@@ -1,6 +1,7 @@
 package com.system.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class EmployeeDto implements Serializable {
 
@@ -10,6 +11,10 @@ public class EmployeeDto implements Serializable {
 	private String hiredate;
 	private String baseWage;
 	private String bankCardNumber;
+	private BigDecimal overtime;
+	private BigDecimal mealsSubsidy;
+	private BigDecimal secrecySubsidy;
+	private BigDecimal communicationFee;
 
 	public String getId() {
 		return id;
@@ -57,5 +62,37 @@ public class EmployeeDto implements Serializable {
 
 	public void setBankCardNumber(String bankCardNumber) {
 		this.bankCardNumber = bankCardNumber;
+	}
+
+	public BigDecimal getOvertime() {
+		return overtime;
+	}
+
+	public void setOvertime(BigDecimal overtime) {
+		this.overtime = overtime;
+	}
+
+	public BigDecimal getMealsSubsidy() {
+		return mealsSubsidy;
+	}
+
+	public void setMealsSubsidy(BigDecimal mealsSubsidy) {
+		this.mealsSubsidy = mealsSubsidy;
+	}
+
+	public BigDecimal getSecrecySubsidy() {
+		return secrecySubsidy;
+	}
+
+	public void setSecrecySubsidy(BigDecimal secrecySubsidy) {
+		this.secrecySubsidy = secrecySubsidy;
+	}
+
+	public BigDecimal getCommunicationFee() {
+		return communicationFee;
+	}
+
+	public void setCommunicationFee(BigDecimal communicationFee) {
+		this.communicationFee = communicationFee;
 	}
 }

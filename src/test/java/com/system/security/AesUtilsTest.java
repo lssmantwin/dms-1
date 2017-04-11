@@ -1,5 +1,6 @@
 package com.system.security;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class AesUtilsTest {
@@ -12,6 +13,7 @@ public class AesUtilsTest {
 		System.out.println(content);
 		System.out.println(encryptContent);
 		System.out.println(decryptContent);
+		Assert.assertEquals("encrypt/decrypt failure", content, decryptContent);
 	}
 
 }

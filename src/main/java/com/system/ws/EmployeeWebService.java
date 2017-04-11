@@ -19,10 +19,6 @@ public interface EmployeeWebService {
 	List<Month> getMonths();
 
 	@GET
-	@Path("/menus")
-	List<Menu> getMenus();
-
-	@GET
 	@Path("/positions")
 	List<Position> getPositions();
 

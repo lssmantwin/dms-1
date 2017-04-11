@@ -8,8 +8,6 @@ public interface EmployeeDao {
 
 	List<Month> getMonths();
 
-	List<Menu> getMenus();
-
 	List<Position> getPositions();
 
 	int getEmployeeCount(MiniRequest request);

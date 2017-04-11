@@ -10,8 +10,6 @@ public interface EmployeeService {
 
 	List<Position> getPositions();
 
-	List<Menu> getMenus();
-
 	int getEmployeeCount(MiniRequest request);
 
 	List<Employee> getEmployees(MiniRequest request);

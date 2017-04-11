@@ -32,11 +32,6 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 	}
 
 	@Override
-	public List<Menu> getMenus() {
-		return employeeService.getMenus();
-	}
-
-	@Override
 	public List<Position> getPositions() {
 
 		LOGGER.info("get positions");
@@ -66,6 +61,10 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 			}
 			employee.setBaseWage(new BigDecimal(employeeDto.getBaseWage()));
 			employee.setBankCardNumber(employeeDto.getBankCardNumber());
+			employee.setOvertime(employeeDto.getOvertime());
+			employee.setMealsSubsidy(employeeDto.getMealsSubsidy());
+			employee.setSecrecySubsidy(employeeDto.getSecrecySubsidy());
+			employee.setCommunicationFee(employeeDto.getCommunicationFee());
 			if (StringUtils.isBlank(employeeDto.getId())) {
 				employeeService.save(employee);
 			} else {
@@ -99,6 +98,10 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 			employeeDto.setHiredate(sf.format(employee.getHiredate().toDate()));
 			employeeDto.setBaseWage(employee.getBaseWage().toString());
 			employeeDto.setBankCardNumber(employee.getBankCardNumber());
+			employeeDto.setOvertime(employee.getOvertime());
+			employeeDto.setMealsSubsidy(employee.getMealsSubsidy());
+			employeeDto.setSecrecySubsidy(employee.getSecrecySubsidy());
+			employeeDto.setCommunicationFee(employee.getCommunicationFee());
 			employeeDtos.add(employeeDto);
 		}
 

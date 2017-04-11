@@ -10,13 +10,9 @@ public class Finance {
 	private long employeeId;
 	private LocalDateTime createdOn;
 	private String attendance;
-	private BigDecimal overtime;
-	private BigDecimal mealSubsidy;
-	private BigDecimal secrecySubsidy;
 	private BigDecimal bonus;
 	private BigDecimal workingAgeSubsidy;
 	private BigDecimal performanceAppraisal;
-	private BigDecimal communicationFee;
 	private BigDecimal otherSubsidy;
 	private BigDecimal exhibitionCharge;
 	private BigDecimal charge;
@@ -63,30 +59,6 @@ public class Finance {
 		this.attendance = attendance;
 	}
 
-	public BigDecimal getOvertime() {
-		return overtime;
-	}
-
-	public void setOvertime(BigDecimal overtime) {
-		this.overtime = overtime;
-	}
-
-	public BigDecimal getMealSubsidy() {
-		return mealSubsidy;
-	}
-
-	public void setMealSubsidy(BigDecimal mealSubsidy) {
-		this.mealSubsidy = mealSubsidy;
-	}
-
-	public BigDecimal getSecrecySubsidy() {
-		return secrecySubsidy;
-	}
-
-	public void setSecrecySubsidy(BigDecimal secrecySubsidy) {
-		this.secrecySubsidy = secrecySubsidy;
-	}
-
 	public BigDecimal getBonus() {
 		return bonus;
 	}
@@ -109,14 +81,6 @@ public class Finance {
 
 	public void setPerformanceAppraisal(BigDecimal performanceAppraisal) {
 		this.performanceAppraisal = performanceAppraisal;
-	}
-
-	public BigDecimal getCommunicationFee() {
-		return communicationFee;
-	}
-
-	public void setCommunicationFee(BigDecimal communicationFee) {
-		this.communicationFee = communicationFee;
 	}
 
 	public BigDecimal getOtherSubsidy() {

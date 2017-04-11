@@ -12,6 +12,10 @@ public class Employee {
 	private LocalDateTime hiredate;
 	private BigDecimal baseWage;
 	private String bankCardNumber;
+	private BigDecimal overtime;
+	private BigDecimal mealsSubsidy;
+	private BigDecimal secrecySubsidy;
+	private BigDecimal communicationFee;
 
 	public long getId() {
 		return id;
@@ -59,5 +63,37 @@ public class Employee {
 
 	public void setBankCardNumber(String bankCardNumber) {
 		this.bankCardNumber = bankCardNumber;
+	}
+
+	public BigDecimal getOvertime() {
+		return overtime;
+	}
+
+	public void setOvertime(BigDecimal overtime) {
+		this.overtime = overtime;
+	}
+
+	public BigDecimal getMealsSubsidy() {
+		return mealsSubsidy;
+	}
+
+	public void setMealsSubsidy(BigDecimal mealsSubsidy) {
+		this.mealsSubsidy = mealsSubsidy;
+	}
+
+	public BigDecimal getSecrecySubsidy() {
+		return secrecySubsidy;
+	}
+
+	public void setSecrecySubsidy(BigDecimal secrecySubsidy) {
+		this.secrecySubsidy = secrecySubsidy;
+	}
+
+	public BigDecimal getCommunicationFee() {
+		return communicationFee;
+	}
+
+	public void setCommunicationFee(BigDecimal communicationFee) {
+		this.communicationFee = communicationFee;
 	}
 }

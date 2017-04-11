@@ -4,12 +4,9 @@
 <configuration>
     <!-- 命名空间 -->
     <typeAliases>
-        <typeAlias type="com.system.domain.User" alias="User"/>
         <typeAlias type="com.system.domain.MiniRequest" alias="MiniRequest"/>
-        <typeAlias type="com.system.domain.User2" alias="User2"/>
         <typeAlias type="com.system.domain.Employee" alias="Employee"/>
         <typeAlias type="com.system.domain.Position" alias="Position"/>
-        <typeAlias type="com.system.domain.Menu" alias="Menu"/>
         <typeAlias type="com.system.domain.Month" alias="Month"/>
     </typeAliases>
 

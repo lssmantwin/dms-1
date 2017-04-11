@@ -10,14 +10,14 @@
         <result property="hiredate" column="hiredate" typeHandler="com.system.handler.LocalDateTimeHandler"/>
         <result property="baseWage" column="base_wage" typeHandler="com.system.handler.BigDecimalHandler"/>
         <result property="bankCardNumber" column="bank_card_number"/>
+        <result property="overtime" column="overtime"/>
+        <result property="mealsSubsidy" column="meals_subsidy"/>
+        <result property="secrecySubsidy" column="secrecy_subsidy"/>
+        <result property="communicationFee" column="communication_fee"/>
     </resultMap>
 
     <select id="getMonths" resultType="Month">
         select * from "month" order by text desc
-    </select>
-
-    <select id="getMenus" resultType="Menu">
-        select * from "menu"
     </select>
 
     <select id="getPositions" resultType="Position">
@@ -28,8 +28,9 @@
         select count(id) from "employee"
         <where>
             <if test="key != null">
-                <bind name="pattern" value="'%' + key + '%'"/>
-                name like #{pattern}
+                <!--<bind name="pattern" value="'%' + key + '%'"/>-->
+                -- name like #{pattern}
+                name like '%'#{name}'%'
             </if>
         </where>
     </select>
@@ -39,8 +40,9 @@
         <where>
             t.rn BETWEEN #{start} and #{end}
             <if test="key != null">
-                <bind name="pattern" value="'%' + key + '%'"/>
-                and t.name like #{pattern}
+                <!--<bind name="pattern" value="'%' + key + '%'"/>-->
+                -- and t.name like #{pattern}
+                name like '%'#{name}'%'
             </if>
             <choose>
                 <when test="sortField == 'name'">
@@ -68,13 +70,15 @@
     </select>
 
     <insert id="save" parameterType="Employee">
-        insert into "employee" (name, "position", hiredate, base_wage, bank_card_number)
-        values (#{name}, #{position}, #{hiredate}, #{baseWage}, #{bankCardNumber})
+        insert into "employee" (name, "position", hiredate, base_wage, bank_card_number, overtime, meals_subsidy, secrecy_subsidy, communication_fee)
+        values (#{name}, #{position}, #{hiredate}, #{baseWage}, #{bankCardNumber}, #{overtime}, #{mealsSubsidy}, #{secrecySubsidy}, #{communicationFee})
     </insert>
 
     <update id="update" parameterType="Employee">
         update "employee" set name = #{name}, position = #{position}, hiredate = #{hiredate},
-        base_wage = #{baseWage}, bank_card_number = #{bankCardNumber}
+        base_wage = #{baseWage}, bank_card_number = #{bankCardNumber},
+        overtime = #{overtime}, meals_subsidy = #{mealsSubsidy},
+        secrecy_subsidy = #{secrecySubsidy}, communication_fee = #{communicationFee}
         where id = #{id}
     </update>
 

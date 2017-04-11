@@ -1,8 +1,5 @@
 package com.system.domain;
 
-/**
- * Created by will on 2017/4/9.
- */
 public class Month {
 
 	private long id;

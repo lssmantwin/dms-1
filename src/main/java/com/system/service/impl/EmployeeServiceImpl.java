@@ -20,11 +20,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public List<Menu> getMenus() {
-		return employeeDao.getMenus();
-	}
-
-	@Override
 	public List<Position> getPositions() {
 		return employeeDao.getPositions();
 	}
