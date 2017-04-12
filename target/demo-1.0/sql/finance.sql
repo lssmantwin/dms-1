@@ -1,0 +1,22 @@
+create table finance (
+  id bigint primary key identity(1,1),
+  employee_id bigint not null,
+  month_id bigint not null,
+  attendance varchar(32),
+  bonus decimal(10,2),
+  working_age_subsidy decimal(10,2),
+  performance_appraisal decimal(10,2),
+  other_subsidy decimal(10,2),
+  exhibition_charge decimal(10,2),
+  charge decimal(10,2),
+  charge_comments varchar(1000),
+  casual_leave decimal(10,2),
+  sick_leave decimal(10,2),
+  storage_charge decimal(10,2),
+  gross_pay decimal(10,2),
+  medical_insurance decimal(10,2),
+  housing_fund decimal(10,2),
+  before_tax_salary decimal(10,2),
+  personal_income_tax decimal(10,2),
+  after_tax_salary decimal(10,2)
+)

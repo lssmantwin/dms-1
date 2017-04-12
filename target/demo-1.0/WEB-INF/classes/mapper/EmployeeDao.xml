@@ -1,0 +1,85 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.system.dao.EmployeeDao">
+
+    <resultMap id="EmployeeMap" type="Employee">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="position" column="position"/>
+        <result property="hiredate" column="hiredate" typeHandler="com.system.handler.LocalDateTimeHandler"/>
+        <result property="baseWage" column="base_wage" typeHandler="com.system.handler.BigDecimalHandler"/>
+        <result property="bankCardNumber" column="bank_card_number"/>
+        <result property="overtime" column="overtime"/>
+        <result property="mealsSubsidy" column="meals_subsidy"/>
+        <result property="secrecySubsidy" column="secrecy_subsidy"/>
+        <result property="communicationFee" column="communication_fee"/>
+    </resultMap>
+
+    <select id="getMonths" resultType="Month">
+        select * from "month" order by text desc
+    </select>
+
+    <select id="getPositions" resultType="Position">
+        select * from "position" order by "value"
+    </select>
+
+    <select id="getEmployeeCount" parameterType="MiniRequest" resultType="int">
+        select count(id) from "employee"
+        <where>
+            <if test="key != null">
+                <!--<bind name="pattern" value="'%' + key + '%'"/>-->
+                -- name like #{pattern}
+                name like '%'#{name}'%'
+            </if>
+        </where>
+    </select>
+
+    <select id="getEmployees" parameterType="MiniRequest" resultMap="EmployeeMap">
+        select * from (select *, row_number() over (order by id) rn from "employee" ) t
+        <where>
+            t.rn BETWEEN #{start} and #{end}
+            <if test="key != null">
+                <!--<bind name="pattern" value="'%' + key + '%'"/>-->
+                -- and t.name like #{pattern}
+                name like '%'#{name}'%'
+            </if>
+            <choose>
+                <when test="sortField == 'name'">
+                    order by name
+                </when>
+                <when test="sortField == 'hiredate'">
+                    order by hiredate
+                </when>
+                <when test="sortField == 'baseWage'">
+                    order by base_wage
+                </when>
+                <otherwise>
+                    order by id
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="sortOrder == 'desc'">
+                    desc
+                </when>
+                <otherwise>
+                    asc
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="Employee">
+        insert into "employee" (name, "position", hiredate, base_wage, bank_card_number, overtime, meals_subsidy, secrecy_subsidy, communication_fee)
+        values (#{name}, #{position}, #{hiredate}, #{baseWage}, #{bankCardNumber}, #{overtime}, #{mealsSubsidy}, #{secrecySubsidy}, #{communicationFee})
+    </insert>
+
+    <update id="update" parameterType="Employee">
+        update "employee" set name = #{name}, position = #{position}, hiredate = #{hiredate},
+        base_wage = #{baseWage}, bank_card_number = #{bankCardNumber},
+        overtime = #{overtime}, meals_subsidy = #{mealsSubsidy},
+        secrecy_subsidy = #{secrecySubsidy}, communication_fee = #{communicationFee}
+        where id = #{id}
+    </update>
+
+</mapper>
