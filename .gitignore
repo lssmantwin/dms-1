@@ -2,4 +2,3 @@
 target
 *.war
 *.iml
-target/*.lst
