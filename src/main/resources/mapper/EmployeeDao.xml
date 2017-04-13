@@ -28,9 +28,8 @@
         select count(id) from "employee"
         <where>
             <if test="key != null">
-                <!--<bind name="pattern" value="'%' + key + '%'"/>-->
-                -- name like #{pattern}
-                name like '%'#{name}'%'
+                <bind name="pattern" value="'%' + key + '%'"/>
+                name like #{pattern}
             </if>
         </where>
     </select>
@@ -40,9 +39,8 @@
         <where>
             t.rn BETWEEN #{start} and #{end}
             <if test="key != null">
-                <!--<bind name="pattern" value="'%' + key + '%'"/>-->
-                -- and t.name like #{pattern}
-                name like '%'#{name}'%'
+                <bind name="pattern" value="'%' + key + '%'"/>
+                and t.name like #{pattern}
             </if>
             <choose>
                 <when test="sortField == 'name'">

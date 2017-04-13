@@ -7,8 +7,8 @@
 
     <Properties>
         <!-- 配置日志文件输出目录 -->
-        <Property name="LOG_HOME">D:/</Property>
-        <property name="LOG_NAME">work</property>
+        <Property name="LOG_HOME">E:/log</Property>
+        <property name="LOG_NAME">dms</property>
     </Properties>
 
     <Appenders>
