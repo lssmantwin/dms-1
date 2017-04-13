@@ -4,14 +4,14 @@
 <configuration>
     <!-- 命名空间 -->
     <typeAliases>
-        <typeAlias type="com.system.domain.MiniRequest" alias="MiniRequest"/>
-        <typeAlias type="com.system.domain.Employee" alias="Employee"/>
-        <typeAlias type="com.system.domain.Position" alias="Position"/>
-        <typeAlias type="com.system.domain.Month" alias="Month"/>
+        <typeAlias type="com.dms.domain.MiniRequest" alias="MiniRequest"/>
+        <typeAlias type="com.dms.domain.Employee" alias="Employee"/>
+        <typeAlias type="com.dms.domain.Position" alias="Position"/>
+        <typeAlias type="com.dms.domain.Month" alias="Month"/>
     </typeAliases>
 
     <typeHandlers>
-        <typeHandler handler="com.system.handler.LocalDateTimeHandler" javaType="org.joda.time.LocalDateTime"
+        <typeHandler handler="com.dms.handler.LocalDateTimeHandler" javaType="org.joda.time.LocalDateTime"
                      jdbcType="DATE"/>
     </typeHandlers>
 </configuration>

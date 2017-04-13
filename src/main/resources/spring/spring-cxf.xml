@@ -32,6 +32,6 @@
         <property name="mapper" ref="jacksonObjectMapper"/>
     </bean>
 
-    <bean id="userInterceptor" class="com.system.interceptor.UserInterceptor"/>
+    <bean id="userInterceptor" class="com.dms.interceptor.UserInterceptor"/>
 
 </beans>
