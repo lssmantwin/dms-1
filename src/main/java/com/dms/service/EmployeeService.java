@@ -1,10 +1,13 @@
 package com.dms.service;
 
-import com.dms.domain.*;
-
 import java.util.List;
 
+import com.dms.domain.*;
+import com.dms.dto.FinanceDto;
+
 public interface EmployeeService {
+
+	List<Attendance> getAttendance();
 
 	List<Month> getMonths();
 
@@ -14,8 +17,13 @@ public interface EmployeeService {
 
 	List<Employee> getEmployees(MiniRequest request);
 
-	void save(Employee employee);
+	List<FinanceDto> getFinances(MiniRequest request);
 
-	void update(Employee employee);
+	void saveEmployee(Employee employee);
 
+	void updateEmployee(Employee employee);
+
+	void saveFinance(FinanceDto financeDto);
+
+	void updateFinance(FinanceDto financeDto);
 }

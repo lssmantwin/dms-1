@@ -9,12 +9,12 @@ public class EmployeeDto implements Serializable {
 	private String name;
 	private String position;
 	private String hiredate;
-	private String baseWage;
-	private String bankCardNumber;
+	private BigDecimal baseWage;
 	private BigDecimal overtime;
 	private BigDecimal mealsSubsidy;
 	private BigDecimal secrecySubsidy;
 	private BigDecimal communicationFee;
+	private String bankCardNumber;
 
 	public String getId() {
 		return id;
@@ -48,11 +48,11 @@ public class EmployeeDto implements Serializable {
 		this.hiredate = hiredate;
 	}
 
-	public String getBaseWage() {
+	public BigDecimal getBaseWage() {
 		return baseWage;
 	}
 
-	public void setBaseWage(String baseWage) {
+	public void setBaseWage(BigDecimal baseWage) {
 		this.baseWage = baseWage;
 	}
 

@@ -1,18 +1,25 @@
 package com.dms.service.impl;
 
-import com.dms.dao.EmployeeDao;
-import com.dms.domain.*;
-import com.dms.service.EmployeeService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.dms.dao.EmployeeDao;
+import com.dms.domain.*;
+import com.dms.dto.FinanceDto;
+import com.dms.service.EmployeeService;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
 	@Autowired
 	private EmployeeDao employeeDao;
+
+	@Override
+	public List<Attendance> getAttendance() {
+		return employeeDao.getAttendance();
+	}
 
 	@Override
 	public List<Month> getMonths() {
@@ -35,12 +42,27 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public void save(Employee employee) {
-		employeeDao.save(employee);
+	public List<FinanceDto> getFinances(MiniRequest request) {
+		return employeeDao.getFinances(request);
 	}
 
 	@Override
-	public void update(Employee employee) {
-		employeeDao.update(employee);
+	public void saveEmployee(Employee employee) {
+		employeeDao.saveEmployee(employee);
+	}
+
+	@Override
+	public void updateEmployee(Employee employee) {
+		employeeDao.updateEmployee(employee);
+	}
+
+	@Override
+	public void saveFinance(FinanceDto financeDto) {
+		employeeDao.saveFinance(financeDto);
+	}
+
+	@Override
+	public void updateFinance(FinanceDto financeDto) {
+		employeeDao.updateFinance(financeDto);
 	}
 }

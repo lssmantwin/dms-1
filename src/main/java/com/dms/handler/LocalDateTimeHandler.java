@@ -9,22 +9,33 @@ import org.joda.time.LocalDateTime;
 public class LocalDateTimeHandler extends BaseTypeHandler<LocalDateTime> {
 	@Override
 	public void setNonNullParameter(PreparedStatement preparedStatement, int i, LocalDateTime localDateTime, JdbcType jdbcType) throws SQLException {
-		// preparedStatement.setTimestamp(i, new Timestamp(localDateTime.toDate().getTime()));
 		preparedStatement.setDate(i, new Date(localDateTime.toDate().getTime()));
 	}
 
 	@Override
 	public LocalDateTime getNullableResult(ResultSet resultSet, String s) throws SQLException {
-		return new LocalDateTime(resultSet.getDate(s).getTime());
+		Date date = resultSet.getDate(s);
+		if (date != null) {
+			return new LocalDateTime(date.getTime());
+		}
+		return null;
 	}
 
 	@Override
 	public LocalDateTime getNullableResult(ResultSet resultSet, int i) throws SQLException {
-		return new LocalDateTime(resultSet.getDate(i).getTime());
+		Date date = resultSet.getDate(i);
+		if (date != null) {
+			return new LocalDateTime(date.getTime());
+		}
+		return null;
 	}
 
 	@Override
 	public LocalDateTime getNullableResult(CallableStatement callableStatement, int i) throws SQLException {
-		return new LocalDateTime(callableStatement.getDate(i).getTime());
+		Date date = callableStatement.getDate(i);
+		if (date != null) {
+			return new LocalDateTime(date.getTime());
+		}
+		return null;
 	}
 }

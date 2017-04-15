@@ -12,11 +12,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.Lists;
 import com.dms.domain.*;
 import com.dms.dto.EmployeeDto;
+import com.dms.dto.FinanceDto;
+import com.dms.request.FinanceRequest;
 import com.dms.service.EmployeeService;
+import com.dms.utils.PersonalIncomeTaxUtils;
 import com.dms.ws.EmployeeWebService;
+import com.google.common.collect.Lists;
 
 @Service("employeeWebService")
 public class EmployeeWebServiceImpl implements EmployeeWebService {
@@ -25,6 +28,11 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 
 	@Autowired
 	private EmployeeService employeeService;
+
+	@Override
+	public List<Attendance> getAttendance() {
+		return employeeService.getAttendance();
+	}
 
 	@Override
 	public List<Month> getMonths() {
@@ -41,7 +49,7 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 	}
 
 	@Override
-	public void save(List<EmployeeDto> employeeDtos) {
+	public void saveEmployees(List<EmployeeDto> employeeDtos) {
 
 		LOGGER.info("save employees, {}", employeeDtos);
 
@@ -59,22 +67,22 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 				LOGGER.error("date parse exception", e);
 				e.printStackTrace();
 			}
-			employee.setBaseWage(new BigDecimal(employeeDto.getBaseWage()));
+			employee.setBaseWage(employeeDto.getBaseWage());
 			employee.setBankCardNumber(employeeDto.getBankCardNumber());
 			employee.setOvertime(employeeDto.getOvertime());
 			employee.setMealsSubsidy(employeeDto.getMealsSubsidy());
 			employee.setSecrecySubsidy(employeeDto.getSecrecySubsidy());
 			employee.setCommunicationFee(employeeDto.getCommunicationFee());
 			if (StringUtils.isBlank(employeeDto.getId())) {
-				employeeService.save(employee);
+				employeeService.saveEmployee(employee);
 			} else {
-				employeeService.update(employee);
+				employeeService.updateEmployee(employee);
 			}
 		}
 	}
 
 	@Override
-	public MiniResponse getEmployees(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
+	public MiniResponse<List<EmployeeDto>> getEmployees(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
 
 		LOGGER.info("get employees, key {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}", key, pageIndex, pageSize, sortField, sortOrder);
 
@@ -96,7 +104,7 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 			employeeDto.setName(employee.getName());
 			employeeDto.setPosition(employee.getPosition());
 			employeeDto.setHiredate(sf.format(employee.getHiredate().toDate()));
-			employeeDto.setBaseWage(employee.getBaseWage().toString());
+			employeeDto.setBaseWage(employee.getBaseWage());
 			employeeDto.setBankCardNumber(employee.getBankCardNumber());
 			employeeDto.setOvertime(employee.getOvertime());
 			employeeDto.setMealsSubsidy(employee.getMealsSubsidy());
@@ -110,6 +118,53 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 		response.setData(employeeDtos);
 
 		return response;
+	}
+
+	@Override
+	public MiniResponse<List<FinanceDto>> getFinances(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
+
+		LOGGER.info("get finances, key {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}", key, pageIndex, pageSize, sortField, sortOrder);
+
+		MiniRequest request = new MiniRequest();
+		request.setStart(pageIndex * pageSize + 1);
+		request.setEnd((pageIndex + 1) * pageSize);
+		request.setKey(key);
+		request.setSortField(sortField);
+		request.setSortOrder(sortOrder);
+
+		int count = employeeService.getEmployeeCount(request);
+		List<FinanceDto> finances = employeeService.getFinances(request);
+
+		MiniResponse<List<FinanceDto>> response = new MiniResponse<>();
+		response.setTotal(count);
+		response.setData(finances);
+
+		return response;
+	}
+
+	@Override
+	public void saveFinances(FinanceRequest request) {
+
+		LOGGER.info("save finances, {}", request);
+
+		for (FinanceDto financeDto : request.getFinances()) {
+			financeDto.setMonth(request.getMonth());
+			BigDecimal grossPay = financeDto.getBaseWage().add(financeDto.getOvertime()).add(financeDto.getMealsSubsidy()).add(financeDto.getSecrecySubsidy())
+					.add(financeDto.getBonus()).add(financeDto.getWorkingAgeSubsidy()).add(financeDto.getPerformanceAppraisal())
+					.add(financeDto.getCommunicationFee()).add(financeDto.getOtherSubsidy()).subtract(financeDto.getCharge())
+					.subtract(financeDto.getExhibitionCharge()).subtract(financeDto.getCasualLeave()).subtract(financeDto.getSickLeave())
+					.subtract(financeDto.getStorageCharge());
+			financeDto.setGrossPay(grossPay);
+			financeDto.setBeforeTaxSalary(financeDto.getGrossPay().subtract(financeDto.getMedicalInsurance()).subtract(financeDto.getHousingFund()));
+			BigDecimal personalIncomeTax = PersonalIncomeTaxUtils.getPersonalIncomeTax(financeDto.getBeforeTaxSalary());
+			financeDto.setPersonalIncomeTax(personalIncomeTax);
+			financeDto.setAfterTaxSalary(financeDto.getBeforeTaxSalary().subtract(personalIncomeTax));
+			if (financeDto.getId() == null) {
+				employeeService.saveFinance(financeDto);
+			} else {
+				employeeService.updateFinance(financeDto);
+			}
+		}
 	}
 
 }

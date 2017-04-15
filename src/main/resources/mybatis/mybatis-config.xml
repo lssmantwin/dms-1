@@ -8,6 +8,8 @@
         <typeAlias type="com.dms.domain.Employee" alias="Employee"/>
         <typeAlias type="com.dms.domain.Position" alias="Position"/>
         <typeAlias type="com.dms.domain.Month" alias="Month"/>
+        <typeAlias type="com.dms.domain.Attendance" alias="Attendance"/>
+        <typeAlias type="com.dms.dto.FinanceDto" alias="FinanceDto"/>
     </typeAliases>
 
     <typeHandlers>

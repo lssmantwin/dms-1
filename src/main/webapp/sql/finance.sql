@@ -1,7 +1,8 @@
 create table finance (
   id bigint primary key identity(1,1),
   employee_id bigint not null,
-  month_id bigint not null,
+  created_on datetime not null,
+  month varchar(6) not null,
   attendance varchar(32),
   bonus decimal(10,2),
   working_age_subsidy decimal(10,2),
