@@ -21,7 +21,7 @@ public class LocalDateTimeJacksonSerializable extends JsonSerializer<LocalDateTi
 			throws IOException, JsonProcessingException {
 		if (localDateTime != null) {
 			ObjectMapper om = new ObjectMapper();
-			om.writeValue(jsonGenerator, localDateTime.toString("yyyy-MM-dd HH:mm:ss zZ"));
+			om.writeValue(jsonGenerator, localDateTime.toString("yyyy-MM-dd"));
 		} else {
 			LOGGER.info("localDateTime is null");
 		}

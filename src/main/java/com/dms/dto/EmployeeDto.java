@@ -3,12 +3,21 @@ package com.dms.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import org.joda.time.LocalDateTime;
+
+import com.dms.serializable.LocalDateTimeJacksonDeSerializable;
+import com.dms.serializable.LocalDateTimeJacksonSerializable;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 public class EmployeeDto implements Serializable {
 
 	private String id;
 	private String name;
 	private String position;
-	private String hiredate;
+	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
+	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
+	private LocalDateTime hiredate;
 	private BigDecimal baseWage;
 	private BigDecimal workingAgeSubsidy;
 	private BigDecimal overtime;
@@ -41,11 +50,11 @@ public class EmployeeDto implements Serializable {
 		this.position = position;
 	}
 
-	public String getHiredate() {
+	public LocalDateTime getHiredate() {
 		return hiredate;
 	}
 
-	public void setHiredate(String hiredate) {
+	public void setHiredate(LocalDateTime hiredate) {
 		this.hiredate = hiredate;
 	}
 

@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dms.dao.EmployeeDao">
 
-    <resultMap id="EmployeeMap" type="Employee">
+    <resultMap id="EmployeeMap" type="EmployeeDto">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="position" column="position"/>
@@ -127,12 +127,12 @@
         </where>
     </select>
 
-    <insert id="saveEmployee" parameterType="Employee">
+    <insert id="saveEmployee" parameterType="EmployeeDto">
         insert into "employee" (name, "position", hiredate, base_wage, bank_card_number, working_age_subsidy, overtime, meals_subsidy, secrecy_subsidy, communication_fee)
         values (#{name}, #{position}, #{hiredate}, #{baseWage}, #{bankCardNumber}, #{workingAgeSubsidy}, #{overtime}, #{mealsSubsidy}, #{secrecySubsidy}, #{communicationFee})
     </insert>
 
-    <update id="updateEmployee" parameterType="Employee">
+    <update id="updateEmployee" parameterType="EmployeeDto">
         update "employee"
         set name = #{name},
             position = #{position},

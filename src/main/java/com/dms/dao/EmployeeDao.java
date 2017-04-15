@@ -3,6 +3,7 @@ package com.dms.dao;
 import java.util.List;
 
 import com.dms.domain.*;
+import com.dms.dto.EmployeeDto;
 import com.dms.dto.FinanceDto;
 
 public interface EmployeeDao {
@@ -15,13 +16,13 @@ public interface EmployeeDao {
 
 	int getEmployeeCount(MiniRequest request);
 
-	List<Employee> getEmployees(MiniRequest request);
+	List<EmployeeDto> getEmployees(MiniRequest request);
 
 	List<FinanceDto> getFinances(MiniRequest request);
 
-	void saveEmployee(Employee employee);
+	void saveEmployee(EmployeeDto employee);
 
-	void updateEmployee(Employee employee);
+	void updateEmployee(EmployeeDto employee);
 
 	void saveFinance(FinanceDto financeDto);
 

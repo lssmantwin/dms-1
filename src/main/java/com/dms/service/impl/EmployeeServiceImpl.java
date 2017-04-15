@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.dms.dao.EmployeeDao;
 import com.dms.domain.*;
+import com.dms.dto.EmployeeDto;
 import com.dms.dto.FinanceDto;
 import com.dms.service.EmployeeService;
 
@@ -37,7 +38,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public List<Employee> getEmployees(MiniRequest request) {
+	public List<EmployeeDto> getEmployees(MiniRequest request) {
 		return employeeDao.getEmployees(request);
 	}
 
@@ -47,12 +48,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public void saveEmployee(Employee employee) {
+	public void saveEmployee(EmployeeDto employee) {
 		employeeDao.saveEmployee(employee);
 	}
 
 	@Override
-	public void updateEmployee(Employee employee) {
+	public void updateEmployee(EmployeeDto employee) {
 		employeeDao.updateEmployee(employee);
 	}
 
