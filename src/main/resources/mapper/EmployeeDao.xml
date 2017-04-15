@@ -10,6 +10,7 @@
         <result property="hiredate" column="hiredate" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="baseWage" column="base_wage" typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="bankCardNumber" column="bank_card_number"/>
+        <result property="workingAgeSubsidy" column="working_age_subsidy"/>
         <result property="overtime" column="overtime"/>
         <result property="mealsSubsidy" column="meals_subsidy"/>
         <result property="secrecySubsidy" column="secrecy_subsidy"/>
@@ -111,37 +112,46 @@
         t.charge_comments, t.casual_leave, t.sick_leave,
         t.storage_charge, t.gross_pay, t.medical_insurance,
         t.housing_fund, t.before_tax_salary, t.personal_income_tax, t.after_tax_salary
-        from (select e.id as eid, e.name, e.base_wage, e.overtime, e.meals_subsidy, e.secrecy_subsidy,
-        e.communication_fee, f.id as fid, f.month, f.attendance,
-        f.bonus, f.working_age_subsidy, f.performance_appraisal,
+        from (
+        select e.id as eid, e.name, e.base_wage, e.overtime, e.meals_subsidy, e.secrecy_subsidy,
+        e.communication_fee, e.working_age_subsidy, f.id as fid, f.month, f.attendance,
+        f.bonus, f.performance_appraisal,
         f.other_subsidy, f.exhibition_charge, f.charge,
         f.charge_comments, f.casual_leave, f.sick_leave,
         f.storage_charge, f.gross_pay, f.medical_insurance,
         f.housing_fund, f.before_tax_salary, f.personal_income_tax, f.after_tax_salary,
-        row_number() over (order by e.id) as rn from employee e left join finance f on e.id = f.employee_id ) t
+        row_number() over (order by e.id) as rn from employee e left join finance f on e.id = f.employee_id
+        ) t
         <where>
             t.rn BETWEEN #{start} and #{end}
         </where>
     </select>
 
     <insert id="saveEmployee" parameterType="Employee">
-        insert into "employee" (name, "position", hiredate, base_wage, bank_card_number, overtime, meals_subsidy, secrecy_subsidy, communication_fee)
-        values (#{name}, #{position}, #{hiredate}, #{baseWage}, #{bankCardNumber}, #{overtime}, #{mealsSubsidy}, #{secrecySubsidy}, #{communicationFee})
+        insert into "employee" (name, "position", hiredate, base_wage, bank_card_number, working_age_subsidy, overtime, meals_subsidy, secrecy_subsidy, communication_fee)
+        values (#{name}, #{position}, #{hiredate}, #{baseWage}, #{bankCardNumber}, #{workingAgeSubsidy}, #{overtime}, #{mealsSubsidy}, #{secrecySubsidy}, #{communicationFee})
     </insert>
 
     <update id="updateEmployee" parameterType="Employee">
-        update "employee" set name = #{name}, position = #{position}, hiredate = #{hiredate},
-        base_wage = #{baseWage}, bank_card_number = #{bankCardNumber},
-        overtime = #{overtime}, meals_subsidy = #{mealsSubsidy},
-        secrecy_subsidy = #{secrecySubsidy}, communication_fee = #{communicationFee}
+        update "employee"
+        set name = #{name},
+            position = #{position},
+            hiredate = #{hiredate},
+            base_wage = #{baseWage},
+            bank_card_number = #{bankCardNumber},
+            working_age_subsidy = #{workingAgeSubsidy},
+            overtime = #{overtime},
+            meals_subsidy = #{mealsSubsidy},
+            secrecy_subsidy = #{secrecySubsidy},
+            communication_fee = #{communicationFee}
         where id = #{id}
     </update>
 
     <insert id="saveFinance" parameterType="FinanceDto">
-        insert into "finance" (created_on, employee_id, month, attendance, bonus, working_age_subsidy, performance_appraisal,
+        insert into "finance" (created_on, employee_id, month, attendance, bonus, performance_appraisal,
          other_subsidy, exhibition_charge, charge, charge_comments, casual_leave, sick_leave, storage_charge,
          gross_pay, medical_insurance, housing_fund, before_tax_salary, personal_income_tax, after_tax_salary)
-        values (current_timestamp, #{employeeId}, #{month}, #{attendance}, #{bonus}, #{workingAgeSubsidy}, #{performanceAppraisal},
+        values (current_timestamp, #{employeeId}, #{month}, #{attendance}, #{bonus}, #{performanceAppraisal},
          #{otherSubsidy}, #{exhibitionCharge}, #{charge}, #{chargeComments}, #{casualLeave}, #{sickLeave}, #{storageCharge},
          #{grossPay}, #{medicalInsurance}, #{housingFund}, #{beforeTaxSalary}, #{personalIncomeTax}, #{afterTaxSalary})
     </insert>
@@ -150,7 +160,6 @@
         update finance
         set attendance =  #{attendance},
             bonus = #{bonus},
-            working_age_subsidy = #{workingAgeSubsidy},
             performance_appraisal = #{performanceAppraisal},
             other_subsidy = #{otherSubsidy},
             exhibition_charge = #{exhibitionCharge},

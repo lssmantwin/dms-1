@@ -69,6 +69,7 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 			}
 			employee.setBaseWage(employeeDto.getBaseWage());
 			employee.setBankCardNumber(employeeDto.getBankCardNumber());
+			employee.setWorkingAgeSubsidy(employeeDto.getWorkingAgeSubsidy());
 			employee.setOvertime(employeeDto.getOvertime());
 			employee.setMealsSubsidy(employeeDto.getMealsSubsidy());
 			employee.setSecrecySubsidy(employeeDto.getSecrecySubsidy());
@@ -106,6 +107,7 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 			employeeDto.setHiredate(sf.format(employee.getHiredate().toDate()));
 			employeeDto.setBaseWage(employee.getBaseWage());
 			employeeDto.setBankCardNumber(employee.getBankCardNumber());
+			employeeDto.setWorkingAgeSubsidy(employee.getWorkingAgeSubsidy());
 			employeeDto.setOvertime(employee.getOvertime());
 			employeeDto.setMealsSubsidy(employee.getMealsSubsidy());
 			employeeDto.setSecrecySubsidy(employee.getSecrecySubsidy());

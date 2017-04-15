@@ -10,6 +10,7 @@ public class EmployeeDto implements Serializable {
 	private String position;
 	private String hiredate;
 	private BigDecimal baseWage;
+	private BigDecimal workingAgeSubsidy;
 	private BigDecimal overtime;
 	private BigDecimal mealsSubsidy;
 	private BigDecimal secrecySubsidy;
@@ -62,6 +63,14 @@ public class EmployeeDto implements Serializable {
 
 	public void setBankCardNumber(String bankCardNumber) {
 		this.bankCardNumber = bankCardNumber;
+	}
+
+	public BigDecimal getWorkingAgeSubsidy() {
+		return workingAgeSubsidy;
+	}
+
+	public void setWorkingAgeSubsidy(BigDecimal workingAgeSubsidy) {
+		this.workingAgeSubsidy = workingAgeSubsidy;
 	}
 
 	public BigDecimal getOvertime() {

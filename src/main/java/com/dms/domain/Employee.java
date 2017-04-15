@@ -12,6 +12,7 @@ public class Employee {
 	private LocalDateTime hiredate;
 	private BigDecimal baseWage;
 	private String bankCardNumber;
+	private BigDecimal workingAgeSubsidy;
 	private BigDecimal overtime;
 	private BigDecimal mealsSubsidy;
 	private BigDecimal secrecySubsidy;
@@ -63,6 +64,14 @@ public class Employee {
 
 	public void setBankCardNumber(String bankCardNumber) {
 		this.bankCardNumber = bankCardNumber;
+	}
+
+	public BigDecimal getWorkingAgeSubsidy() {
+		return workingAgeSubsidy;
+	}
+
+	public void setWorkingAgeSubsidy(BigDecimal workingAgeSubsidy) {
+		this.workingAgeSubsidy = workingAgeSubsidy;
 	}
 
 	public BigDecimal getOvertime() {
