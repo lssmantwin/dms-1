@@ -1,35 +1,35 @@
-package com.dms.domain;
+package com.dms.dto;
 
+import com.dms.domain.ProjectCommision;
 import org.joda.time.LocalDateTime;
 
 import java.math.BigDecimal;
 
-public class ProjectCommision {
+public class ProjectCommisionDto {
 
-	private long id;
-	private String designer;
-	private String desginerAssistant;
-
-	private String acNumber;
-	private String contractId;
-	private String customerName;
-	private BigDecimal contractTotal;
-	private BigDecimal purchaseAgentFee;
-	private BigDecimal projectChangeTotal;
-	private BigDecimal customerPay;
-	private BigDecimal payContractRatio;
-	private BigDecimal payProjectRatio;
-	private String contractState;
-	private String firstCommision;
-	private String balanceCommision;
-	private BigDecimal designCommisionRate;
-	private BigDecimal desginerAssistantCommisionRate;
-	private LocalDateTime contractDate;
-	private LocalDateTime firstCommisionDate;
-	private LocalDateTime actualStartTime;
-	private LocalDateTime actualEndTime;
-	private LocalDateTime balanceTime;
-	private LocalDateTime balanceCommisionDate;
+		private long id;
+		private String designer;
+		private String desginerAssistant;
+		private String acNumber;
+		private String contractId;
+		private String customerName;
+		private BigDecimal contractTotal;
+		private BigDecimal purchaseAgentFee;
+		private BigDecimal projectChangeTotal;
+		private BigDecimal customerPay;
+		private BigDecimal payContractRatio;
+		private BigDecimal payProjectRatio;
+		private String contractState;
+		private String firstCommision;
+		private String balanceCommision;
+		private BigDecimal designCommisionRate;
+		private BigDecimal desginerAssistantCommisionRate;
+		private LocalDateTime contractDate;
+		private LocalDateTime firstCommisionDate;
+		private LocalDateTime actualStartTime;
+		private LocalDateTime actualEndTime;
+		private LocalDateTime balanceTime;
+		private LocalDateTime balanceCommisionDate;
 
 	public String getDesigner() {
 		return designer;
@@ -222,7 +222,7 @@ public class ProjectCommision {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 
-		ProjectCommision that = (ProjectCommision) o;
+		ProjectCommisionDto that = (ProjectCommisionDto) o;
 
 		return getAcNumber() != null ? getAcNumber().equals(that.getAcNumber()) : that.getAcNumber() == null;
 	}
