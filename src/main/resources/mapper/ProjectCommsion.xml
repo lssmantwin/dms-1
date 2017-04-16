@@ -1,0 +1,97 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dms.dao.EmployeeDao">
+
+    <resultMap id="ProjectCommision" type="ProjectCommision">
+        <id property="id" column="id"/>
+        <result property="designer" column="designer"/>
+        <result property="acNumber" column="ac_number"/>
+        <result property="contractId" column="contract_id"/>
+        <result property="customerName" column="customer_name"/>
+
+        <result property="contractTotal" column="contract_total" typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="purchaseAgentFee" column="purchase_agent_fee"  typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="projectChangeTotal" column="project_change_total"  typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="customerPay" column="customer_pay"  typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="payContractRatio" column="pay_contract_ratio"  typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="payProjectRatio" column="pay_project_ratio"  typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="contractState" column="contract_state"/>
+        <result property="contractDate" column="contract_date" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
+
+        <result property="firstCommisionDate" column="first_commision_date" typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="actualStartTime" column="actual_start_time" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
+        <result property="actualEndTime" column="actual_end_time" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
+        <result property="balanceTime" column="balance_time" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
+        <result property="firstCommisionDate" column="first_commision_date" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
+        <result property="balanceCommisionDate" column="balance_commision_date" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
+        <result property="desginerAssistant" column="desginer_assistant"/>
+
+        <result property="firstCommision" column="first_commision" typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="balanceCommision" column="balance_commision"  typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="designCommisionRate" column="design_commision_rate"  typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="desginerAssistantCommisionRate" column="desginer_assistant_commision_rate"  typeHandler="com.dms.handler.BigDecimalHandler"/>
+    </resultMap>
+
+
+    <insert id="getProjects" parameterType="Employee">
+        INSERT INTO dms.dbo.Project_Commision
+        (
+        designer
+        ,ac_number
+        ,contract_id
+        ,contract_total
+        ,purchase_agent_fee
+        ,project_change_total
+        ,customer_pay
+        ,pay_contract_ratio
+        ,pay_project_ratio
+        ,contract_state
+        ,branch
+        ,contract_date
+        ,actual_start_time
+        ,actual_end_time
+        ,balance_time
+        ,customer_name)
+        SELECT ci.designer AS 设计师,
+        ci.ACNumber AS 受理编号,
+        ci.contract_id AS 工程编号,
+        ci.contract_total AS 合同价,
+        rp.代采金额,
+        bc.变更总价,
+        ISNULL(hr.已付, 0) AS 已付,
+        hr.已付 / ci.contract_total AS 合同收款比,
+        hr.已付 / (ci.contract_total + ISNULL(bc.变更总价, 0)) AS 总收款比,
+        CASE ci.state WHEN 9 THEN '归档' WHEN 8 THEN '结算' WHEN 7 THEN '竣工' WHEN 6 THEN '在建' END AS 状态,
+        derivedtbl_1.ACName AS 网点,
+        ci.contract_date AS 签约日期,
+        ci.actual_start_time AS 实际开工,
+        ci.actual_end_time AS 实际竣工,
+        ci.balance_time AS 结算日期,
+        View_Max_Flow_Form.CustName as 客户名字
+        FROM   Contract_Info AS ci
+        INNER JOIN   View_Max_Flow_Form ON ci.ACNumber = View_Max_Flow_Form.ACNumber LEFT OUTER JOIN
+        (SELECT     ID, ACType, ACName, ACCont, ACNumb, ACOrder, ACLogic, ACText
+        FROM          AC_Set
+        WHERE      (ACType = '营业网点')) AS derivedtbl_1 ON View_Max_Flow_Form.Branch = derivedtbl_1.ACNumb LEFT OUTER JOIN
+        (SELECT     受理编号, SUM(数量 * 单价) AS 代采金额
+        FROM          ERP_Replace_Purchase
+        WHERE      (状态 = 6)
+        GROUP BY 受理编号) AS rp ON ci.ACNumber = rp.受理编号 LEFT OUTER JOIN
+        (SELECT     h1.ACNumber, SUM(CASE WHEN h1.财务确认 = 1 OR
+        v1.source = '东方CJ' AND h1.Account1 IN ('定金', '上门费') AND h1.received = 1000 THEN h1.Received ELSE 0 END) AS 已付
+        FROM          Has_Receivables AS h1 INNER JOIN
+        View_Max_Flow_Form AS v1 ON h1.ACNumber = v1.ACNumber
+        GROUP BY h1.ACNumber) AS hr ON ci.ACNumber = hr.ACNumber LEFT OUTER JOIN
+        (SELECT     受理编号, SUM(变更总价) AS 变更总价
+        FROM          ERP_Budget_Change
+        WHERE      (审核日期 >= '2009-12-31')
+        GROUP BY 受理编号) AS bc ON ci.ACNumber = bc.受理编号
+        WHERE     ((ci.actual_start_time BETWEEN #{current_month_start} AND @end) or (ci.end_balance BETWEEN #{current_month_end} AND @end))  (ci.contract_id NOT LIKE 'W%')
+        ORDER BY ci.state,设计师
+
+    </insert>
+
+
+
+</mapper>
