@@ -1,13 +1,16 @@
-package com.dms.dao;
+package com.dms.service;
 
+import com.dms.domain.Attendance;
 import com.dms.domain.MiniRequest;
-import com.dms.domain.ProjectCommision;
+import com.dms.domain.Month;
+import com.dms.domain.Position;
 import com.dms.dto.EmployeeDto;
+import com.dms.dto.FinanceDto;
 import com.dms.dto.ProjectCommisionDto;
 
 import java.util.List;
 
-public interface ProjectCommisionDao {
+public interface ProjectCommisionService {
 
 	List<ProjectCommisionDto> getProjectCommisions();
 
@@ -16,5 +19,4 @@ public interface ProjectCommisionDao {
 	void saveProjectCommision(ProjectCommisionDto projectCommision);
 
 	void updateProjectCommision(ProjectCommisionDto projectCommision);
-
 }
