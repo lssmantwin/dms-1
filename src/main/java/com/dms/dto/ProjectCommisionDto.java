@@ -7,229 +7,234 @@ import java.math.BigDecimal;
 
 public class ProjectCommisionDto {
 
-		private long id;
-		private String designer;
-		private String desginerAssistant;
-		private String acNumber;
-		private String contractId;
-		private String customerName;
-		private BigDecimal contractTotal;
-		private BigDecimal purchaseAgentFee;
-		private BigDecimal projectChangeTotal;
-		private BigDecimal customerPay;
-		private BigDecimal payContractRatio;
-		private BigDecimal payProjectRatio;
-		private String contractState;
-		private String firstCommision;
-		private String balanceCommision;
-		private BigDecimal designCommisionRate;
-		private BigDecimal desginerAssistantCommisionRate;
-		private LocalDateTime contractDate;
-		private LocalDateTime firstCommisionDate;
-		private LocalDateTime actualStartTime;
-		private LocalDateTime actualEndTime;
-		private LocalDateTime balanceTime;
-		private LocalDateTime balanceCommisionDate;
+    private Long id;
+    private String designer;
+    private String designerAssistant;
+    private String acNumber;
+    private String contractId;
+    private String customerName;
+    private BigDecimal contractTotal;
+    private BigDecimal purchaseAgentFee;
+    private BigDecimal projectChangeTotal;
+    private BigDecimal customerPay;
+    private BigDecimal payContractRatio;
+    private BigDecimal payProjectRatio;
+    private String contractState;
+    private String firstCommision;
+    private String balanceCommision;
+    private BigDecimal designCommisionRate;
+    private BigDecimal designerAssistantCommisionRate;
+    private LocalDateTime contractDate;
+    private LocalDateTime firstCommisionDate;
+    private LocalDateTime actualStartTime;
+    private LocalDateTime actualEndTime;
+    private LocalDateTime balanceTime;
+    private LocalDateTime balanceCommisionDate;
 
-	public String getDesigner() {
-		return designer;
-	}
 
-	public void setDesigner(String designer) {
-		this.designer = designer;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getDesginerAssistant() {
-		return desginerAssistant;
-	}
+    public String getDesigner() {
+        return designer;
+    }
 
-	public void setDesginerAssistant(String desginerAssistant) {
-		this.desginerAssistant = desginerAssistant;
-	}
+    public void setDesigner(String designer) {
+        this.designer = designer;
+    }
 
-	public String getAcNumber() {
-		return acNumber;
-	}
+    public String getDesignerAssistant() {
+        return designerAssistant;
+    }
 
-	public void setAcNumber(String acNumber) {
-		this.acNumber = acNumber;
-	}
+    public void setDesignerAssistant(String designerAssistant) {
+        this.designerAssistant = designerAssistant;
+    }
 
-	public String getContractId() {
-		return contractId;
-	}
+    public String getAcNumber() {
+        return acNumber;
+    }
 
-	public void setContractId(String contractId) {
-		this.contractId = contractId;
-	}
+    public void setAcNumber(String acNumber) {
+        this.acNumber = acNumber;
+    }
 
-	public String getCustomerName() {
-		return customerName;
-	}
+    public String getContractId() {
+        return contractId;
+    }
 
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
+    public void setContractId(String contractId) {
+        this.contractId = contractId;
+    }
 
-	public BigDecimal getContractTotal() {
-		return contractTotal;
-	}
+    public String getCustomerName() {
+        return customerName;
+    }
 
-	public void setContractTotal(BigDecimal contractTotal) {
-		this.contractTotal = contractTotal;
-	}
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
 
-	public BigDecimal getPurchaseAgentFee() {
-		return purchaseAgentFee;
-	}
+    public BigDecimal getContractTotal() {
+        return contractTotal;
+    }
 
-	public void setPurchaseAgentFee(BigDecimal purchaseAgentFee) {
-		this.purchaseAgentFee = purchaseAgentFee;
-	}
+    public void setContractTotal(BigDecimal contractTotal) {
+        this.contractTotal = contractTotal;
+    }
 
-	public BigDecimal getProjectChangeTotal() {
-		return projectChangeTotal;
-	}
+    public BigDecimal getPurchaseAgentFee() {
+        return purchaseAgentFee;
+    }
 
-	public void setProjectChangeTotal(BigDecimal projectChangeTotal) {
-		this.projectChangeTotal = projectChangeTotal;
-	}
+    public void setPurchaseAgentFee(BigDecimal purchaseAgentFee) {
+        this.purchaseAgentFee = purchaseAgentFee;
+    }
 
-	public BigDecimal getCustomerPay() {
-		return customerPay;
-	}
+    public BigDecimal getProjectChangeTotal() {
+        return projectChangeTotal;
+    }
 
-	public void setCustomerPay(BigDecimal customerPay) {
-		this.customerPay = customerPay;
-	}
+    public void setProjectChangeTotal(BigDecimal projectChangeTotal) {
+        this.projectChangeTotal = projectChangeTotal;
+    }
 
-	public BigDecimal getPayContractRatio() {
-		return payContractRatio;
-	}
+    public BigDecimal getCustomerPay() {
+        return customerPay;
+    }
 
-	public void setPayContractRatio(BigDecimal payContractRatio) {
-		this.payContractRatio = payContractRatio;
-	}
+    public void setCustomerPay(BigDecimal customerPay) {
+        this.customerPay = customerPay;
+    }
 
-	public BigDecimal getPayProjectRatio() {
-		return payProjectRatio;
-	}
+    public BigDecimal getPayContractRatio() {
+        return payContractRatio;
+    }
 
-	public void setPayProjectRatio(BigDecimal payProjectRatio) {
-		this.payProjectRatio = payProjectRatio;
-	}
+    public void setPayContractRatio(BigDecimal payContractRatio) {
+        this.payContractRatio = payContractRatio;
+    }
 
-	public String getContractState() {
-		return contractState;
-	}
+    public BigDecimal getPayProjectRatio() {
+        return payProjectRatio;
+    }
 
-	public void setContractState(String contractState) {
-		this.contractState = contractState;
-	}
+    public void setPayProjectRatio(BigDecimal payProjectRatio) {
+        this.payProjectRatio = payProjectRatio;
+    }
 
-	public String getFirstCommision() {
-		return firstCommision;
-	}
+    public String getContractState() {
+        return contractState;
+    }
 
-	public void setFirstCommision(String firstCommision) {
-		this.firstCommision = firstCommision;
-	}
+    public void setContractState(String contractState) {
+        this.contractState = contractState;
+    }
 
-	public String getBalanceCommision() {
-		return balanceCommision;
-	}
+    public String getFirstCommision() {
+        return firstCommision;
+    }
 
-	public void setBalanceCommision(String balanceCommision) {
-		this.balanceCommision = balanceCommision;
-	}
+    public void setFirstCommision(String firstCommision) {
+        this.firstCommision = firstCommision;
+    }
 
-	public BigDecimal getDesignCommisionRate() {
-		return designCommisionRate;
-	}
+    public String getBalanceCommision() {
+        return balanceCommision;
+    }
 
-	public void setDesignCommisionRate(BigDecimal designCommisionRate) {
-		this.designCommisionRate = designCommisionRate;
-	}
+    public void setBalanceCommision(String balanceCommision) {
+        this.balanceCommision = balanceCommision;
+    }
 
-	public BigDecimal getDesginerAssistantCommisionRate() {
-		return desginerAssistantCommisionRate;
-	}
+    public BigDecimal getDesignCommisionRate() {
+        return designCommisionRate;
+    }
 
-	public void setDesginerAssistantCommisionRate(BigDecimal desginerAssistantCommisionRate) {
-		this.desginerAssistantCommisionRate = desginerAssistantCommisionRate;
-	}
+    public void setDesignCommisionRate(BigDecimal designCommisionRate) {
+        this.designCommisionRate = designCommisionRate;
+    }
 
-	public LocalDateTime getContractDate() {
-		return contractDate;
-	}
+    public BigDecimal getDesginerAssistantCommisionRate() {
+        return designerAssistantCommisionRate;
+    }
 
-	public void setContractDate(LocalDateTime contractDate) {
-		this.contractDate = contractDate;
-	}
+    public void setDesginerAssistantCommisionRate(BigDecimal desginerAssistantCommisionRate) {
+        this.designerAssistantCommisionRate = desginerAssistantCommisionRate;
+    }
 
-	public LocalDateTime getFirstCommisionDate() {
-		return firstCommisionDate;
-	}
+    public LocalDateTime getContractDate() {
+        return contractDate;
+    }
 
-	public void setFirstCommisionDate(LocalDateTime firstCommisionDate) {
-		this.firstCommisionDate = firstCommisionDate;
-	}
+    public void setContractDate(LocalDateTime contractDate) {
+        this.contractDate = contractDate;
+    }
 
-	public LocalDateTime getActualStartTime() {
-		return actualStartTime;
-	}
+    public LocalDateTime getFirstCommisionDate() {
+        return firstCommisionDate;
+    }
 
-	public void setActualStartTime(LocalDateTime actualStartTime) {
-		this.actualStartTime = actualStartTime;
-	}
+    public void setFirstCommisionDate(LocalDateTime firstCommisionDate) {
+        this.firstCommisionDate = firstCommisionDate;
+    }
 
-	public LocalDateTime getActualEndTime() {
-		return actualEndTime;
-	}
+    public LocalDateTime getActualStartTime() {
+        return actualStartTime;
+    }
 
-	public void setActualEndTime(LocalDateTime actualEndTime) {
-		this.actualEndTime = actualEndTime;
-	}
+    public void setActualStartTime(LocalDateTime actualStartTime) {
+        this.actualStartTime = actualStartTime;
+    }
 
-	public LocalDateTime getBalanceTime() {
-		return balanceTime;
-	}
+    public LocalDateTime getActualEndTime() {
+        return actualEndTime;
+    }
 
-	public void setBalanceTime(LocalDateTime balanceTime) {
-		this.balanceTime = balanceTime;
-	}
+    public void setActualEndTime(LocalDateTime actualEndTime) {
+        this.actualEndTime = actualEndTime;
+    }
 
-	public LocalDateTime getBalanceCommisionDate() {
-		return balanceCommisionDate;
-	}
+    public LocalDateTime getBalanceTime() {
+        return balanceTime;
+    }
 
-	public void setBalanceCommisionDate(LocalDateTime balanceCommisionDate) {
-		this.balanceCommisionDate = balanceCommisionDate;
-	}
+    public void setBalanceTime(LocalDateTime balanceTime) {
+        this.balanceTime = balanceTime;
+    }
 
-	@Override
-	public String toString() {
-		return "ProjectCommision{" +
-				"designer='" + designer + '\'' +
-				", acNumber='" + acNumber + '\'' +
-				", contractId='" + contractId + '\'' +
-				", customerName='" + customerName + '\'' +
-				'}';
-	}
+    public LocalDateTime getBalanceCommisionDate() {
+        return balanceCommisionDate;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+    public void setBalanceCommisionDate(LocalDateTime balanceCommisionDate) {
+        this.balanceCommisionDate = balanceCommisionDate;
+    }
 
-		ProjectCommisionDto that = (ProjectCommisionDto) o;
+    @Override
+    public String toString() {
+        return "ProjectCommision{" +
+                "designer='" + designer + '\'' +
+                ", acNumber='" + acNumber + '\'' +
+                ", contractId='" + contractId + '\'' +
+                ", customerName='" + customerName + '\'' +
+                '}';
+    }
 
-		return getAcNumber() != null ? getAcNumber().equals(that.getAcNumber()) : that.getAcNumber() == null;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-	@Override
-	public int hashCode() {
-		return getAcNumber() != null ? getAcNumber().hashCode() : 0;
-	}
+        ProjectCommisionDto that = (ProjectCommisionDto) o;
+
+        return getAcNumber() != null ? getAcNumber().equals(that.getAcNumber()) : that.getAcNumber() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return getAcNumber() != null ? getAcNumber().hashCode() : 0;
+    }
 
 }

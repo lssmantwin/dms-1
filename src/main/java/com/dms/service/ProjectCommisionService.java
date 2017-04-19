@@ -12,11 +12,11 @@ import java.util.List;
 
 public interface ProjectCommisionService {
 
-	List<ProjectCommisionDto> getProjectCommisions();
+	List<ProjectCommisionDto> getProjectCommisions(MiniRequest request);
 
 	int getProjectCommisionCount(MiniRequest request);
 
-	void saveProjectCommision(ProjectCommisionDto projectCommision);
+	void saveProjectCommision(ProjectCommisionDto projectCommisionDto);
 
-	void updateProjectCommision(ProjectCommisionDto projectCommision);
+	void updateProjectCommision(ProjectCommisionDto projectCommisionDto);
 }

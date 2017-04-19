@@ -15,12 +15,12 @@ import java.util.List;
 public class ProjectCommisionServiceImpl implements ProjectCommisionService {
 
 	@Autowired
-	private ProjectCommisionDao ProjectCommisionDao;
+	private ProjectCommisionDao projectCommisionDao;
 
 
 	@Override
-	public List<ProjectCommisionDto> getProjectCommisions() {
-		return null;
+	public List<ProjectCommisionDto> getProjectCommisions(MiniRequest request) {
+		return projectCommisionDao.getProjectCommisions();
 	}
 
 	@Override
