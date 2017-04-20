@@ -1,8 +1,8 @@
 package com.dms.domain;
 
-import org.joda.time.LocalDateTime;
-
 import java.math.BigDecimal;
+
+import org.joda.time.LocalDateTime;
 
 public class ProjectCommision {
 
