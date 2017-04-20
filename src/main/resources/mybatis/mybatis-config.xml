@@ -12,6 +12,7 @@
         <typeAlias type="com.dms.dto.EmployeeDto" alias="EmployeeDto"/>
         <typeAlias type="com.dms.dto.FinanceDto" alias="FinanceDto"/>
         <typeAlias type="com.dms.domain.ProjectCommision" alias="ProjectCommision"/>
+        <typeAlias type="com.dms.dto.ProjectCommisionDto" alias="ProjectCommisionDto"/>
     </typeAliases>
 
     <typeHandlers>

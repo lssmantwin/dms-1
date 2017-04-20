@@ -17,14 +17,14 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/v1")
 public interface ProjectCommisionWebService {
+
 	@POST
 	@Path("/projectCommisions")
 	void saveProjectCommisions(List<ProjectCommisionDto> projectCommisionDtos);
 
 	@GET
 	@Path("/projectCommisions")
-	MiniResponse<List<ProjectCommisionDto>> getProjectCommisions(@QueryParam("key") String key, @QueryParam("pageIndex") int pageIndex, @QueryParam("pageSize") int pageSize,
-												 @QueryParam("sortField") String sortField, @QueryParam("sortOrder") String sortOrder);
-
+	MiniResponse<List<ProjectCommisionDto>> getProjectCommisions(@QueryParam("key") String key, @QueryParam("pageIndex") int pageIndex,
+			@QueryParam("pageSize") int pageSize, @QueryParam("sortField") String sortField, @QueryParam("sortOrder") String sortOrder);
 
 }

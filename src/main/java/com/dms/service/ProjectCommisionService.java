@@ -16,7 +16,7 @@ public interface ProjectCommisionService {
 
 	int getProjectCommisionCount(MiniRequest request);
 
-	void saveProjectCommision(ProjectCommisionDto projectCommisionDto);
+	void saveProjectCommision(ProjectCommisionDto projectCommisionDto) throws IllegalAccessException;
 
 	void updateProjectCommision(ProjectCommisionDto projectCommisionDto);
 }

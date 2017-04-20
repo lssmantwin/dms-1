@@ -25,6 +25,25 @@
         </jaxrs:languageMappings>
     </jaxrs:server>
 
+    <jaxrs:server id="projectCommisionWebServices" address="/commision">
+        <jaxrs:serviceBeans>
+            <ref bean="projectCommisionWebService"/>
+        </jaxrs:serviceBeans>
+        <jaxrs:providers>
+            <ref bean="jacksonProvider"/>
+        </jaxrs:providers>
+        <jaxrs:inInterceptors>
+            <ref bean="userInterceptor"/>
+        </jaxrs:inInterceptors>
+        <jaxrs:extensionMappings>
+            <entry key="json" value="application/json"/>
+            <entry key="xml" value="application/xml"/>
+        </jaxrs:extensionMappings>
+        <jaxrs:languageMappings>
+            <entry key="en" value="en-gb"/>
+        </jaxrs:languageMappings>
+    </jaxrs:server>
+
     <bean id="jacksonObjectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean"/>
 
     <bean id="jacksonProvider"

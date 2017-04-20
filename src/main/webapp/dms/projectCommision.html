@@ -6,8 +6,6 @@
     <title>Fit Layout</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <link href="../demo.css" rel="stylesheet" type="text/css"/>
-
-
     <script src="../../scripts/boot.js" type="text/javascript"></script>
 
 
@@ -27,11 +25,11 @@
     <table style="width:100%;">
         <tr>
             <td style="width:100%;">
-                <input id="combo1" class="mini-combobox" style="width:150px;" textField="text" valueField="value"
-                       url="http://localhost:8080/ws/employee/v1/months"
-                       ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
-                       required="true" allowInput="true" showNullItem="false" onvaluechanged="onMonthChange"/>
-                <span class="separator"></span>
+                <!--<input id="combo1" class="mini-combobox" style="width:150px;" textField="text" valueField="value"-->
+                <!--url="http://localhost:8080/ws/employee/v1/months"-->
+                <!--ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"-->
+                <!--required="true" allowInput="true" showNullItem="false" onvaluechanged="onMonthChange"/>-->
+                <!--<span class="separator"></span>-->
                 <!--<a class="mini-button" iconCls="icon-add" plain="true" onclick="addRow()">增加</a>-->
                 <!--<span class="separator"></span>-->
                 <a class="mini-button" iconCls="icon-save" plain="true" onclick="saveData()">保存</a>
@@ -48,62 +46,88 @@
 <div class="mini-fit">
 
     <div id="datagrid1" class="mini-datagrid" style="width:100%;height:100%;"
-         url="http://localhost:8080/ws/employee/v1/finances"
+         url="http://localhost:8080/ws/commision/v1/projectCommisions"
          ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
          idField="id" sizeList="[5,10,20,50]" pageSize="10" allowCellEdit="true" allowCellSelect="true"
          multiSelect="true">
         <div property="columns">
             <div type="indexcolumn"></div>
-            <!--<div field="loginname" width="120" headerAlign="center" allowSort="true">员工帐号</div>-->
-            <div field="employeeName" width="120" headerAlign="center" allowSort="true">姓名
-                <!--<input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>-->
+            <div field="designer" width="100" headerAlign="center" allowSort="true">designer
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="attendance" width="120" type="comboboxcolumn" headerAlign="center" allowSort="false">考勤
-                <input property="editor" class="mini-combobox" style="width:150px;" textField="text" valueField="value"
-                       url="http://localhost:8080/ws/employee/v1/attendance" required="true" allowInput="true"/>
+            <div field="designerAssistant" width="100" headerAlign="center" allowSort="true">designerAssistant
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="bonus" width="120" headerAlign="center" allowSort="true">提成
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
+            <div field="acNumber" width="100" headerAlign="center" allowSort="true">acNumber
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="performanceAppraisal" width="120" headerAlign="center" allowSort="true">绩效
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
+            <div field="customerName" width="100" headerAlign="center" allowSort="true">customerName
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="otherSubsidy" width="120" headerAlign="center" allowSort="true">其他补贴
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
+            <div field="contractTotal" width="100" headerAlign="center" allowSort="true">contractTotal
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="charge" width="120" headerAlign="center" allowSort="true">扣款
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
+            <div field="purchaseAgentFee" width="100" headerAlign="center" allowSort="true">purchaseAgentFee
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="chargeComments" width="120" headerAlign="center" allowSort="true">扣款说明
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
+            <div field="projectChangeTotal" width="100" headerAlign="center" allowSort="true">projectChangeTotal
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="exhibitionCharge" width="120" headerAlign="center" allowSort="true">会展扣款
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
+            <div field="customerPay" width="100" headerAlign="center" allowSort="true">customerPay
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="casualLeave" width="120" headerAlign="center" allowSort="true">事假
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
+            <div field="payContractRatio" width="100" headerAlign="center" allowSort="true">payContractRatio
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="sickLeave" width="120" headerAlign="center" allowSort="true">病假
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
+            <div field="payProjectRatio" width="100" headerAlign="center" allowSort="true">payProjectRatio
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="storageCharge" width="120" headerAlign="center" allowSort="true">保管
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
+            <div field="contractState" width="100" headerAlign="center" allowSort="true">contractState
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="grossPay" width="120" headerAlign="center" allowSort="true">应发工资
-                <!--<input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>-->
+            <div field="contractState" width="100" headerAlign="center" allowSort="true">commisonState
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="medicalInsurance" width="120" headerAlign="center" allowSort="true">代扣社保
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
+            <div field="designCommisionRate" width="100" headerAlign="center" allowSort="true">designCommisionRate
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="housingFund" width="120" headerAlign="center" allowSort="true">代扣公积金
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
+            <div field="designerAssistantCommisionRate" width="100" headerAlign="center" allowSort="true">
+                designerAssistantCommisionRate
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="beforeTaxSalary" width="120" headerAlign="center" allowSort="true">税前工资
+            <div field="actualStartTime" width="100" headerAlign="center" allowSort="true" dateFormat="yyyy-MM-dd">
+                actualStartTime
+                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="personalIncomeTax" width="120" headerAlign="center" allowSort="true">个人所得税
+            <div field="actualEndTime" width="100" headerAlign="center" allowSort="true" dateFormat="yyyy-MM-dd">
+                actualEndTime
+                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="afterTaxSalary" width="120" headerAlign="center" allowSort="true">应发工资
+            <div field="contractDate" width="100" headerAlign="center" allowSort="true" dateFormat="yyyy-MM-dd">
+                contractDate
+                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
             </div>
+            <div field="firstCommision" width="100" headerAlign="center" allowSort="true">
+                firstCommision
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            </div>
+            <div field="firstCommisionDate" width="100" headerAlign="center" allowSort="true" dateFormat="yyyy-MM-dd">
+                firstCommisionDate
+                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+            </div>
+            <div field="balanceTime" width="100" headerAlign="center" allowSort="true" dateFormat="yyyy-MM-dd">
+                balanceTime
+                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+            </div>
+            <div field="balanceCommision" width="100" headerAlign="center" allowSort="true">
+                balanceCommision
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            </div>
+            <div field="balanceCommisionDate" width="100" headerAlign="center" allowSort="true" dateFormat="yyyy-MM-dd">
+                balanceCommisionDate
+                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+            </div>
+
         </div>
     </div>
 
@@ -115,42 +139,13 @@
     var grid = mini.get("datagrid1");
     grid.load();
 
-    var zeroize = function (value, length) {
-        if (!length) length = 2;
-        value = String(value);
-        for (var i = 0, zeros = ''; i < (length - value.length); i++) {
-            zeros += '0';
-        }
-        return zeros + value;
-    };
-
-    var now = new Date();
-    var year = String(now.getFullYear());
-    var month = zeroize(now.getMonth() + 1);
-    mini.get('combo1').setValue(year + month);
-
-
-    function onMonthChange() {
-        var value = mini.get('combo1').getValue();
-        alert(value);
-    }
-
-    function addRow() {
-        // var newRow = {name: "New Row"};
-        var newRow = {};
-        grid.addRow(newRow, 0);
-        grid.beginEditCell(newRow, "NAME");
-    }
-
     function saveData() {
-        var finances = grid.getChanges();
-        var month = mini.get('combo1').getValue();
-        var data = {'finances': finances, 'month': month};
+        var data = grid.getChanges();
         var json = mini.encode(data);
         alert(json);
         grid.loading("保存中，请稍后......");
         $.ajax({
-            url: 'http://localhost:8080/ws/employee/v1/finances',
+            url: 'http://localhost:8080/ws/commision/v1/projectCommisions',
             data: json,
             type: 'post',
             dataType: 'json',
@@ -166,15 +161,6 @@
             }
         });
     }
-
-    //    function onKeyEnter(e) {
-    //        onSearch();
-    //    }
-    //
-    //    function onSearch() {
-    //        var key = mini.get("key").getValue();
-    //        grid.load({key: key});
-    //    }
 
 </script>
 

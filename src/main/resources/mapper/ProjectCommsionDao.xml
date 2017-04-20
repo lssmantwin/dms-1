@@ -1,7 +1,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dms.dao.EmployeeDao">
+<mapper namespace="com.dms.dao.ProjectCommisionDao">
 
     <resultMap id="ProjectCommisionMap" type="ProjectCommisionDto">
         <id property="id" column="id"/>
@@ -9,28 +9,35 @@
         <result property="acNumber" column="ac_number"/>
         <result property="contractId" column="contract_id"/>
         <result property="customerName" column="customer_name"/>
-
         <result property="contractTotal" column="contract_total" typeHandler="com.dms.handler.BigDecimalHandler"/>
-        <result property="purchaseAgentFee" column="purchase_agent_fee"  typeHandler="com.dms.handler.BigDecimalHandler"/>
-        <result property="projectChangeTotal" column="project_change_total"  typeHandler="com.dms.handler.BigDecimalHandler"/>
-        <result property="customerPay" column="customer_pay"  typeHandler="com.dms.handler.BigDecimalHandler"/>
-        <result property="payContractRatio" column="pay_contract_ratio"  typeHandler="com.dms.handler.BigDecimalHandler"/>
-        <result property="payProjectRatio" column="pay_project_ratio"  typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="purchaseAgentFee" column="purchase_agent_fee"
+                typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="projectChangeTotal" column="project_change_total"
+                typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="customerPay" column="customer_pay" typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="payContractRatio" column="pay_contract_ratio"
+                typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="payProjectRatio" column="pay_project_ratio" typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="contractState" column="contract_state"/>
+        <result property="commisonState" column="commison_state"/>
         <result property="contractDate" column="contract_date" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
-
-        <result property="firstCommisionDate" column="first_commision_date" typeHandler="com.dms.handler.BigDecimalHandler"/>
-        <result property="actualStartTime" column="actual_start_time" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
+        <result property="firstCommisionDate" column="first_commision_date"
+                typeHandler="com.dms.handler.LocalDateTimeHandler"/>
+        <result property="actualStartTime" column="actual_start_time"
+                typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="actualEndTime" column="actual_end_time" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="balanceTime" column="balance_time" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
-        <result property="firstCommisionDate" column="first_commision_date" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
-        <result property="balanceCommisionDate" column="balance_commision_date" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
+        <result property="firstCommisionDate" column="first_commision_date"
+                typeHandler="com.dms.handler.LocalDateTimeHandler"/>
+        <result property="balanceCommisionDate" column="balance_commision_date"
+                typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="desginerAssistant" column="desginer_assistant"/>
-
         <result property="firstCommision" column="first_commision" typeHandler="com.dms.handler.BigDecimalHandler"/>
-        <result property="balanceCommision" column="balance_commision"  typeHandler="com.dms.handler.BigDecimalHandler"/>
-        <result property="designCommisionRate" column="design_commision_rate"  typeHandler="com.dms.handler.BigDecimalHandler"/>
-        <result property="desginerAssistantCommisionRate" column="desginer_assistant_commision_rate"  typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="balanceCommision" column="balance_commision" typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="designCommisionRate" column="design_commision_rate"
+                typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="desginerAssistantCommisionRate" column="desginer_assistant_commision_rate"
+                typeHandler="com.dms.handler.BigDecimalHandler"/>
     </resultMap>
 
     <select id="getProjectCommionCount" parameterType="MiniRequest" resultType="int">
@@ -43,18 +50,9 @@
         </where>
     </select>
 
-    <select id="getProjectCommions" parameterType="MiniRequest" resultMap="ProjectCommisionMap">
-        select * from  'project_commision' t
-        <where>
-            t.rn BETWEEN #{start} and #{end}
-            <if test="key != null">
-                <bind name="pattern" value="'%' + key + '%'"/>
-                and t.name like #{pattern}
-            </if>
-
-        </where>
+    <select id="getProjectCommisions" parameterType="MiniRequest" resultMap="ProjectCommisionMap">
+        select * from "project_commision"
     </select>
-
 
 
     <insert id="getProjects" parameterType="ProjectCommisionDto">
@@ -117,7 +115,7 @@
 
 
     <update id="updateProjectCommision" parameterType="ProjectCommisionDto">
-        update "Project_Commision"
+        update "project_commision"
         set
         contractTotal = #{contractTotal},
         purchaseAgentFee = #{purchaseAgentFee},
@@ -139,7 +137,5 @@
         desginerAssistantCommisionRate = #{desginerAssistantCommisionRate},
         where acNumber = #{acNumber}
     </update>
-
-
 
 </mapper>
