@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dms.dao.EmployeeDao">
 
-    <resultMap id="ProjectCommision" type="ProjectCommision">
+    <resultMap id="ProjectCommisionMap" type="ProjectCommisionDto">
         <id property="id" column="id"/>
         <result property="designer" column="designer"/>
         <result property="acNumber" column="ac_number"/>
@@ -33,8 +33,31 @@
         <result property="desginerAssistantCommisionRate" column="desginer_assistant_commision_rate"  typeHandler="com.dms.handler.BigDecimalHandler"/>
     </resultMap>
 
+    <select id="getProjectCommionCount" parameterType="MiniRequest" resultType="int">
+        select count(id) from "project_commision"
+        <where>
+            <if test="commision_state != null">
+                <bind name="commision_state" value="'%' + commision_state + '%'"/>
+                name like #{pattern}
+            </if>
+        </where>
+    </select>
 
-    <insert id="getProjects" parameterType="Employee">
+    <select id="getProjectCommions" parameterType="MiniRequest" resultMap="ProjectCommisionMap">
+        select * from  'project_commision' t
+        <where>
+            t.rn BETWEEN #{start} and #{end}
+            <if test="key != null">
+                <bind name="pattern" value="'%' + key + '%'"/>
+                and t.name like #{pattern}
+            </if>
+
+        </where>
+    </select>
+
+
+
+    <insert id="getProjects" parameterType="ProjectCommisionDto">
         INSERT INTO dms.dbo.Project_Commision
         (
         designer
@@ -91,6 +114,31 @@
         ORDER BY ci.state,设计师
 
     </insert>
+
+
+    <update id="updateProjectCommision" parameterType="ProjectCommisionDto">
+        update "Project_Commision"
+        set
+        contractTotal = #{contractTotal},
+        purchaseAgentFee = #{purchaseAgentFee},
+        projectChangeTotal = #{projectChangeTotal},
+        customerPay = #{customerPay},
+        payContractRatio = #{payContractRatio},
+        payProjectRatio = #{payProjectRatio},
+        contractState = #{contractState},
+        actualStartTime = #{actualStartTime},
+        actualEndTime = #{actualEndTime},
+        balanceTime = #{balanceTime},
+        firstCommision = #{firstCommision},
+        firstCommisionDate = #{firstCommisionDate},
+        balanceCommision = #{balanceCommision},
+        balanceCommisionDate = #{balanceCommisionDate},
+        commisonState = #{commisonState},
+        desginerAssistant = #{desginerAssistant},
+        designCommisionRate = #{designCommisionRate},
+        desginerAssistantCommisionRate = #{desginerAssistantCommisionRate},
+        where acNumber = #{acNumber}
+    </update>
 
 
 

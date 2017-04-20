@@ -1,0 +1,20 @@
+CREATE TABLE [dbo].[Has_Receivables](
+	[ID] [nchar](10) NULL,
+	[ACNumber] [nvarchar](50) NULL,
+	[contract_id] [nvarchar](50) NULL,
+	[Account1] [nvarchar](50) NULL,
+	[Account2] [nvarchar](50) NULL,
+	[Account_Detail] [nvarchar](50) NULL,
+	[Received] [money] NULL,
+	[Receipt] [varchar](50) NULL,
+	[Payee] [varchar](50) NULL,
+	[Received_Date] [datetime] NULL,
+	[Explain] [varchar](50) NULL,
+	[ModiTime] [datetime] NULL,
+	[ModiMan] [varchar](50) NULL,
+	[财务确认] [bit] NULL,
+	[财务确认人] [varchar](50) NULL,
+	[财务确认时间] [datetime] NULL,
+	[付款方式] [int] NULL,
+	[到账日期] [datetime] NULL
+)

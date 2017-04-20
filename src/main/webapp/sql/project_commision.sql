@@ -1,5 +1,4 @@
-GO
-CREATE TABLE [dbo].[Project_Commision](
+CREATE TABLE [dbo].[project_commision](
 	[id] [int] NULL,
 	[designer] [nvarchar](50) NULL,
 	[ac_number] [varchar](6) NULL,
