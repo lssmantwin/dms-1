@@ -21,8 +21,6 @@
         <result property="contractState" column="contract_state"/>
         <result property="commisonState" column="commison_state"/>
         <result property="contractDate" column="contract_date" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
-        <result property="firstCommisionDate" column="first_commision_date"
-                typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="actualStartTime" column="actual_start_time"
                 typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="actualEndTime" column="actual_end_time" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
@@ -31,12 +29,12 @@
                 typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="balanceCommisionDate" column="balance_commision_date"
                 typeHandler="com.dms.handler.LocalDateTimeHandler"/>
-        <result property="desginerAssistant" column="desginer_assistant"/>
+        <result property="designerAssistant" column="designer_assistant"/>
         <result property="firstCommision" column="first_commision" typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="balanceCommision" column="balance_commision" typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="designCommisionRate" column="design_commision_rate"
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
-        <result property="desginerAssistantCommisionRate" column="desginer_assistant_commision_rate"
+        <result property="designerAssistantCommisionRate" column="designer_assistant_commision_rate"
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
     </resultMap>
 
@@ -117,25 +115,25 @@
     <update id="updateProjectCommision" parameterType="ProjectCommisionDto">
         update "project_commision"
         set
-        contractTotal = #{contractTotal},
-        purchaseAgentFee = #{purchaseAgentFee},
-        projectChangeTotal = #{projectChangeTotal},
-        customerPay = #{customerPay},
-        payContractRatio = #{payContractRatio},
-        payProjectRatio = #{payProjectRatio},
-        contractState = #{contractState},
-        actualStartTime = #{actualStartTime},
-        actualEndTime = #{actualEndTime},
-        balanceTime = #{balanceTime},
-        firstCommision = #{firstCommision},
-        firstCommisionDate = #{firstCommisionDate},
-        balanceCommision = #{balanceCommision},
-        balanceCommisionDate = #{balanceCommisionDate},
-        commisonState = #{commisonState},
-        desginerAssistant = #{desginerAssistant},
-        designCommisionRate = #{designCommisionRate},
-        desginerAssistantCommisionRate = #{desginerAssistantCommisionRate},
-        where acNumber = #{acNumber}
+        contract_total = #{contractTotal},
+        purchase_agent_fee = #{purchaseAgentFee},
+        project_change_total = #{projectChangeTotal},
+        customer_pay = #{customerPay},
+        pay_contract_ratio = #{payContractRatio},
+        pay_project_ratio = #{payProjectRatio},
+        contract_state = #{contractState},
+        actual_start_time = #{actualStartTime},
+        actual_end_time = #{actualEndTime},
+        balance_time = #{balanceTime},
+        first_commision = #{firstCommision},
+        first_commision_date = #{firstCommisionDate},
+        balance_commision = #{balanceCommision},
+        balance_commision_date = #{balanceCommisionDate},
+        commision_state = #{commisionState},
+        designer_assistant = #{designerAssistant},
+        design_commision_rate = #{designCommisionRate},
+        designer_assistant_commision_rate = #{designerAssistantCommisionRate}
+        where ac_number = #{acNumber}
     </update>
 
 </mapper>
