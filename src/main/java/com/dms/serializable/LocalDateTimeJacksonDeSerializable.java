@@ -2,6 +2,7 @@ package com.dms.serializable;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
@@ -18,6 +19,10 @@ public class LocalDateTimeJacksonDeSerializable extends JsonDeserializer<LocalDa
 
 	@Override
 	public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-		return LocalDateTime.parse(jsonParser.getValueAsString(), DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss"));
+		String value = jsonParser.getValueAsString();
+		if (StringUtils.isNotBlank(value)) {
+			return LocalDateTime.parse(value, DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss"));
+		}
+		return null;
 	}
 }
