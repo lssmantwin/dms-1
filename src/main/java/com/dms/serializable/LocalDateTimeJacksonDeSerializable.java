@@ -19,9 +19,9 @@ public class LocalDateTimeJacksonDeSerializable extends JsonDeserializer<LocalDa
 
 	@Override
 	public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-		String value = jsonParser.getValueAsString();
+		String value = StringUtils.left(jsonParser.getValueAsString(), 10);
 		if (StringUtils.isNotBlank(value)) {
-			return LocalDateTime.parse(value, DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss"));
+			return LocalDateTime.parse(value, DateTimeFormat.forPattern("yyyy-MM-dd"));
 		}
 		return null;
 	}
