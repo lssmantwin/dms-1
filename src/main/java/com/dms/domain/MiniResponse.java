@@ -6,6 +6,7 @@ public class MiniResponse<T> implements Serializable {
 
 	private int total;
 	private T data;
+	private T rows;
 
 	public int getTotal() {
 		return total;
@@ -21,5 +22,13 @@ public class MiniResponse<T> implements Serializable {
 
 	public void setData(T data) {
 		this.data = data;
+	}
+
+	public T getRows() {
+		return rows;
+	}
+
+	public void setRows(T rows) {
+		this.rows = rows;
 	}
 }

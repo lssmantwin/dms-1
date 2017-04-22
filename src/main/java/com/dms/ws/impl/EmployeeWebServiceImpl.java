@@ -71,6 +71,7 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 		MiniResponse<List<EmployeeDto>> response = new MiniResponse<>();
 		response.setTotal(count);
 		response.setData(employees);
+		response.setRows(employees);
 
 		return response;
 	}
