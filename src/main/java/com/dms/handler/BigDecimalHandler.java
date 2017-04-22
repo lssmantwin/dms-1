@@ -12,7 +12,7 @@ import org.apache.ibatis.type.JdbcType;
 public class BigDecimalHandler extends BaseTypeHandler<BigDecimal> {
 	@Override
 	public void setNonNullParameter(PreparedStatement preparedStatement, int i, BigDecimal bigDecimal, JdbcType jdbcType) throws SQLException {
-		preparedStatement.setBigDecimal(i, bigDecimal);
+		preparedStatement.setBigDecimal(i, bigDecimal == null ? BigDecimal.ZERO : bigDecimal);
 	}
 
 	@Override
