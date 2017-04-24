@@ -9,6 +9,7 @@ public class DataGridRequest implements Serializable {
 	private String key;
 	private String sortField;
 	private String sortOrder;
+	private String month;
 
 	public int getStart() {
 		return start;
@@ -48,5 +49,13 @@ public class DataGridRequest implements Serializable {
 
 	public void setSortOrder(String sortOrder) {
 		this.sortOrder = sortOrder;
+	}
+
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
 	}
 }

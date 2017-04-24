@@ -3,22 +3,24 @@ package com.dms.ws.impl;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.dms.request.DataGridRequest;
-import com.dms.response.DataGridResponse;
-import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dms.domain.*;
+import com.dms.domain.Attendance;
+import com.dms.domain.Month;
+import com.dms.domain.Position;
 import com.dms.dto.EmployeeDto;
 import com.dms.dto.FinanceDto;
+import com.dms.request.DataGridRequest;
 import com.dms.request.FinanceRequest;
+import com.dms.response.DataGridResponse;
 import com.dms.service.EmployeeService;
 import com.dms.utils.PersonalIncomeTaxUtils;
 import com.dms.ws.EmployeeWebService;
+import com.google.common.collect.Lists;
 
 @Service("employeeWebService")
 public class EmployeeWebServiceImpl implements EmployeeWebService {
@@ -71,7 +73,7 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 
 		LOGGER.info("get employees, key {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}", key, pageIndex, pageSize, sortField, sortOrder);
 
-		DataGridRequest request = generateDataGridRequest(key, pageIndex, pageSize, sortField, sortOrder);
+		DataGridRequest request = generateDataGridRequest(key, pageIndex, pageSize, sortField, sortOrder, null);
 
 		int count = employeeService.getEmployeeCount(request);
 		List<EmployeeDto> employees = employeeService.getEmployees(request);
@@ -85,11 +87,11 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 	}
 
 	@Override
-	public DataGridResponse<List<FinanceDto>> getFinances(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
+	public DataGridResponse<List<FinanceDto>> getFinances(String key, int pageIndex, int pageSize, String sortField, String sortOrder, String month) {
 
 		LOGGER.info("get finances, key {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}", key, pageIndex, pageSize, sortField, sortOrder);
 
-		DataGridRequest request = generateDataGridRequest(key, pageIndex, pageSize, sortField, sortOrder);
+		DataGridRequest request = generateDataGridRequest(key, pageIndex, pageSize, sortField, sortOrder, month);
 
 		int count = employeeService.getEmployeeCount(request);
 		List<FinanceDto> finances = employeeService.getFinances(request);
@@ -101,13 +103,14 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 		return response;
 	}
 
-	private DataGridRequest generateDataGridRequest(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
+	private DataGridRequest generateDataGridRequest(String key, int pageIndex, int pageSize, String sortField, String sortOrder, String month) {
 		DataGridRequest request = new DataGridRequest();
 		request.setStart(pageIndex * pageSize + 1);
 		request.setEnd((pageIndex + 1) * pageSize);
 		request.setKey(key);
 		request.setSortField(sortField);
 		request.setSortOrder(sortOrder);
+		request.setMonth(month);
 		return request;
 	}
 

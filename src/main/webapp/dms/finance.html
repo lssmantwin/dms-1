@@ -108,30 +108,36 @@
 
 <script type="text/javascript">
 
+
     mini.parse();
     var grid = mini.get("datagrid1");
-    grid.load();
+    var now = now();
+    alert(now)
+    grid.load({month: now});
 
-    var zeroize = function (value, length) {
+    mini.get('combo1').setValue(now);
+
+    function onMonthChange() {
+        var value = mini.get('combo1').getValue();
+        alert(value);
+        grid.load({month: value});
+    }
+
+    function now() {
+        var now = new Date();
+        var year = String(now.getFullYear());
+        var month = zeroize(now.getMonth() + 1);
+        return year + month;
+    }
+
+    function zeroize(value, length) {
         if (!length) length = 2;
         value = String(value);
         for (var i = 0, zeros = ''; i < (length - value.length); i++) {
             zeros += '0';
         }
         return zeros + value;
-    };
-
-    var now = new Date();
-    var year = String(now.getFullYear());
-    var month = zeroize(now.getMonth() + 1);
-    mini.get('combo1').setValue(year + month);
-
-
-    function onMonthChange() {
-        var value = mini.get('combo1').getValue();
-        alert(value);
     }
-
 
     function saveData() {
 

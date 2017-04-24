@@ -42,7 +42,7 @@ public interface EmployeeWebService {
 	@GET
 	@Path("/finances")
 	DataGridResponse<List<FinanceDto>> getFinances(@QueryParam("key") String key, @QueryParam("pageIndex") int pageIndex, @QueryParam("pageSize") int pageSize,
-			@QueryParam("sortField") String sortField, @QueryParam("sortOrder") String sortOrder);
+			@QueryParam("sortField") String sortField, @QueryParam("sortOrder") String sortOrder, @QueryParam("month") String month);
 
 	@POST
 	@Path("/finances")
