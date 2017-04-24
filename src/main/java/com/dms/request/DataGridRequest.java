@@ -1,8 +1,8 @@
-package com.dms.domain;
+package com.dms.request;
 
 import java.io.Serializable;
 
-public class MiniRequest implements Serializable {
+public class DataGridRequest implements Serializable {
 
 	private int start;
 	private int end;

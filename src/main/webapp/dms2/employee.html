@@ -10,8 +10,6 @@
     <script type="text/javascript" src="locale/easyui-lang-zh_CN.js"></script>
 </head>
 <body class="easyui-layout">
-<!--<h2>Row Editing in DataGrid</h2>-->
-<!--<p>Click the row to start editing.</p>-->
 <table id="dg" class="easyui-datagrid" style="height: auto"
        data-options="
                 rownumbers: true,
@@ -53,6 +51,12 @@
         <th data-options="field:'mealsSubsidy', width:100, align:'center', editor:'textbox'">
             饭补
         </th>
+        <th data-options="field:'secrecySubsidy', width:100, align:'center', editor:'textbox'">
+            保密
+        </th>
+        <th data-options="field:'communicationFee', width:100, align:'center', editor:'textbox'">
+            通讯费
+        </th>
         <th data-options="field:'bankCardNumber', width:100, align:'center', editor:'textbox'">
             工资卡号
         </th>
@@ -63,14 +67,8 @@
 <div id="tb" style="height:auto">
     <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true"
        onclick="add()">新增</a>
-    <!--<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true"-->
-    <!--onclick="removeit()">Remove</a>-->
     <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true"
        onclick="save()">保存</a>
-    <!--<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true"-->
-    <!--onclick="reject()">Reject</a>-->
-    <!--<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true"-->
-    <!--onclick="getChanges()">GetChanges</a>-->
 </div>
 
 <script type="text/javascript">
@@ -122,14 +120,15 @@
     function add() {
         if (endEditing()) {
             $('#dg').datagrid('appendRow', {});
-//            editIndex = $('#dg').datagrid('getRows').length - 1;
-//            $('#dg').datagrid('selectRow', editIndex)
-//                .datagrid('beginEdit', editIndex);
+            editIndex = $('#dg').datagrid('getRows').length - 1;
+            $('#dg').datagrid('selectRow', editIndex)
+                .datagrid('beginEdit', editIndex);
         }
     }
 
 
     function save() {
+        endEditing();
         var rows = $('#dg').datagrid('getChanges');
         var data = JSON.stringify(rows);
         alert(data);

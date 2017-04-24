@@ -2,14 +2,14 @@ package com.dms.dao;
 
 import java.util.List;
 
-import com.dms.domain.MiniRequest;
+import com.dms.request.DataGridRequest;
 import com.dms.dto.ProjectCommisionDto;
 
 public interface ProjectCommisionDao {
 
-	List<ProjectCommisionDto> getProjectCommisions(MiniRequest request);
+	List<ProjectCommisionDto> getProjectCommisions(DataGridRequest request);
 
-	int getProjectCommisionCount(MiniRequest request);
+	int getProjectCommisionCount(DataGridRequest request);
 
 	void saveProjectCommision(ProjectCommisionDto projectCommision);
 

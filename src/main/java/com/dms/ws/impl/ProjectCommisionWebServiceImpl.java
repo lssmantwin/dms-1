@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dms.domain.MiniRequest;
-import com.dms.domain.MiniResponse;
+import com.dms.request.DataGridRequest;
+import com.dms.response.DataGridResponse;
 import com.dms.dto.ProjectCommisionDto;
 import com.dms.service.ProjectCommisionService;
 import com.dms.ws.ProjectCommisionWebService;
@@ -32,24 +32,24 @@ public class ProjectCommisionWebServiceImpl implements ProjectCommisionWebServic
 	}
 
 	@Override
-	public MiniResponse<List<ProjectCommisionDto>> getProjectCommisions(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
+	public DataGridResponse<List<ProjectCommisionDto>> getProjectCommisions(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
 
 		LOGGER.info("get projectCommisions, key {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}", key, pageIndex, pageSize, sortField, sortOrder);
 
-		MiniRequest request = generateMiniRequest(key, pageIndex, pageSize, sortField, sortOrder);
+		DataGridRequest request = generateDataGridRequest(key, pageIndex, pageSize, sortField, sortOrder);
 
 		int count = projectCommisionService.getProjectCommisionCount(request);
 		List<ProjectCommisionDto> projectCommisions = projectCommisionService.getProjectCommisions(request);
 
-		MiniResponse<List<ProjectCommisionDto>> response = new MiniResponse<>();
+		DataGridResponse<List<ProjectCommisionDto>> response = new DataGridResponse<>();
 		response.setTotal(count);
 		response.setData(projectCommisions);
 
 		return response;
 	}
 
-	private MiniRequest generateMiniRequest(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
-		MiniRequest request = new MiniRequest();
+	private DataGridRequest generateDataGridRequest(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
+		DataGridRequest request = new DataGridRequest();
 		request.setStart(pageIndex * pageSize + 1);
 		request.setEnd((pageIndex + 1) * pageSize);
 		request.setKey(key);

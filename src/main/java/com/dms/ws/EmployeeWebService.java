@@ -6,7 +6,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 import com.dms.domain.Attendance;
-import com.dms.domain.MiniResponse;
+import com.dms.response.DataGridResponse;
 import com.dms.domain.Month;
 import com.dms.domain.Position;
 import com.dms.dto.EmployeeDto;
@@ -36,12 +36,12 @@ public interface EmployeeWebService {
 
 	@GET
 	@Path("/employees")
-	MiniResponse<List<EmployeeDto>> getEmployees(@QueryParam("key") String key, @QueryParam("pageIndex") int pageIndex, @QueryParam("pageSize") int pageSize,
-			@QueryParam("sortField") String sortField, @QueryParam("sortOrder") String sortOrder);
+	DataGridResponse<List<EmployeeDto>> getEmployees(@QueryParam("key") String key, @QueryParam("pageIndex") int pageIndex,
+			@QueryParam("pageSize") int pageSize, @QueryParam("sortField") String sortField, @QueryParam("sortOrder") String sortOrder);
 
 	@GET
 	@Path("/finances")
-	MiniResponse<List<FinanceDto>> getFinances(@QueryParam("key") String key, @QueryParam("pageIndex") int pageIndex, @QueryParam("pageSize") int pageSize,
+	DataGridResponse<List<FinanceDto>> getFinances(@QueryParam("key") String key, @QueryParam("pageIndex") int pageIndex, @QueryParam("pageSize") int pageSize,
 			@QueryParam("sortField") String sortField, @QueryParam("sortOrder") String sortOrder);
 
 	@POST

@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dms.dao.EmployeeDao;
-import com.dms.domain.*;
+import com.dms.domain.Attendance;
+import com.dms.domain.Month;
+import com.dms.domain.Position;
 import com.dms.dto.EmployeeDto;
 import com.dms.dto.FinanceDto;
+import com.dms.request.DataGridRequest;
 import com.dms.service.EmployeeService;
 
 @Service
@@ -33,28 +36,28 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public int getEmployeeCount(MiniRequest request) {
+	public int getEmployeeCount(DataGridRequest request) {
 		return employeeDao.getEmployeeCount(request);
 	}
 
 	@Override
-	public List<EmployeeDto> getEmployees(MiniRequest request) {
+	public List<EmployeeDto> getEmployees(DataGridRequest request) {
 		return employeeDao.getEmployees(request);
 	}
 
 	@Override
-	public List<FinanceDto> getFinances(MiniRequest request) {
+	public List<FinanceDto> getFinances(DataGridRequest request) {
 		return employeeDao.getFinances(request);
 	}
 
 	@Override
-	public void saveEmployee(EmployeeDto employee) {
-		employeeDao.saveEmployee(employee);
+	public void saveEmployees(List<EmployeeDto> employeeDtos) {
+		employeeDao.saveEmployees(employeeDtos);
 	}
 
 	@Override
-	public void updateEmployee(EmployeeDto employee) {
-		employeeDao.updateEmployee(employee);
+	public void updateEmployees(List<EmployeeDto> employeeDtos) {
+		employeeDao.updateEmployees(employeeDtos);
 	}
 
 	@Override

@@ -3,6 +3,9 @@ package com.dms.ws.impl;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.dms.request.DataGridRequest;
+import com.dms.response.DataGridResponse;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,26 +52,31 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 
 		LOGGER.info("save employees, {}", employeeDtos);
 
+		List<EmployeeDto> addEmployees = Lists.newArrayList();
+		List<EmployeeDto> updateEmployees = Lists.newArrayList();
 		for (EmployeeDto employeeDto : employeeDtos) {
 			if (StringUtils.isBlank(employeeDto.getId())) {
-				employeeService.saveEmployee(employeeDto);
-			} else {
-				employeeService.updateEmployee(employeeDto);
+				addEmployees.add(employeeDto);
+				continue;
 			}
+			updateEmployees.add(employeeDto);
 		}
+
+		employeeService.saveEmployees(addEmployees);
+		employeeService.updateEmployees(updateEmployees);
 	}
 
 	@Override
-	public MiniResponse<List<EmployeeDto>> getEmployees(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
+	public DataGridResponse<List<EmployeeDto>> getEmployees(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
 
 		LOGGER.info("get employees, key {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}", key, pageIndex, pageSize, sortField, sortOrder);
 
-		MiniRequest request = generateMiniRequest(key, pageIndex, pageSize, sortField, sortOrder);
+		DataGridRequest request = generateDataGridRequest(key, pageIndex, pageSize, sortField, sortOrder);
 
 		int count = employeeService.getEmployeeCount(request);
 		List<EmployeeDto> employees = employeeService.getEmployees(request);
 
-		MiniResponse<List<EmployeeDto>> response = new MiniResponse<>();
+		DataGridResponse<List<EmployeeDto>> response = new DataGridResponse<>();
 		response.setTotal(count);
 		response.setData(employees);
 		response.setRows(employees);
@@ -77,24 +85,24 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 	}
 
 	@Override
-	public MiniResponse<List<FinanceDto>> getFinances(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
+	public DataGridResponse<List<FinanceDto>> getFinances(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
 
 		LOGGER.info("get finances, key {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}", key, pageIndex, pageSize, sortField, sortOrder);
 
-		MiniRequest request = generateMiniRequest(key, pageIndex, pageSize, sortField, sortOrder);
+		DataGridRequest request = generateDataGridRequest(key, pageIndex, pageSize, sortField, sortOrder);
 
 		int count = employeeService.getEmployeeCount(request);
 		List<FinanceDto> finances = employeeService.getFinances(request);
 
-		MiniResponse<List<FinanceDto>> response = new MiniResponse<>();
+		DataGridResponse<List<FinanceDto>> response = new DataGridResponse<>();
 		response.setTotal(count);
 		response.setData(finances);
 
 		return response;
 	}
 
-	private MiniRequest generateMiniRequest(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
-		MiniRequest request = new MiniRequest();
+	private DataGridRequest generateDataGridRequest(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
+		DataGridRequest request = new DataGridRequest();
 		request.setStart(pageIndex * pageSize + 1);
 		request.setEnd((pageIndex + 1) * pageSize);
 		request.setKey(key);
