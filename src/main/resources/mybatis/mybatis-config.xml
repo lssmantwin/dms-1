@@ -5,13 +5,11 @@
     <!-- 命名空间 -->
     <typeAliases>
         <typeAlias type="com.dms.request.DataGridRequest" alias="DataGridRequest"/>
-        <typeAlias type="com.dms.domain.Employee" alias="Employee"/>
         <typeAlias type="com.dms.domain.Position" alias="Position"/>
         <typeAlias type="com.dms.domain.Month" alias="Month"/>
         <typeAlias type="com.dms.domain.Attendance" alias="Attendance"/>
         <typeAlias type="com.dms.dto.EmployeeDto" alias="EmployeeDto"/>
         <typeAlias type="com.dms.dto.FinanceDto" alias="FinanceDto"/>
-        <typeAlias type="com.dms.domain.ProjectCommision" alias="ProjectCommision"/>
         <typeAlias type="com.dms.dto.ProjectCommisionDto" alias="ProjectCommisionDto"/>
     </typeAliases>
 
