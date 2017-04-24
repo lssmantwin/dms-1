@@ -54,48 +54,45 @@
          multiSelect="true">
         <div property="columns">
             <div type="indexcolumn"></div>
-            <!--<div field="loginname" width="120" headerAlign="center" allowSort="true">员工帐号</div>-->
             <div field="employeeName" width="120" headerAlign="center" allowSort="true">姓名
-                <!--<input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>-->
             </div>
             <div field="attendance" width="120" type="comboboxcolumn" headerAlign="center" allowSort="false">考勤
                 <input property="editor" class="mini-combobox" style="width:150px;" textField="text" valueField="value"
                        url="http://localhost:8080/ws/employee/v1/attendance" required="true" allowInput="true"/>
             </div>
-            <div field="bonus" width="120" headerAlign="center" allowSort="true">提成
+            <div field="bonus" width="120" headerAlign="center" allowSort="true" vtype="float">提成
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
             </div>
-            <div field="performanceAppraisal" width="120" headerAlign="center" allowSort="true">绩效
+            <div field="performanceAppraisal" width="120" headerAlign="center" allowSort="true" vtype="float">绩效
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
             </div>
-            <div field="otherSubsidy" width="120" headerAlign="center" allowSort="true">其他补贴
+            <div field="otherSubsidy" width="120" headerAlign="center" allowSort="true" vtype="float">其他补贴
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
             </div>
-            <div field="charge" width="120" headerAlign="center" allowSort="true">扣款
+            <div field="charge" width="120" headerAlign="center" allowSort="true" vtype="float">扣款
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
             </div>
             <div field="chargeComments" width="120" headerAlign="center" allowSort="true">扣款说明
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
             </div>
-            <div field="exhibitionCharge" width="120" headerAlign="center" allowSort="true">会展扣款
+            <div field="exhibitionCharge" width="120" headerAlign="center" allowSort="true" vtype="float">会展扣款
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
             </div>
-            <div field="casualLeave" width="120" headerAlign="center" allowSort="true">事假
+            <div field="casualLeave" width="120" headerAlign="center" allowSort="true" vtype="float">事假
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
             </div>
-            <div field="sickLeave" width="120" headerAlign="center" allowSort="true">病假
+            <div field="sickLeave" width="120" headerAlign="center" allowSort="true" vtype="float">病假
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
             </div>
-            <div field="storageCharge" width="120" headerAlign="center" allowSort="true">保管
+            <div field="storageCharge" width="120" headerAlign="center" allowSort="true" vtype="float">保管
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
             </div>
             <div field="grossPay" width="120" headerAlign="center" allowSort="true">应发工资
-                <!--<input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>-->
             </div>
-            <div field="medicalInsurance" width="120" headerAlign="center" allowSort="true">代扣社保
+            <div field="medicalInsurance" width="120" headerAlign="center" allowSort="true" vtype="float">代扣社保
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
             </div>
-            <div field="housingFund" width="120" headerAlign="center" allowSort="true">代扣公积金
+            <div field="housingFund" width="120" headerAlign="center" allowSort="true" vtype="float">代扣公积金
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
             </div>
             <div field="beforeTaxSalary" width="120" headerAlign="center" allowSort="true">税前工资
@@ -135,14 +132,17 @@
         alert(value);
     }
 
-    function addRow() {
-        // var newRow = {name: "New Row"};
-        var newRow = {};
-        grid.addRow(newRow, 0);
-        grid.beginEditCell(newRow, "NAME");
-    }
 
     function saveData() {
+
+        grid.validate();
+        if (grid.isValid() == false) {
+            alert("请校验输入单元格内容");
+            var error = grid.getCellErrors()[0];
+            grid.beginEditCell(error.record, error.column);
+            return;
+        }
+
         var finances = grid.getChanges();
         var month = mini.get('combo1').getValue();
         var data = {'finances': finances, 'month': month};
@@ -166,15 +166,6 @@
             }
         });
     }
-
-    //    function onKeyEnter(e) {
-    //        onSearch();
-    //    }
-    //
-    //    function onSearch() {
-    //        var key = mini.get("key").getValue();
-    //        grid.load({key: key});
-    //    }
 
 </script>
 
