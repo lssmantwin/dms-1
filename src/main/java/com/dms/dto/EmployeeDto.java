@@ -25,6 +25,10 @@ public class EmployeeDto implements Serializable {
 	private BigDecimal secrecySubsidy;
 	private BigDecimal communicationFee;
 	private String bankCardNumber;
+	private int jywCommissionRatio;
+	private int commencementRatio;
+	private int completionRatio;
+	private int renovateCommossionRatio;
 
 	public String getId() {
 		return id;
@@ -112,5 +116,37 @@ public class EmployeeDto implements Serializable {
 
 	public void setCommunicationFee(BigDecimal communicationFee) {
 		this.communicationFee = communicationFee;
+	}
+
+	public int getJywCommissionRatio() {
+		return jywCommissionRatio;
+	}
+
+	public void setJywCommissionRatio(int jywCommissionRatio) {
+		this.jywCommissionRatio = jywCommissionRatio;
+	}
+
+	public int getCommencementRatio() {
+		return commencementRatio;
+	}
+
+	public void setCommencementRatio(int commencementRatio) {
+		this.commencementRatio = commencementRatio;
+	}
+
+	public int getCompletionRatio() {
+		return completionRatio;
+	}
+
+	public void setCompletionRatio(int completionRatio) {
+		this.completionRatio = completionRatio;
+	}
+
+	public int getRenovateCommossionRatio() {
+		return renovateCommossionRatio;
+	}
+
+	public void setRenovateCommossionRatio(int renovateCommossionRatio) {
+		this.renovateCommossionRatio = renovateCommossionRatio;
 	}
 }

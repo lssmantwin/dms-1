@@ -9,13 +9,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dms.domain.*;
+import com.dms.domain.Attendance;
+import com.dms.domain.Month;
+import com.dms.domain.Position;
 import com.dms.dto.EmployeeDto;
 import com.dms.dto.FinanceDto;
+import com.dms.request.DataGridRequest;
 import com.dms.request.FinanceRequest;
+import com.dms.response.DataGridResponse;
 import com.dms.service.EmployeeService;
 import com.dms.utils.PersonalIncomeTaxUtils;
 import com.dms.ws.EmployeeWebService;
+import com.google.common.collect.Lists;
 
 @Service("employeeWebService")
 public class EmployeeWebServiceImpl implements EmployeeWebService {
@@ -49,56 +54,63 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 
 		LOGGER.info("save employees, {}", employeeDtos);
 
+		List<EmployeeDto> addEmployees = Lists.newArrayList();
+		List<EmployeeDto> updateEmployees = Lists.newArrayList();
 		for (EmployeeDto employeeDto : employeeDtos) {
 			if (StringUtils.isBlank(employeeDto.getId())) {
-				employeeService.saveEmployee(employeeDto);
-			} else {
-				employeeService.updateEmployee(employeeDto);
+				addEmployees.add(employeeDto);
+				continue;
 			}
+			updateEmployees.add(employeeDto);
 		}
+
+		employeeService.saveEmployees(addEmployees);
+		employeeService.updateEmployees(updateEmployees);
 	}
 
 	@Override
-	public MiniResponse<List<EmployeeDto>> getEmployees(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
+	public DataGridResponse<List<EmployeeDto>> getEmployees(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
 
 		LOGGER.info("get employees, key {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}", key, pageIndex, pageSize, sortField, sortOrder);
 
-		MiniRequest request = generateMiniRequest(key, pageIndex, pageSize, sortField, sortOrder);
+		DataGridRequest request = generateDataGridRequest(key, pageIndex, pageSize, sortField, sortOrder, null);
 
 		int count = employeeService.getEmployeeCount(request);
 		List<EmployeeDto> employees = employeeService.getEmployees(request);
 
-		MiniResponse<List<EmployeeDto>> response = new MiniResponse<>();
+		DataGridResponse<List<EmployeeDto>> response = new DataGridResponse<>();
 		response.setTotal(count);
 		response.setData(employees);
+		response.setRows(employees);
 
 		return response;
 	}
 
 	@Override
-	public MiniResponse<List<FinanceDto>> getFinances(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
+	public DataGridResponse<List<FinanceDto>> getFinances(String key, int pageIndex, int pageSize, String sortField, String sortOrder, String month) {
 
 		LOGGER.info("get finances, key {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}", key, pageIndex, pageSize, sortField, sortOrder);
 
-		MiniRequest request = generateMiniRequest(key, pageIndex, pageSize, sortField, sortOrder);
+		DataGridRequest request = generateDataGridRequest(key, pageIndex, pageSize, sortField, sortOrder, month);
 
 		int count = employeeService.getEmployeeCount(request);
 		List<FinanceDto> finances = employeeService.getFinances(request);
 
-		MiniResponse<List<FinanceDto>> response = new MiniResponse<>();
+		DataGridResponse<List<FinanceDto>> response = new DataGridResponse<>();
 		response.setTotal(count);
 		response.setData(finances);
 
 		return response;
 	}
 
-	private MiniRequest generateMiniRequest(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
-		MiniRequest request = new MiniRequest();
+	private DataGridRequest generateDataGridRequest(String key, int pageIndex, int pageSize, String sortField, String sortOrder, String month) {
+		DataGridRequest request = new DataGridRequest();
 		request.setStart(pageIndex * pageSize + 1);
 		request.setEnd((pageIndex + 1) * pageSize);
 		request.setKey(key);
 		request.setSortField(sortField);
 		request.setSortOrder(sortOrder);
+		request.setMonth(month);
 		return request;
 	}
 

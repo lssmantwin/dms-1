@@ -1,11 +1,12 @@
-package com.dms.domain;
+package com.dms.response;
 
 import java.io.Serializable;
 
-public class MiniResponse<T> implements Serializable {
+public class DataGridResponse<T> implements Serializable {
 
 	private int total;
-	private T data;
+	private T data; // for miniui
+	private T rows; // for easyui
 
 	public int getTotal() {
 		return total;
@@ -21,5 +22,13 @@ public class MiniResponse<T> implements Serializable {
 
 	public void setData(T data) {
 		this.data = data;
+	}
+
+	public T getRows() {
+		return rows;
+	}
+
+	public void setRows(T rows) {
+		this.rows = rows;
 	}
 }

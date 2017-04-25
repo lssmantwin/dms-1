@@ -39,19 +39,20 @@
     </table>
 </div>
 
-<!--撑满页面-->
 <div class="mini-fit">
 
     <div id="datagrid1" class="mini-datagrid" style="width:100%;height:100%;"
          url="http://localhost:8080/ws/employee/v1/employees"
          ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
          idField="id" sizeList="[5,10,20,50]" pageSize="10" allowCellEdit="true" allowCellSelect="true"
-         multiSelect="true">
+         multiSelect="true" showSummaryRow="true">
         <div property="columns">
             <div type="indexcolumn"></div>
-            <!--<div field="loginname" width="120" headerAlign="center" allowSort="true">员工帐号</div>-->
             <div field="name" width="120" headerAlign="center" allowSort="true">姓名
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
+            </div>
+            <div field="hiredate" width="100" headerAlign="center" dateFormat="yyyy-MM-dd" allowSort="true">入职日期
+                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
             </div>
             <div field="position" width="120" type="comboboxcolumn" headerAlign="center" allowSort="false">职位
                 <input property="editor" class="mini-combobox" style="width:150px;" textField="text" valueField="value"
@@ -59,32 +60,39 @@
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
                        required="true" allowInput="true" showNullItem="false"/>
             </div>
-            <div field="hiredate" width="100" headerAlign="center" dateFormat="yyyy-MM-dd" allowSort="true">入职日期
-                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
-            </div>
-            <!--<div field="gender" width="100" renderer="onGenderRenderer" align="center" headerAlign="center">性别</div>-->
-            <div field="bankCardNumber" width="100" allowSort="false" headerAlign="center">卡号
+            <div field="baseWage" width="100" allowSort="true" headerAlign="center" vtype="float"> 基本工资
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="baseWage" width="100" allowSort="true" headerAlign="center">基本工资
+            <div field="workingAgeSubsidy" width="100" headerAlign="center" allowSort="true" vtype="int">工龄
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="workingAgeSubsidy" width="100" headerAlign="center" allowSort="true">工龄
+            <div field="overtime" width="100" headerAlign="center" allowSort="false" vtype="float">加班
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="overtime" width="100" headerAlign="center" allowSort="false">加班
+            <div field="mealsSubsidy" width="100" headerAlign="center" allowSort="false" vtype="float">饭贴
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="mealsSubsidy" width="100" headerAlign="center" allowSort="false">饭贴
+            <div field="secrecySubsidy" width="100" headerAlign="center" allowSort="false" vtype="float">保密
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="secrecySubsidy" width="100" headerAlign="center" allowSort="false">保密
+            <div field="communicationFee" width="100" headerAlign="center" allowSort="false" vtype="float">通讯费
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="communicationFee" width="100" headerAlign="center" allowSort="false">通讯费
+            <div field="jywCommissionRatio" width="100" headerAlign="center" allowSort="false" vtype="float">佳园屋提成比例
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <!--<div field="age" width="100" allowSort="true" headerAlign="center">年龄</div>-->
+            <div field="commencementRatio" width="100" headerAlign="center" allowSort="false" vtype="float">开工比例
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            </div>
+            <div field="completionRatio" width="100" headerAlign="center" allowSort="false" vtype="float">竣工比例
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            </div>
+            <div field="renovateCommossionRatio" width="100" headerAlign="center" allowSort="false" vtype="float">翻新提成比例
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            </div>
+            <div field="bankCardNumber" width="100" allowSort="false" headerAlign="center" vtype="float">卡号
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            </div>
         </div>
     </div>
 
@@ -98,13 +106,21 @@
 
 
     function addRow() {
-        // var newRow = {name: "New Row"};
         var newRow = {};
         grid.addRow(newRow, 0);
         grid.beginEditCell(newRow, "NAME");
     }
 
     function saveData() {
+
+        grid.validate();
+        if (grid.isValid() == false) {
+            alert("请校验输入单元格内容");
+            var error = grid.getCellErrors()[0];
+            grid.beginEditCell(error.record, error.column);
+            return;
+        }
+
         var data = grid.getChanges();
         var json = mini.encode(data);
         alert(json);
@@ -135,6 +151,7 @@
         var key = mini.get("key").getValue();
         grid.load({key: key});
     }
+
 
 </script>
 

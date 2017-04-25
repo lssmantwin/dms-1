@@ -5,6 +5,7 @@ import java.util.List;
 import com.dms.domain.*;
 import com.dms.dto.EmployeeDto;
 import com.dms.dto.FinanceDto;
+import com.dms.request.DataGridRequest;
 
 public interface EmployeeService {
 
@@ -14,15 +15,15 @@ public interface EmployeeService {
 
 	List<Position> getPositions();
 
-	int getEmployeeCount(MiniRequest request);
+	int getEmployeeCount(DataGridRequest request);
 
-	List<EmployeeDto> getEmployees(MiniRequest request);
+	List<EmployeeDto> getEmployees(DataGridRequest request);
 
-	List<FinanceDto> getFinances(MiniRequest request);
+	List<FinanceDto> getFinances(DataGridRequest request);
 
-	void saveEmployee(EmployeeDto employee);
+	void saveEmployees(List<EmployeeDto> employeeDtos);
 
-	void updateEmployee(EmployeeDto employee);
+	void updateEmployees(List<EmployeeDto> employeeDtos);
 
 	void saveFinance(FinanceDto financeDto);
 

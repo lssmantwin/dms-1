@@ -15,6 +15,10 @@
         <result property="mealsSubsidy" column="meals_subsidy"/>
         <result property="secrecySubsidy" column="secrecy_subsidy"/>
         <result property="communicationFee" column="communication_fee"/>
+        <result property="jywCommissionRatio" column="jyw_commission_ratio"/>
+        <result property="commencementRatio" column="commencement_ratio"/>
+        <result property="completionRatio" column="completion_ratio"/>
+        <result property="renovateCommossionRatio" column="renovate_commossion_ratio"/>
     </resultMap>
 
     <resultMap id="FinanceMap" type="FinanceDto">
@@ -26,7 +30,6 @@
         <result property="mealsSubsidy" column="meals_subsidy"/>
         <result property="secrecySubsidy" column="secrecy_subsidy"/>
         <result property="communicationFee" column="communication_fee"/>
-        <!--<result property="monthId" column="month"/>-->
         <result property="attendance" column="attendance"/>
         <result property="bonus" column="bonus"/>
         <result property="workingAgeSubsidy" column="working_age_subsidy"/>
@@ -58,7 +61,7 @@
         select * from "position" order by "value"
     </select>
 
-    <select id="getEmployeeCount" parameterType="MiniRequest" resultType="int">
+    <select id="getEmployeeCount" parameterType="DataGridRequest" resultType="int">
         select count(id) from "employee"
         <where>
             <if test="key != null">
@@ -69,7 +72,8 @@
     </select>
 
 
-    <select id="getEmployees" parameterType="MiniRequest" resultMap="EmployeeMap">
+    <select id="getEmployees" parameterType="DataGridRequest" resultMap="EmployeeMap">
+        -- select * from employee
         select * from (select *, row_number() over (order by id) rn from "employee" ) t
         <where>
             t.rn BETWEEN #{start} and #{end}
@@ -103,7 +107,7 @@
     </select>
 
 
-    <select id="getFinances" parameterType="MiniRequest" resultMap="FinanceMap">
+    <select id="getFinances" parameterType="DataGridRequest" resultMap="FinanceMap">
         select t.eid as employee_id, t.name as employee_name, t.base_wage, t.overtime, t.meals_subsidy,
         t.secrecy_subsidy, t.communication_fee,
         t.fid as finance_id, t.month,
@@ -120,31 +124,47 @@
         f.charge_comments, f.casual_leave, f.sick_leave,
         f.storage_charge, f.gross_pay, f.medical_insurance,
         f.housing_fund, f.before_tax_salary, f.personal_income_tax, f.after_tax_salary,
-        row_number() over (order by e.id) as rn from employee e left join finance f on e.id = f.employee_id
+        row_number() over (order by e.id) as rn from employee e left join finance f on e.id = f.employee_id and
+        f."month" = #{month}
         ) t
         <where>
             t.rn BETWEEN #{start} and #{end}
         </where>
     </select>
 
-    <insert id="saveEmployee" parameterType="EmployeeDto">
-        insert into "employee" (name, "position", hiredate, base_wage, bank_card_number, working_age_subsidy, overtime, meals_subsidy, secrecy_subsidy, communication_fee)
-        values (#{name}, #{position}, #{hiredate}, #{baseWage}, #{bankCardNumber}, #{workingAgeSubsidy}, #{overtime}, #{mealsSubsidy}, #{secrecySubsidy}, #{communicationFee})
+    <insert id="saveEmployees" parameterType="list">
+        insert into "employee" (name, "position", hiredate, base_wage, bank_card_number, working_age_subsidy, overtime,
+        meals_subsidy, secrecy_subsidy, communication_fee, jyw_commission_ratio, commencement_ratio, completion_ratio,
+        renovate_commossion_ratio)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.name}, #{item.position}, #{item.hiredate}, #{item.baseWage}, #{item.bankCardNumber},
+            #{item.workingAgeSubsidy}, #{item.overtime},
+            #{item.mealsSubsidy}, #{item.secrecySubsidy}, #{item.communicationFee},
+            ${item.jywCommissionRatio}, #{item.commencementRatio}, #{item.completionRatio},
+            #{item.renovateCommossionRatio})
+        </foreach>
     </insert>
 
-    <update id="updateEmployee" parameterType="EmployeeDto">
-        update "employee"
-        set name = #{name},
-            position = #{position},
-            hiredate = #{hiredate},
-            base_wage = #{baseWage},
-            bank_card_number = #{bankCardNumber},
-            working_age_subsidy = #{workingAgeSubsidy},
-            overtime = #{overtime},
-            meals_subsidy = #{mealsSubsidy},
-            secrecy_subsidy = #{secrecySubsidy},
-            communication_fee = #{communicationFee}
-        where id = #{id}
+    <update id="updateEmployees" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update "employee"
+            set name = #{item.name},
+            position = #{item.position},
+            hiredate = #{item.hiredate},
+            base_wage = #{item.baseWage},
+            bank_card_number = #{item.bankCardNumber},
+            working_age_subsidy = #{item.workingAgeSubsidy},
+            overtime = #{item.overtime},
+            meals_subsidy = #{item.mealsSubsidy},
+            secrecy_subsidy = #{item.secrecySubsidy},
+            communication_fee = #{item.communicationFee},
+            jyw_commission_ratio = ${item.jywCommissionRatio},
+            commencement_ratio = #{item.commencementRatio},
+            completion_ratio = #{item.completionRatio},
+            renovate_commossion_ratio = #{item.renovateCommossionRatio}
+            where id = #{item.id}
+        </foreach>
     </update>
 
     <insert id="saveFinance" parameterType="FinanceDto">

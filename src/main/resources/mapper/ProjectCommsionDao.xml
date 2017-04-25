@@ -38,7 +38,7 @@
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
     </resultMap>
 
-    <select id="getProjectCommionCount" parameterType="MiniRequest" resultType="int">
+    <select id="getProjectCommionCount" parameterType="DataGridRequest" resultType="int">
         select count(id) from "project_commision"
         <where>
             <if test="commision_state != null">
@@ -48,7 +48,7 @@
         </where>
     </select>
 
-    <select id="getProjectCommisions" parameterType="MiniRequest" resultMap="ProjectCommisionMap">
+    <select id="getProjectCommisions" parameterType="DataGridRequest" resultMap="ProjectCommisionMap">
         select * from "project_commision"
     </select>
 

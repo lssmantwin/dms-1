@@ -1,10 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../css/demo.css">
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="locale/easyui-lang-zh_CN.js"></script>
 </head>
-<body>
- HELLO EMPLOYEE
+<body class="easyui-layout">
+<table id="dg" class="easyui-datagrid" style="height: auto"
+       data-options="
+                rownumbers: true,
+				iconCls: 'icon-edit',
+				singleSelect: true,
+				toolbar: '#tb',
+				url: 'http://localhost:8080/ws/employee/v1/employees',
+				method: 'get',
+				onClickCell: onClickCell,
+				pagination : true,
+                pageList: [10, 20, 30, 40, 50],
+                fit: true,
+                border:false,
+                fitColumns:true
+			">
+    <thead>
+    <tr>
+        <th data-options="field:'name', width:100, align:'center', editor:'textbox'">员工姓名</th>
+        <th data-options="field:'hiredate', width:100, align:'center',
+                        editor:'datebox'">
+            入职日期
+        </th>
+        <th data-options="field:'position', width:100, align:'center',
+						editor:{
+							type:'combobox',
+							options:{
+							    valueField: 'text',
+							    textField: 'text',
+								url:'data/positions.json',
+							}
+						}">
+            职位
+        </th>
+        <th data-options="field:'baseWage', width:100, align:'center', editor:'textbox'">
+            基本工资
+        </th>
+        <th data-options="field:'workingAgeSubsidy', width:100, align:'center', editor:'numberbox'">工龄补贴</th>
+        <th data-options="field:'overtime', width:100, align:'center', editor:'textbox'">加班</th>
+        <th data-options="field:'mealsSubsidy', width:100, align:'center', editor:'textbox'">
+            饭补
+        </th>
+        <th data-options="field:'secrecySubsidy', width:100, align:'center', editor:'textbox'">
+            保密
+        </th>
+        <th data-options="field:'communicationFee', width:100, align:'center', editor:'textbox'">
+            通讯费
+        </th>
+        <th data-options="field:'bankCardNumber', width:100, align:'center', editor:'textbox'">
+            工资卡号
+        </th>
+    </tr>
+    </thead>
+</table>
+
+<div id="tb" style="height:auto">
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true"
+       onclick="add()">新增</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true"
+       onclick="save()">保存</a>
+</div>
+
+<script type="text/javascript">
+
+    $.extend($.fn.datagrid.methods, {
+        editCell: function (jq, param) {
+            return jq.each(function () {
+                var opts = $(this).datagrid('options');
+                var fields = $(this).datagrid('getColumnFields', true).concat($(this).datagrid('getColumnFields'));
+                for (var i = 0; i < fields.length; i++) {
+                    var col = $(this).datagrid('getColumnOption', fields[i]);
+                    col.editor1 = col.editor;
+                    if (fields[i] != param.field) {
+                        col.editor = null;
+                    }
+                }
+                $(this).datagrid('beginEdit', param.index);
+                for (var i = 0; i < fields.length; i++) {
+                    var col = $(this).datagrid('getColumnOption', fields[i]);
+                    col.editor = col.editor1;
+                }
+            });
+        }
+    });
+
+    var editIndex = undefined;
+    function endEditing() {
+        if (editIndex == undefined) {
+            return true;
+        }
+        if ($('#dg').datagrid('validateRow', editIndex)) {
+            $('#dg').datagrid('endEdit', editIndex);
+            editIndex = undefined;
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function onClickCell(index, field) {
+        if (endEditing()) {
+            $('#dg').datagrid('selectRow', index)
+                .datagrid('editCell', {index: index, field: field});
+            editIndex = index;
+        }
+    }
+
+    ////////////////////////////////////////////////////
+
+    function add() {
+        if (endEditing()) {
+            $('#dg').datagrid('appendRow', {});
+            editIndex = $('#dg').datagrid('getRows').length - 1;
+            $('#dg').datagrid('selectRow', editIndex)
+                .datagrid('beginEdit', editIndex);
+        }
+    }
+
+
+    function save() {
+        endEditing();
+        var rows = $('#dg').datagrid('getChanges');
+        var data = JSON.stringify(rows);
+        alert(data);
+        $.ajax({
+            url: "http://localhost:8080/ws/employee/v1/employees",
+            data: data,
+            type: 'post',
+            dataType: 'json',
+            contentType: "application/json;charset=utf-8",
+            success: function (text) {
+                $('#dg').datagrid('reload');
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR);
+                alert(textStatus);
+                alert(errorThrown);
+                alert(jqXHR.responseText);
+            }
+        });
+    }
+
+</script>
 </body>
 </html>
