@@ -53,7 +53,7 @@
     </select>
 
 
-    <insert id="getProjects" parameterType="ProjectCommisionDto">
+    <insert id="synchronizeProjects" parameterType="ProjectCommisionDto">
         INSERT INTO dms.dbo.Project_Commision
         (
         designer
@@ -110,6 +110,48 @@
         ORDER BY ci.state,设计师
 
     </insert>
+
+    <select id="synchronizeProjects" parameterType="MiniRequest" resultMap="ProjectCommisionMap">
+        SELECT ci.designer AS designer,
+        ci.ACNumber AS 受理编号 acNumber,
+        ci.contract_id AS contractId,
+        ci.contract_total AS contractTotal,
+        rp.purchaseAgentFee,
+        bc.projectChangeTotal,
+        ISNULL(hr.已付, 0) AS customerPay,
+        hr.已付 / ci.contract_total AS payContractRatio,
+        hr.已付 / (ci.contract_total + ISNULL(bc.变更总价, 0)) AS payProjectRatio,
+        CASE ci.state WHEN 9 THEN '归档' WHEN 8 THEN '结算' WHEN 7 THEN '竣工' WHEN 6 THEN '在建' END AS contractState,
+        derivedtbl_1.ACName AS branch,
+        ci.contract_date AS contractDate,
+        ci.actual_start_time AS actualStartTime,
+        ci.actual_end_time AS actualEndTime,
+        ci.balance_time AS balanceTime,
+        View_Max_Flow_Form.CustName as customerName
+        FROM   Contract_Info AS ci
+        INNER JOIN   View_Max_Flow_Form ON ci.ACNumber = View_Max_Flow_Form.ACNumber LEFT OUTER JOIN
+        (SELECT     ID, ACType, ACName, ACCont, ACNumb, ACOrder, ACLogic, ACText
+        FROM          AC_Set
+        WHERE      (ACType = '营业网点')) AS derivedtbl_1 ON View_Max_Flow_Form.Branch = derivedtbl_1.ACNumb LEFT OUTER JOIN
+        (SELECT     受理编号, SUM(数量 * 单价) AS 代采金额
+        FROM          ERP_Replace_Purchase
+        WHERE      (状态 = 6)
+        GROUP BY 受理编号) AS rp ON ci.ACNumber = rp.受理编号 LEFT OUTER JOIN
+        (SELECT     h1.ACNumber, SUM(CASE WHEN h1.财务确认 = 1 OR
+        v1.source = '东方CJ' AND h1.Account1 IN ('定金', '上门费') AND h1.received = 1000 THEN h1.Received ELSE 0 END) AS 已付
+        FROM          Has_Receivables AS h1 INNER JOIN
+        View_Max_Flow_Form AS v1 ON h1.ACNumber = v1.ACNumber
+        GROUP BY h1.ACNumber) AS hr ON ci.ACNumber = hr.ACNumber LEFT OUTER JOIN
+        (SELECT     受理编号, SUM(变更总价) AS 变更总价
+        FROM          ERP_Budget_Change
+        WHERE      (审核日期 >= '2009-12-31')
+        GROUP BY 受理编号) AS bc ON ci.ACNumber = bc.受理编号
+        WHERE   ci.ACNumber in
+        ( SELECT ac_number from project_commision where comission_state != '已提')
+        ORDER BY ci.state,设计师
+
+    </select>
+
 
 
     <update id="updateProjectCommision" parameterType="ProjectCommisionDto">
