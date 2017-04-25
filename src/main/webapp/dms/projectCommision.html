@@ -49,11 +49,12 @@
          url="http://localhost:8080/ws/commision/v1/projectCommisions"
          ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
          idField="id" sizeList="[5,10,20,50]" pageSize="10" allowCellEdit="true" allowCellSelect="true"
-         multiSelect="true">
+         multiSelect="true" showFilterRow="true">
         <div property="columns">
             <div type="indexcolumn"></div>
             <div field="designer" width="100" headerAlign="center" allowSort="false">designer
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+                <input property="filter" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
             <div field="designerAssistant" width="100" headerAlign="center" allowSort="false">designerAssistant
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>

@@ -31,10 +31,10 @@
                 <span class="separator"></span>
                 <a class="mini-button" iconCls="icon-save" plain="true" onclick="saveData()">保存</a>
             </td>
-            <td style="white-space:nowrap;"><label style="font-family:Verdana;">名称: </label>
-                <input id="key" class="mini-textbox" emptyText="请输入姓名" style="width:150px;" onenter="onKeyEnter"/>
-                <a class="mini-button" iconCls="icon-search" plain="true" onclick="onSearch()">查询</a>
-            </td>
+            <!--<td style="white-space:nowrap;"><label style="font-family:Verdana;">名称: </label>-->
+            <!--<input id="key" class="mini-textbox" emptyText="请输入姓名" style="width:150px;" onenter="onKeyEnter"/>-->
+            <!--<a class="mini-button" iconCls="icon-search" plain="true" onclick="onSearch()">查询</a>-->
+            <!--</td>-->
         </tr>
     </table>
 </div>
@@ -45,11 +45,14 @@
          url="http://localhost:8080/ws/employee/v1/employees"
          ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
          idField="id" sizeList="[5,10,20,50]" pageSize="10" allowCellEdit="true" allowCellSelect="true"
-         multiSelect="true" showSummaryRow="true">
+         multiSelect="true" showSummaryRow="true" showFilterRow="true">
         <div property="columns">
             <div type="indexcolumn"></div>
             <div field="name" width="120" headerAlign="center" allowSort="true">姓名
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="120"/>
+                <input id="nameFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="120"
+                       onvaluechanged="onFilterChanged"/>
+                <!--onenter="onKeyEnter"-->
             </div>
             <div field="hiredate" width="100" headerAlign="center" dateFormat="yyyy-MM-dd" allowSort="true">入职日期
                 <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
@@ -147,11 +150,10 @@
         onSearch();
     }
 
-    function onSearch() {
-        var key = mini.get("key").getValue();
+    function onFilterChanged() {
+        var key = mini.get("nameFilter").getValue();
         grid.load({key: key});
     }
-
 
 </script>
 
