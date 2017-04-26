@@ -9,7 +9,7 @@ import com.dms.serializable.LocalDateTimeJacksonSerializable;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-public class ProjectCommisionDto {
+public class ProjectCommissionDto {
 
 	private Long id;
 	private String designer;
@@ -24,16 +24,16 @@ public class ProjectCommisionDto {
 	private BigDecimal payContractRatio;
 	private BigDecimal payProjectRatio;
 	private String contractState;
-	private String commisionState;
-	private BigDecimal firstCommision;
-	private BigDecimal balanceCommision;
-	private BigDecimal designCommisionRate;
+	private String CommissionState;
+	private BigDecimal firstCommission;
+	private BigDecimal balanceCommission;
+	private BigDecimal designCommissionRate;
 	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
 	private LocalDateTime contractDate;
 	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
-	private LocalDateTime firstCommisionDate;
+	private LocalDateTime firstCommissionDate;
 	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
 	private LocalDateTime actualStartTime;
@@ -45,8 +45,8 @@ public class ProjectCommisionDto {
 	private LocalDateTime balanceTime;
 	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
-	private LocalDateTime balanceCommisionDate;
-	private BigDecimal designerAssistantCommisionRate;
+	private LocalDateTime balanceCommissionDate;
+	private BigDecimal designerAssistantCommissionRate;
 
 	public Long getId() {
 		return id;
@@ -148,12 +148,12 @@ public class ProjectCommisionDto {
 		this.contractState = contractState;
 	}
 
-	public BigDecimal getDesignCommisionRate() {
-		return designCommisionRate;
+	public BigDecimal getDesignCommissionRate() {
+		return designCommissionRate;
 	}
 
-	public void setDesignCommisionRate(BigDecimal designCommisionRate) {
-		this.designCommisionRate = designCommisionRate;
+	public void setDesignCommissionRate(BigDecimal designCommissionRate) {
+		this.designCommissionRate = designCommissionRate;
 	}
 
 	public LocalDateTime getContractDate() {
@@ -164,12 +164,12 @@ public class ProjectCommisionDto {
 		this.contractDate = contractDate;
 	}
 
-	public LocalDateTime getFirstCommisionDate() {
-		return firstCommisionDate;
+	public LocalDateTime getFirstCommissionDate() {
+		return firstCommissionDate;
 	}
 
-	public void setFirstCommisionDate(LocalDateTime firstCommisionDate) {
-		this.firstCommisionDate = firstCommisionDate;
+	public void setFirstCommissionDate(LocalDateTime firstCommissionDate) {
+		this.firstCommissionDate = firstCommissionDate;
 	}
 
 	public LocalDateTime getActualStartTime() {
@@ -196,44 +196,44 @@ public class ProjectCommisionDto {
 		this.balanceTime = balanceTime;
 	}
 
-	public LocalDateTime getBalanceCommisionDate() {
-		return balanceCommisionDate;
+	public LocalDateTime getBalanceCommissionDate() {
+		return balanceCommissionDate;
 	}
 
-	public void setBalanceCommisionDate(LocalDateTime balanceCommisionDate) {
-		this.balanceCommisionDate = balanceCommisionDate;
+	public void setBalanceCommissionDate(LocalDateTime balanceCommissionDate) {
+		this.balanceCommissionDate = balanceCommissionDate;
 	}
 
-	public BigDecimal getDesignerAssistantCommisionRate() {
-		return designerAssistantCommisionRate;
+	public BigDecimal getDesignerAssistantCommissionRate() {
+		return designerAssistantCommissionRate;
 	}
 
-	public void setDesignerAssistantCommisionRate(BigDecimal designerAssistantCommisionRate) {
-		this.designerAssistantCommisionRate = designerAssistantCommisionRate;
+	public void setDesignerAssistantCommissionRate(BigDecimal designerAssistantCommissionRate) {
+		this.designerAssistantCommissionRate = designerAssistantCommissionRate;
 	}
 
-	public String getCommisionState() {
-		return commisionState;
+	public String getCommissionState() {
+		return CommissionState;
 	}
 
-	public void setCommisionState(String commisionState) {
-		this.commisionState = commisionState;
+	public void setCommissionState(String CommissionState) {
+		this.CommissionState = CommissionState;
 	}
 
-	public BigDecimal getFirstCommision() {
-		return firstCommision;
+	public BigDecimal getFirstCommission() {
+		return firstCommission;
 	}
 
-	public void setFirstCommision(BigDecimal firstCommision) {
-		this.firstCommision = firstCommision;
+	public void setFirstCommission(BigDecimal firstCommission) {
+		this.firstCommission = firstCommission;
 	}
 
-	public BigDecimal getBalanceCommision() {
-		return balanceCommision;
+	public BigDecimal getBalanceCommission() {
+		return balanceCommission;
 	}
 
-	public void setBalanceCommision(BigDecimal balanceCommision) {
-		this.balanceCommision = balanceCommision;
+	public void setBalanceCommission(BigDecimal balanceCommission) {
+		this.balanceCommission = balanceCommission;
 	}
 
 	@Override
@@ -249,7 +249,7 @@ public class ProjectCommisionDto {
 		if (o == null || getClass() != o.getClass())
 			return false;
 
-		ProjectCommisionDto that = (ProjectCommisionDto) o;
+		ProjectCommissionDto that = (ProjectCommissionDto) o;
 
 		return getAcNumber() != null ? getAcNumber().equals(that.getAcNumber()) : that.getAcNumber() == null;
 	}

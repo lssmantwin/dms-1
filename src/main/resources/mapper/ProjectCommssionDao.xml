@@ -1,9 +1,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dms.dao.ProjectCommisionDao">
+<mapper namespace="com.dms.dao.ProjectCommissionDao">
 
-    <resultMap id="ProjectCommisionMap" type="ProjectCommisionDto">
+    <resultMap id="ProjectCommissionMap" type="ProjectCommissionDto">
         <id property="id" column="id"/>
         <result property="designer" column="designer"/>
         <result property="acNumber" column="ac_number"/>
@@ -25,36 +25,36 @@
                 typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="actualEndTime" column="actual_end_time" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="balanceTime" column="balance_time" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
-        <result property="firstCommisionDate" column="first_commision_date"
+        <result property="firstCommissionDate" column="first_commission_date"
                 typeHandler="com.dms.handler.LocalDateTimeHandler"/>
-        <result property="balanceCommisionDate" column="balance_commision_date"
+        <result property="balanceCommissionDate" column="balance_commission_date"
                 typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="designerAssistant" column="designer_assistant"/>
-        <result property="firstCommision" column="first_commision" typeHandler="com.dms.handler.BigDecimalHandler"/>
-        <result property="balanceCommision" column="balance_commision" typeHandler="com.dms.handler.BigDecimalHandler"/>
-        <result property="designCommisionRate" column="design_commision_rate"
+        <result property="firstCommission" column="first_commission" typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="balanceCommission" column="balance_commission" typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="designCommissionRate" column="design_commission_rate"
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
-        <result property="designerAssistantCommisionRate" column="designer_assistant_commision_rate"
+        <result property="designerAssistantCommissionRate" column="designer_assistant_commission_rate"
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
     </resultMap>
 
     <select id="getProjectCommionCount" parameterType="DataGridRequest" resultType="int">
-        select count(id) from "project_commision"
+        select count(id) from "project_commission"
         <where>
-            <if test="commision_state != null">
-                <bind name="commision_state" value="'%' + commision_state + '%'"/>
+            <if test="commission_state != null">
+                <bind name="commission_state" value="'%' + commission_state + '%'"/>
                 name like #{pattern}
             </if>
         </where>
     </select>
 
-    <select id="getProjectCommisions" parameterType="DataGridRequest" resultMap="ProjectCommisionMap">
-        select * from "project_commision"
+    <select id="getProjectCommissions" parameterType="DataGridRequest" resultMap="ProjectCommissionMap">
+        select * from "project_commission"
     </select>
 
 
-    <insert id="getProjects" parameterType="ProjectCommisionDto">
-        INSERT INTO dms.dbo.Project_Commision
+    <insert id="getProjects" parameterType="ProjectCommissionDto">
+        INSERT INTO dms.dbo.Project_Commission
         (
         designer
         ,ac_number
@@ -112,8 +112,8 @@
     </insert>
 
 
-    <update id="updateProjectCommision" parameterType="ProjectCommisionDto">
-        update "project_commision"
+    <update id="updateProjectCommission" parameterType="ProjectCommissionDto">
+        update "project_commission"
         set
         contract_total = #{contractTotal},
         purchase_agent_fee = #{purchaseAgentFee},
@@ -125,14 +125,14 @@
         actual_start_time = #{actualStartTime},
         actual_end_time = #{actualEndTime},
         balance_time = #{balanceTime},
-        first_commision = #{firstCommision},
-        first_commision_date = #{firstCommisionDate},
-        balance_commision = #{balanceCommision},
-        balance_commision_date = #{balanceCommisionDate},
-        commision_state = #{commisionState},
+        first_commission = #{firstCommission},
+        first_commission_date = #{firstCommissionDate},
+        balance_commission = #{balanceCommission},
+        balance_commission_date = #{balanceCommissionDate},
+        commission_state = #{commissionState},
         designer_assistant = #{designerAssistant},
-        design_commision_rate = #{designCommisionRate},
-        designer_assistant_commision_rate = #{designerAssistantCommisionRate}
+        design_commission_rate = #{designCommissionRate},
+        designer_assistant_commission_rate = #{designerAssistantCommissionRate}
         where ac_number = #{acNumber}
     </update>
 
