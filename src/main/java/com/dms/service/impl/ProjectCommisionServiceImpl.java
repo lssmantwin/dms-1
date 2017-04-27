@@ -1,5 +1,6 @@
 package com.dms.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,24 @@ public class ProjectCommisionServiceImpl implements ProjectCommisionService {
 	}
 
 	@Override
+	public ProjectCommisionDto getProjectCommision(String acNumber) {
+		return projectCommisionDao.getProjectCommision(acNumber);
+	}
+
+	@Override
+	public int getProjects(Date startDate, Date endDate) {
+		return 0;
+	}
+
+	@Override
+	public void saveProjectCommision(List<ProjectCommisionDto> projectCommisionDtos) throws IllegalAccessException {
+		
+	}
+
+	@Override
 	public void saveProjectCommision(ProjectCommisionDto projectCommision) throws IllegalAccessException {
 		throw new IllegalAccessException("unsupport operation");
-		// projectCommisionDao.saveProjectCommision(projectCommision);
+		//projectCommisionDao.saveProjectCommision(projectCommision);
 	}
 
 	@Override

@@ -24,14 +24,20 @@
 <div class="mini-toolbar" style="padding:2px;border-bottom:0;">
     <table style="width:100%;">
         <tr>
+
             <td style="width:100%;">
-                <!--<input id="combo1" class="mini-combobox" style="width:150px;" textField="text" valueField="value"-->
-                <!--url="http://localhost:8080/ws/employee/v1/months"-->
-                <!--ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"-->
-                <!--required="true" allowInput="true" showNullItem="false" onvaluechanged="onMonthChange"/>-->
-                <!--<span class="separator"></span>-->
+                <input id="combo1" class="mini-combobox" style="width:150px;" textField="text" valueField="value"
+                       url="http://localhost:8080/ws/employee/v1/months"
+                       ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
+                       required="true" allowInput="true" showNullItem="false" onvaluechanged="onMonthChange"/>
+                <span class="separator"></span>
                 <!--<a class="mini-button" iconCls="icon-add" plain="true" onclick="addRow()">增加</a>-->
                 <!--<span class="separator"></span>-->
+                <a class="mini-button" iconCls="icon-save" plain="true" onclick="saveData()">保存</a>
+            </td>
+
+            <td style="width:100%;">
+
                 <a class="mini-button" iconCls="icon-save" plain="true" onclick="saveData()">保存</a>
             </td>
             <!--<td style="white-space:nowrap;"><label style="font-family:Verdana;">名称: </label>-->
@@ -46,7 +52,7 @@
 <div class="mini-fit">
 
     <div id="datagrid1" class="mini-datagrid" style="width:100%;height:100%;"
-         url="http://localhost:8080/ws/commision/v1/projectCommisions"
+         url="http://localhost:8081/ws/commision/v1/projectCommisions"
          ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
          idField="id" sizeList="[5,10,20,50]" pageSize="10" allowCellEdit="true" allowCellSelect="true"
          multiSelect="true">
@@ -64,7 +70,7 @@
             <div field="customerName" width="100" headerAlign="center" allowSort="false">customerName
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="contractTotal" width="100" headerAlign="center" allowSort="false">contractTotal
+            <div field="contractTotal" width="100" headerAlign="center" allowSort="false" >contractTotal
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
             <div field="purchaseAgentFee" width="100" headerAlign="center" allowSort="false">purchaseAgentFee
@@ -73,13 +79,13 @@
             <div field="projectChangeTotal" width="100" headerAlign="center" allowSort="false">projectChangeTotal
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="customerPay" width="100" headerAlign="center" allowSort="false">customerPay
+            <div field="customerPay" width="100" headerAlign="center" allowSort="false" >customerPay
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="payContractRatio" width="100" headerAlign="center" allowSort="false">payContractRatio
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            <div field="payContractRatio" width="100" headerAlign="center" allowSort="false" numberFormat="#%">payContractRatio
+                <input property="editor" class="mini-textbox; format='p'" style="width:100%;" minWidth="100"  />
             </div>
-            <div field="payProjectRatio" width="100" headerAlign="center" allowSort="false">payProjectRatio
+            <div field="payProjectRatio" width="100" headerAlign="center" allowSort="false" numberFormat="#%">payProjectRatio
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
             <div field="contractState" width="100" headerAlign="center" allowSort="false">contractState
@@ -88,7 +94,7 @@
             <div field="commisionState" width="100" headerAlign="center" allowSort="false">commisionState
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="designCommisionRate" width="100" headerAlign="center" allowSort="false">designCommisionRate
+            <div field="designCommisionRate" width="100" headerAlign="center" allowSort="false" numberFormat="#%">designCommisionRate
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
             <div field="designerAssistantCommisionRate" width="100" headerAlign="center" allowSort="false">
@@ -146,7 +152,7 @@
         alert(json);
         grid.loading("保存中，请稍后......");
         $.ajax({
-            url: 'http://localhost:8080/ws/commision/v1/projectCommisions',
+            url: 'http://localhost:8081/ws/commision/v1/projectCommisions',
             data: json,
             type: 'post',
             dataType: 'json',
@@ -163,7 +169,27 @@
         });
     }
 
-</script>
+     function synchronizeData() {
+        var data = grid.getChanges();
+        var json = mini.encode(data);
+        alert(json);
+        grid.loading("保存中，请稍后......");
+        $.ajax({
+            url: 'http://localhost:8081/ws/commision/v1/projectCommisions',
+            data: json,
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json;charset=utf-8',
+            success: function (text) {
+                grid.reload();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR);
+                alert(textStatus);
+                alert(errorThrown);
+                alert(jqXHR.responseText);
+            }
+        });
+    }
 
-</body>
-</html>
+</script>   

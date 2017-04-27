@@ -1,5 +1,6 @@
 package com.dms.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.dms.request.DataGridRequest;
@@ -11,7 +12,13 @@ public interface ProjectCommisionDao {
 
 	int getProjectCommisionCount(DataGridRequest request);
 
-	void saveProjectCommision(ProjectCommisionDto projectCommision);
+	ProjectCommisionDto getProjectCommision(String acNumber);
+
+	int getProjects(Date startDate, Date endDate);
+
+	void saveProjectCommision(List<ProjectCommisionDto> projectCommisions);
+
+	int saveProjectCommision(ProjectCommisionDto projectCommision);
 
 	void updateProjectCommision(ProjectCommisionDto projectCommision);
 
