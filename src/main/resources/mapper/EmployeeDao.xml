@@ -44,13 +44,18 @@
     </select>
 
     <select id="getEmployees" parameterType="DataGridRequest" resultMap="EmployeeMap">
-        select * from (select *, row_number() over (order by id) rn from "employee" ) t
+        select * from
+        (
+        select *, row_number() over (order by id) rn from "employee"
         <where>
-            t.rn BETWEEN #{start} and #{end}
             <if test="key != null">
                 <bind name="pattern" value="'%' + key + '%'"/>
-                and t.name like #{pattern}
+                name like #{pattern}
             </if>
+        </where>
+        ) t
+        <where>
+            t.rn BETWEEN #{start} and #{end}
             <choose>
                 <when test="sortField == 'name'">
                     order by name
