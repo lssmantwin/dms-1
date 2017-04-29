@@ -25,9 +25,9 @@
         </jaxrs:languageMappings>
     </jaxrs:server>
 
-    <jaxrs:server id="projectCommisionWebServices" address="/commision">
+    <jaxrs:server id="projectCommissionWebServices" address="/commission">
         <jaxrs:serviceBeans>
-            <ref bean="projectCommisionWebService"/>
+            <ref bean="projectCommissionWebService"/>
         </jaxrs:serviceBeans>
         <jaxrs:providers>
             <ref bean="jacksonProvider"/>

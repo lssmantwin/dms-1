@@ -10,7 +10,7 @@
         <typeAlias type="com.dms.domain.Attendance" alias="Attendance"/>
         <typeAlias type="com.dms.dto.EmployeeDto" alias="EmployeeDto"/>
         <typeAlias type="com.dms.dto.FinanceDto" alias="FinanceDto"/>
-        <typeAlias type="com.dms.dto.ProjectCommisionDto" alias="ProjectCommisionDto"/>
+        <typeAlias type="com.dms.dto.ProjectCommissionDto" alias="ProjectCommissionDto"/>
     </typeAliases>
 
     <typeHandlers>
