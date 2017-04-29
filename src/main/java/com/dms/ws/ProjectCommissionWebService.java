@@ -7,10 +7,12 @@ import javax.ws.rs.core.MediaType;
 
 import com.dms.dto.ProjectCommissionDto;
 import com.dms.response.DataGridResponse;
+import org.springframework.stereotype.Controller;
 
+@Controller
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Path("/v1")
+@Path("/commission/v1")
 public interface ProjectCommissionWebService {
 
 	@POST

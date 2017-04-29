@@ -10,10 +10,12 @@ import com.dms.domain.Month;
 import com.dms.domain.Position;
 import com.dms.dto.EmployeeDto;
 import com.dms.response.DataGridResponse;
+import org.springframework.stereotype.Controller;
 
+@Controller
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Path("/v1")
+@Path("/employee/v1")
 public interface EmployeeWebService {
 
 	@GET
