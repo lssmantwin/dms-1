@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("ProjectCommissionWebService")
+@Service("projectCommissionWebService")
 public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProjectCommissionWebServiceImpl.class);

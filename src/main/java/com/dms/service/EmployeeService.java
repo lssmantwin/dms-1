@@ -2,9 +2,10 @@ package com.dms.service;
 
 import java.util.List;
 
-import com.dms.domain.*;
+import com.dms.domain.Attendance;
+import com.dms.domain.Month;
+import com.dms.domain.Position;
 import com.dms.dto.EmployeeDto;
-import com.dms.dto.FinanceDto;
 import com.dms.request.DataGridRequest;
 
 public interface EmployeeService {
@@ -19,13 +20,8 @@ public interface EmployeeService {
 
 	List<EmployeeDto> getEmployees(DataGridRequest request);
 
-	List<FinanceDto> getFinances(DataGridRequest request);
-
 	void saveEmployees(List<EmployeeDto> employeeDtos);
 
 	void updateEmployees(List<EmployeeDto> employeeDtos);
 
-	void saveFinance(FinanceDto financeDto);
-
-	void updateFinance(FinanceDto financeDto);
 }

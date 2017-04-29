@@ -1,25 +1,25 @@
 package com.dms.dao;
 
+import com.dms.dto.FinanceDto;
+import com.dms.dto.ProjectCommissionDto;
+import com.dms.request.DataGridRequest;
+
 import java.util.Date;
 import java.util.List;
 
-import com.dms.dto.ProjectCommisionDto;
-import com.dms.request.DataGridRequest;
+public interface ProjectCommissionDao {
 
-public interface ProjectCommisionDao {
+    List<ProjectCommissionDto> getProjectCommissions(DataGridRequest request);
 
-	List<ProjectCommisionDto> getProjectCommisions(DataGridRequest request);
+    int getProjectCommissionCount(DataGridRequest request);
 
-	int getProjectCommisionCount(DataGridRequest request);
+    ProjectCommissionDto getProjectCommission(String acNumber);
 
-	ProjectCommisionDto getProjectCommision(String acNumber);
+    int getProjects(Date startDate, Date endDate);
 
-	int getProjects(Date startDate, Date endDate);
+    void saveProjectCommission(List<ProjectCommissionDto> projectCommissions);
 
-	void saveProjectCommision(List<ProjectCommisionDto> projectCommisions);
+    int saveProjectCommission(ProjectCommissionDto projectCommission);
 
-	int saveProjectCommision(ProjectCommisionDto projectCommision);
-
-	void updateProjectCommision(ProjectCommisionDto projectCommision);
-
+    void updateProjectCommission(ProjectCommissionDto projectCommission);
 }

@@ -1,23 +1,25 @@
 package com.dms.service;
 
+import com.dms.dto.ProjectCommissionDto;
 import com.dms.request.DataGridRequest;
 
 import java.util.Date;
 import java.util.List;
 
-public interface ProjectCommisionService {
 
-	List<ProjectCommisionDto> getProjectCommisions(DataGridRequest request);
+public interface ProjectCommissionService {
+	List<ProjectCommissionDto> getProjectCommissions(DataGridRequest request);
 
-	int getProjectCommisionCount(DataGridRequest request);
+	int getProjectCommissionCount(DataGridRequest request);
 
-	ProjectCommisionDto getProjectCommision(String acNumber);
+	ProjectCommissionDto getProjectCommission(String acNumber);
 
 	int getProjects(Date startDate, Date endDate);
 
-	void saveProjectCommision(List<ProjectCommisionDto> projectCommisionDtos) throws IllegalAccessException;
+	void saveProjectCommission(List<ProjectCommissionDto> projectCommissionDtos) throws IllegalAccessException;
 
-	int saveProjectCommision(ProjectCommisionDto projectCommisionDto) throws IllegalAccessException;
+	int saveProjectCommission(ProjectCommissionDto projectCommissionDto) throws IllegalAccessException;
 
-	void updateProjectCommision(ProjectCommisionDto projectCommisionDto);
+	void updateProjectCommission(ProjectCommissionDto projectCommissionDto);
 }
+

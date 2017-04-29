@@ -28,6 +28,8 @@
         <javax-servlet-version>3.1.0</javax-servlet-version>
         <joda-time-version>2.9.9</joda-time-version>
         <guava-version>21.0</guava-version>
+        <resteasy-version>3.1.2.Final</resteasy-version>
+        <resteasy-jaxrs-api-version>3.0.12.Final</resteasy-jaxrs-api-version>
     </properties>
 
     <build>
@@ -256,6 +258,7 @@
             <version>${log4j-version}</version>
         </dependency>
 
+        <!-- servlet -->
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -263,6 +266,7 @@
             <version>${javax-servlet-version}</version>
         </dependency>
 
+        <!-- joda-time -->
         <!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
         <dependency>
             <groupId>joda-time</groupId>
@@ -270,11 +274,50 @@
             <version>${joda-time-version}</version>
         </dependency>
 
+        <!-- guava -->
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava-version}</version>
+        </dependency>
+
+        <!-- resteasy -->
+        <!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-jaxrs -->
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <version>${resteasy-version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jboss.resteasy/jaxrs-api -->
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>jaxrs-api</artifactId>
+            <version>${resteasy-jaxrs-api-version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-jackson2-provider -->
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jackson2-provider</artifactId>
+            <version>${resteasy-version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-jaxb-provider -->
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxb-provider</artifactId>
+            <version>${resteasy-version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-spring -->
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-spring</artifactId>
+            <version>${resteasy-version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-servlet-initializer -->
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-servlet-initializer</artifactId>
+            <version>${resteasy-version}</version>
         </dependency>
 
 

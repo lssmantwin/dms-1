@@ -1,12 +1,18 @@
 package com.dms.security;
 
-import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
+import sun.misc.BASE64Encoder;
+
+import java.io.UnsupportedEncodingException;
+import java.security.SecureRandom;
+import java.util.UUID;
 
 public class Test {
 
-	public static void main(String[] args) {
-		System.out.print(LocalDateTime.parse("2017-04-25T00:00:00", DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss")));
-	}
+	public static void main(String[] args) throws UnsupportedEncodingException {
+		byte[] bytes = new SecureRandom().generateSeed(16);
+		System.out.println(UUID.randomUUID());
 
+	}
+//0508e740-4c15-42d7-b787-85baa71f3a2d
+//c842df95-ad6f-41a2-b625-ccac180e7b25
 }

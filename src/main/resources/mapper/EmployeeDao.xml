@@ -21,34 +21,6 @@
         <result property="renovateCommossionRatio" column="renovate_commossion_ratio"/>
     </resultMap>
 
-    <resultMap id="FinanceMap" type="FinanceDto">
-        <id property="id" column="finance_id"/>
-        <result property="employeeId" column="employee_id"/>
-        <result property="employeeName" column="employee_name"/>
-        <result property="baseWage" column="base_wage"/>
-        <result property="overtime" column="overtime"/>
-        <result property="mealsSubsidy" column="meals_subsidy"/>
-        <result property="secrecySubsidy" column="secrecy_subsidy"/>
-        <result property="communicationFee" column="communication_fee"/>
-        <result property="attendance" column="attendance"/>
-        <result property="bonus" column="bonus"/>
-        <result property="workingAgeSubsidy" column="working_age_subsidy"/>
-        <result property="performanceAppraisal" column="performance_appraisal"/>
-        <result property="otherSubsidy" column="other_subsidy"/>
-        <result property="exhibitionCharge" column="exhibition_charge"/>
-        <result property="charge" column="charge"/>
-        <result property="chargeComments" column="charge_comments"/>
-        <result property="casualLeave" column="casual_leave"/>
-        <result property="sickLeave" column="sick_leave"/>
-        <result property="storageCharge" column="storage_charge"/>
-        <result property="grossPay" column="gross_pay"/>
-        <result property="medicalInsurance" column="medical_insurance"/>
-        <result property="housingFund" column="housing_fund"/>
-        <result property="beforeTaxSalary" column="before_tax_salary"/>
-        <result property="personalIncomeTax" column="personal_income_tax"/>
-        <result property="afterTaxSalary" column="after_tax_salary"/>
-    </resultMap>
-
     <select id="getAttendance" resultType="Attendance">
         select * from attendance order by "value"
     </select>
@@ -71,9 +43,7 @@
         </where>
     </select>
 
-
     <select id="getEmployees" parameterType="DataGridRequest" resultMap="EmployeeMap">
-        -- select * from employee
         select * from (select *, row_number() over (order by id) rn from "employee" ) t
         <where>
             t.rn BETWEEN #{start} and #{end}
@@ -103,32 +73,6 @@
                     asc
                 </otherwise>
             </choose>
-        </where>
-    </select>
-
-
-    <select id="getFinances" parameterType="DataGridRequest" resultMap="FinanceMap">
-        select t.eid as employee_id, t.name as employee_name, t.base_wage, t.overtime, t.meals_subsidy,
-        t.secrecy_subsidy, t.communication_fee,
-        t.fid as finance_id, t.month,
-        t.attendance, t.bonus, t.working_age_subsidy, t.performance_appraisal,
-        t.other_subsidy, t.exhibition_charge, t.charge,
-        t.charge_comments, t.casual_leave, t.sick_leave,
-        t.storage_charge, t.gross_pay, t.medical_insurance,
-        t.housing_fund, t.before_tax_salary, t.personal_income_tax, t.after_tax_salary
-        from (
-        select e.id as eid, e.name, e.base_wage, e.overtime, e.meals_subsidy, e.secrecy_subsidy,
-        e.communication_fee, e.working_age_subsidy, f.id as fid, f.month, f.attendance,
-        f.bonus, f.performance_appraisal,
-        f.other_subsidy, f.exhibition_charge, f.charge,
-        f.charge_comments, f.casual_leave, f.sick_leave,
-        f.storage_charge, f.gross_pay, f.medical_insurance,
-        f.housing_fund, f.before_tax_salary, f.personal_income_tax, f.after_tax_salary,
-        row_number() over (order by e.id) as rn from employee e left join finance f on e.id = f.employee_id and
-        f."month" = #{month}
-        ) t
-        <where>
-            t.rn BETWEEN #{start} and #{end}
         </where>
     </select>
 
@@ -165,36 +109,6 @@
             renovate_commossion_ratio = #{item.renovateCommossionRatio}
             where id = #{item.id}
         </foreach>
-    </update>
-
-    <insert id="saveFinance" parameterType="FinanceDto">
-        insert into "finance" (created_on, employee_id, month, attendance, bonus, performance_appraisal,
-         other_subsidy, exhibition_charge, charge, charge_comments, casual_leave, sick_leave, storage_charge,
-         gross_pay, medical_insurance, housing_fund, before_tax_salary, personal_income_tax, after_tax_salary)
-        values (current_timestamp, #{employeeId}, #{month}, #{attendance}, #{bonus}, #{performanceAppraisal},
-         #{otherSubsidy}, #{exhibitionCharge}, #{charge}, #{chargeComments}, #{casualLeave}, #{sickLeave}, #{storageCharge},
-         #{grossPay}, #{medicalInsurance}, #{housingFund}, #{beforeTaxSalary}, #{personalIncomeTax}, #{afterTaxSalary})
-    </insert>
-
-    <update id="updateFinance" parameterType="FinanceDto">
-        update finance
-        set attendance =  #{attendance},
-            bonus = #{bonus},
-            performance_appraisal = #{performanceAppraisal},
-            other_subsidy = #{otherSubsidy},
-            exhibition_charge = #{exhibitionCharge},
-            charge = #{charge},
-            charge_comments = #{chargeComments},
-            casual_leave = #{casualLeave},
-            sick_leave = #{sickLeave},
-            storage_charge = #{storageCharge},
-            gross_pay = #{grossPay},
-            medical_insurance = #{medicalInsurance},
-            housing_fund = #{housingFund},
-            before_tax_salary = #{beforeTaxSalary},
-            personal_income_tax = #{personalIncomeTax},
-            after_tax_salary = #{afterTaxSalary}
-         where id = #{id}
     </update>
 
 </mapper>

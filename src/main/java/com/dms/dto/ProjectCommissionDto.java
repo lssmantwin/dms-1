@@ -6,9 +6,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.joda.time.LocalDateTime;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class ProjectCommsisionDto {
+public class ProjectCommissionDto implements Serializable {
 
 	private Long id;
 	private String designer;
@@ -248,7 +249,7 @@ public class ProjectCommsisionDto {
 		if (o == null || getClass() != o.getClass())
 			return false;
 
-		ProjectCommsisionDto that = (ProjectCommsisionDto) o;
+		ProjectCommissionDto that = (ProjectCommissionDto) o;
 
 		return getAcNumber() != null ? getAcNumber().equals(that.getAcNumber()) : that.getAcNumber() == null;
 	}

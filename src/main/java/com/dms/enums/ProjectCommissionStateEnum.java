@@ -1,12 +1,12 @@
 package com.dms.enums;
 
-public enum ProjectCommisionStateEnum {
+public enum ProjectCommissionStateEnum {
 
 	NO_COMMISION(1), FIRST_COMMISION(2), END_COMMISION(3);
 
 	private int dbConstant;
 
-	ProjectCommisionStateEnum(int dbConstant) {
+	ProjectCommissionStateEnum(int dbConstant) {
 		this.dbConstant = dbConstant;
 	}
 
@@ -14,8 +14,8 @@ public enum ProjectCommisionStateEnum {
 		return dbConstant;
 	}
 
-	public static ProjectCommisionStateEnum fromDbConstant(int dbConstant) {
-		for (ProjectCommisionStateEnum pe : values()) {
+	public static ProjectCommissionStateEnum fromDbConstant(int dbConstant) {
+		for (ProjectCommissionStateEnum pe : values()) {
 			if (pe.getDbConstant() == dbConstant) {
 				return pe;
 			}

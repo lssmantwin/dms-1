@@ -38,7 +38,7 @@
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
     </resultMap>
 
-    <select id="getProjectCommionCount" parameterType="DataGridRequest" resultType="int">
+    <select id="getProjectCommsionCount" parameterType="DataGridRequest" resultType="int">
         select count(id) from "project_commission"
         <where>
             <if test="commission_state != null">
@@ -63,7 +63,7 @@
 
 
 
-    <insert id="getProjects" parameterType="ProjectCommissionDto">
+    <insert id="saveProjects" parameterType="ProjectCommissionDto">
         INSERT INTO dms.dbo.Project_Commission
         (
         designer
@@ -121,7 +121,7 @@
     </insert>
 
 
-    <select id="getProjects" parameterType="MiniRequest" resultMap="ProjectCommissionMap">
+    <select id="getProjects" parameterType="DataGridRequest" resultMap="ProjectCommissionMap">
         SELECT ci.designer AS 设计师,
         ci.ACNumber AS 受理编号,
         ci.contract_id AS 工程编号,
