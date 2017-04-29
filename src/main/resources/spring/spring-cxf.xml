@@ -25,6 +25,25 @@
         </jaxrs:languageMappings>
     </jaxrs:server>
 
+    <jaxrs:server id="financeWebServices" address="/finance">
+        <jaxrs:serviceBeans>
+            <ref bean="financeWebService"/>
+        </jaxrs:serviceBeans>
+        <jaxrs:providers>
+            <ref bean="jacksonProvider"/>
+        </jaxrs:providers>
+        <jaxrs:inInterceptors>
+            <ref bean="userInterceptor"/>
+        </jaxrs:inInterceptors>
+        <jaxrs:extensionMappings>
+            <entry key="json" value="application/json"/>
+            <entry key="xml" value="application/xml"/>
+        </jaxrs:extensionMappings>
+        <jaxrs:languageMappings>
+            <entry key="en" value="en-gb"/>
+        </jaxrs:languageMappings>
+    </jaxrs:server>
+
     <jaxrs:server id="projectCommissionWebServices" address="/commission">
         <jaxrs:serviceBeans>
             <ref bean="projectCommissionWebService"/>

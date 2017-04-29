@@ -45,10 +45,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeDao.getEmployees(request);
 	}
 
-	@Override
-	public List<FinanceDto> getFinances(DataGridRequest request) {
-		return employeeDao.getFinances(request);
-	}
+
 
 	@Override
 	public void saveEmployees(List<EmployeeDto> employeeDtos) {
@@ -60,13 +57,5 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employeeDao.updateEmployees(employeeDtos);
 	}
 
-	@Override
-	public void saveFinance(FinanceDto financeDto) {
-		employeeDao.saveFinance(financeDto);
-	}
 
-	@Override
-	public void updateFinance(FinanceDto financeDto) {
-		employeeDao.updateFinance(financeDto);
-	}
 }

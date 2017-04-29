@@ -6,12 +6,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 import com.dms.domain.Attendance;
-import com.dms.response.DataGridResponse;
 import com.dms.domain.Month;
 import com.dms.domain.Position;
 import com.dms.dto.EmployeeDto;
-import com.dms.dto.FinanceDto;
-import com.dms.request.FinanceRequest;
+import com.dms.response.DataGridResponse;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -39,12 +37,4 @@ public interface EmployeeWebService {
 	DataGridResponse<List<EmployeeDto>> getEmployees(@QueryParam("key") String key, @QueryParam("pageIndex") int pageIndex,
 			@QueryParam("pageSize") int pageSize, @QueryParam("sortField") String sortField, @QueryParam("sortOrder") String sortOrder);
 
-	@GET
-	@Path("/finances")
-	DataGridResponse<List<FinanceDto>> getFinances(@QueryParam("key") String key, @QueryParam("pageIndex") int pageIndex, @QueryParam("pageSize") int pageSize,
-			@QueryParam("sortField") String sortField, @QueryParam("sortOrder") String sortOrder, @QueryParam("month") String month);
-
-	@POST
-	@Path("/finances")
-	void saveFinances(FinanceRequest request);
 }

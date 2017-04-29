@@ -23,19 +23,8 @@
     <table style="width:100%;">
         <tr>
             <td style="width:100%;">
-                <!--<input id="combo1" class="mini-combobox" style="width:150px;" textField="text" valueField="value"-->
-                <!--url="http://localhost:8080/ws/employee/v1/months"-->
-                <!--ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"-->
-                <!--required="true" allowInput="true" showNullItem="false" onvaluechanged="onMonthChange"/>-->
-                <!--<span class="separator"></span>-->
-                <!--<a class="mini-button" iconCls="icon-add" plain="true" onclick="addRow()">增加</a>-->
-                <!--<span class="separator"></span>-->
                 <a class="mini-button" iconCls="icon-save" plain="true" onclick="saveData()">保存</a>
             </td>
-            <!--<td style="white-space:nowrap;"><label style="font-family:Verdana;">名称: </label>-->
-            <!--<input id="key" class="mini-textbox" emptyText="请输入姓名" style="width:150px;" onenter="onKeyEnter"/>-->
-            <!--<a class="mini-button" iconCls="icon-search" plain="true" onclick="onSearch()">查询</a>-->
-            <!--</td>-->
         </tr>
     </table>
 </div>
@@ -83,9 +72,17 @@
             </div>
             <div field="contractState" width="100" headerAlign="center" allowSort="false">contractState
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+                <input property="filter" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
+                       url="http://localhost:8080/ws/employee/v1/positions"
+                       ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
+                       allowInput="true" showNullItem="true"/>
             </div>
-            <div field="CommissionState" width="100" headerAlign="center" allowSort="false">CommissionState
+            <div field="commissionState" width="100" headerAlign="center" allowSort="false">CommissionState
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+                <input property="filter" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
+                       url="http://localhost:8080/ws/employee/v1/positions"
+                       ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
+                       allowInput="true" showNullItem="true"/>
             </div>
             <div field="designCommissionRate" width="100" headerAlign="center" allowSort="false">designCommissionRate
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
@@ -97,26 +94,33 @@
             <div field="actualStartTime" width="100" headerAlign="center" allowSort="false" dateFormat="yyyy-MM-dd">
                 actualStartTime
                 <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+                <input property="filter" class="mini-datepicker" style="width:100%;" minWidth="100"/>
             </div>
             <div field="actualEndTime" width="100" headerAlign="center" allowSort="false" dateFormat="yyyy-MM-dd">
                 actualEndTime
                 <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+                <input property="filter" class="mini-datepicker" style="width:100%;" minWidth="100"/>
             </div>
             <div field="contractDate" width="100" headerAlign="center" allowSort="false" dateFormat="yyyy-MM-dd">
                 contractDate
                 <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+                <input property="filter" class="mini-datepicker" style="width:100%;" minWidth="100"/>
             </div>
             <div field="firstCommission" width="100" headerAlign="center" allowSort="false">
                 firstCommission
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="firstCommissionDate" width="100" headerAlign="center" allowSort="false" dateFormat="yyyy-MM-dd">
+            <div field="firstCommissionDate" width="100" headerAlign="center" allowSort="false"
+                 dateFormat="yyyy-MM-dd">
                 firstCommissionDate
                 <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+                <input property="filter" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+                <input property="filter" class="mini-datepicker" style="width:100%;" minWidth="100"/>
             </div>
             <div field="balanceTime" width="100" headerAlign="center" allowSort="false" dateFormat="yyyy-MM-dd">
                 balanceTime
                 <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+                <input property="filter" class="mini-datepicker" style="width:100%;" minWidth="100"/>
             </div>
             <div field="balanceCommission" width="100" headerAlign="center" allowSort="false">
                 balanceCommission
@@ -126,6 +130,7 @@
                  dateFormat="yyyy-MM-dd">
                 balanceCommissionDate
                 <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+                <input property="filter" class="mini-datepicker" style="width:100%;" minWidth="100"/>
             </div>
 
         </div>
