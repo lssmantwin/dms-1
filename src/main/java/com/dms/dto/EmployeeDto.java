@@ -3,6 +3,7 @@ package com.dms.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.joda.time.LocalDateTime;
 
 import com.dms.serializable.LocalDateTimeJacksonDeSerializable;
@@ -10,6 +11,7 @@ import com.dms.serializable.LocalDateTimeJacksonSerializable;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class EmployeeDto implements Serializable {
 
 	private String id;

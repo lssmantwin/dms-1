@@ -3,6 +3,9 @@ package com.dms.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FinanceDto implements Serializable {
 
 	private Long id;
@@ -57,7 +60,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getBaseWage() {
-		return baseWage == null ? BigDecimal.ZERO : baseWage;
+		return baseWage;
 	}
 
 	public void setBaseWage(BigDecimal baseWage) {
@@ -65,7 +68,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getOvertime() {
-		return overtime == null ? BigDecimal.ZERO : overtime;
+		return overtime;
 	}
 
 	public void setOvertime(BigDecimal overtime) {
@@ -73,7 +76,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getMealsSubsidy() {
-		return mealsSubsidy == null ? BigDecimal.ZERO : mealsSubsidy;
+		return mealsSubsidy;
 	}
 
 	public void setMealsSubsidy(BigDecimal mealsSubsidy) {
@@ -81,7 +84,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getSecrecySubsidy() {
-		return secrecySubsidy == null ? BigDecimal.ZERO : secrecySubsidy;
+		return secrecySubsidy;
 	}
 
 	public void setSecrecySubsidy(BigDecimal secrecySubsidy) {
@@ -89,7 +92,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getCommunicationFee() {
-		return communicationFee == null ? BigDecimal.ZERO : communicationFee;
+		return communicationFee;
 	}
 
 	public void setCommunicationFee(BigDecimal communicationFee) {
@@ -113,7 +116,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getBonus() {
-		return bonus == null ? BigDecimal.ZERO : bonus;
+		return bonus;
 	}
 
 	public void setBonus(BigDecimal bonus) {
@@ -121,7 +124,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getWorkingAgeSubsidy() {
-		return workingAgeSubsidy == null ? BigDecimal.ZERO : workingAgeSubsidy;
+		return workingAgeSubsidy;
 	}
 
 	public void setWorkingAgeSubsidy(BigDecimal workingAgeSubsidy) {
@@ -129,7 +132,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getPerformanceAppraisal() {
-		return performanceAppraisal == null ? BigDecimal.ZERO : performanceAppraisal;
+		return performanceAppraisal;
 	}
 
 	public void setPerformanceAppraisal(BigDecimal performanceAppraisal) {
@@ -137,7 +140,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getOtherSubsidy() {
-		return otherSubsidy == null ? BigDecimal.ZERO : otherSubsidy;
+		return otherSubsidy;
 	}
 
 	public void setOtherSubsidy(BigDecimal otherSubsidy) {
@@ -145,7 +148,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getExhibitionCharge() {
-		return exhibitionCharge == null ? BigDecimal.ZERO : exhibitionCharge;
+		return exhibitionCharge;
 	}
 
 	public void setExhibitionCharge(BigDecimal exhibitionCharge) {
@@ -153,7 +156,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getCharge() {
-		return charge == null ? BigDecimal.ZERO : charge;
+		return charge;
 	}
 
 	public void setCharge(BigDecimal charge) {
@@ -169,7 +172,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getCasualLeave() {
-		return casualLeave == null ? BigDecimal.ZERO : casualLeave;
+		return casualLeave;
 	}
 
 	public void setCasualLeave(BigDecimal casualLeave) {
@@ -177,7 +180,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getSickLeave() {
-		return sickLeave == null ? BigDecimal.ZERO : sickLeave;
+		return sickLeave;
 	}
 
 	public void setSickLeave(BigDecimal sickLeave) {
@@ -185,7 +188,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getStorageCharge() {
-		return storageCharge == null ? BigDecimal.ZERO : storageCharge;
+		return storageCharge;
 	}
 
 	public void setStorageCharge(BigDecimal storageCharge) {
@@ -193,7 +196,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getGrossPay() {
-		return grossPay == null ? BigDecimal.ZERO : grossPay;
+		return grossPay;
 	}
 
 	public void setGrossPay(BigDecimal grossPay) {
@@ -201,7 +204,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getMedicalInsurance() {
-		return medicalInsurance == null ? BigDecimal.ZERO : medicalInsurance;
+		return medicalInsurance;
 	}
 
 	public void setMedicalInsurance(BigDecimal medicalInsurance) {
@@ -209,7 +212,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getHousingFund() {
-		return housingFund == null ? BigDecimal.ZERO : housingFund;
+		return housingFund;
 	}
 
 	public void setHousingFund(BigDecimal housingFund) {
@@ -217,7 +220,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getBeforeTaxSalary() {
-		return beforeTaxSalary == null ? BigDecimal.ZERO : beforeTaxSalary;
+		return beforeTaxSalary;
 	}
 
 	public void setBeforeTaxSalary(BigDecimal beforeTaxSalary) {
@@ -225,7 +228,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getPersonalIncomeTax() {
-		return personalIncomeTax == null ? BigDecimal.ZERO : personalIncomeTax;
+		return personalIncomeTax;
 	}
 
 	public void setPersonalIncomeTax(BigDecimal personalIncomeTax) {
@@ -233,7 +236,7 @@ public class FinanceDto implements Serializable {
 	}
 
 	public BigDecimal getAfterTaxSalary() {
-		return afterTaxSalary == null ? BigDecimal.ZERO : afterTaxSalary;
+		return afterTaxSalary;
 	}
 
 	public void setAfterTaxSalary(BigDecimal afterTaxSalary) {

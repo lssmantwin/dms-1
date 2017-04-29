@@ -6,9 +6,11 @@ import org.joda.time.LocalDateTime;
 
 import com.dms.serializable.LocalDateTimeJacksonDeSerializable;
 import com.dms.serializable.LocalDateTimeJacksonSerializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProjectCommissionDto {
 
 	private Long id;
