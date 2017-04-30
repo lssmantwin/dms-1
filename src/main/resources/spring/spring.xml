@@ -36,7 +36,7 @@
           p:cacheManager-ref="ehCacheManagerFactory"/>
     -->
 
-    <import resource="spring-cxf.xml"/>
+    <!--<import resource="spring-cxf.xml"/>-->
     <import resource="spring-mybatis.xml"/>
 
 </beans>
