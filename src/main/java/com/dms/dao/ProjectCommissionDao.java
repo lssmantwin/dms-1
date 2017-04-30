@@ -11,8 +11,6 @@ public interface ProjectCommissionDao {
 
 	int getProjectCommissionCount(DataGridRequest request);
 
-	void saveProjectCommission(ProjectCommissionDto projectCommision);
-
-	void updateProjectCommission(ProjectCommissionDto projectCommision);
+	void updateProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos);
 
 }

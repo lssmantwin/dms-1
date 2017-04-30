@@ -11,7 +11,6 @@ public interface ProjectCommissionService {
 
 	int getProjectCommissionCount(DataGridRequest request);
 
-	void saveProjectCommission(ProjectCommissionDto projectCommissionDto) throws IllegalAccessException;
+	void updateProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos);
 
-	void updateProjectCommission(ProjectCommissionDto projectCommissionDto);
 }

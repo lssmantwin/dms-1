@@ -26,9 +26,7 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 
 		LOGGER.info("save projectCommission, {}", projectCommissionDtos);
 
-		for (ProjectCommissionDto projectCommissionDto : projectCommissionDtos) {
-			projectCommissionService.updateProjectCommission(projectCommissionDto);
-		}
+		projectCommissionService.updateProjectCommissions(projectCommissionDtos);
 	}
 
 	@Override
