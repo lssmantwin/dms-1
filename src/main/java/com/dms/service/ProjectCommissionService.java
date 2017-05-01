@@ -16,7 +16,9 @@ public interface ProjectCommissionService {
 
 	int getProjects(Date startDate, Date endDate);
 
-	void saveProjectCommission(List<ProjectCommissionDto> projectCommissionDtos) throws IllegalAccessException;
+	void calculateCommission(List<ProjectCommissionDto> projectCommissionDtos);
+
+	void saveProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos) throws IllegalAccessException;
 
 	int saveProjectCommission(ProjectCommissionDto projectCommissionDto) throws IllegalAccessException;
 

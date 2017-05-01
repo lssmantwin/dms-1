@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 public class ProjectCommissionDto implements Serializable {
-
 	private Long id;
 	private String designer;
 	private String designerAssistant;
@@ -24,7 +23,10 @@ public class ProjectCommissionDto implements Serializable {
 	private BigDecimal payContractRatio;
 	private BigDecimal payProjectRatio;
 	private String contractState;
-	private String CommissionState;
+	private String commissionState;
+	private BigDecimal firstCommissionRate;
+
+	private BigDecimal balanceCommissionRate;
 	private BigDecimal firstCommission;
 	private BigDecimal balanceCommission;
 	private BigDecimal designCommissionRate;
@@ -45,8 +47,32 @@ public class ProjectCommissionDto implements Serializable {
 	private LocalDateTime balanceTime;
 	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
+	private LocalDateTime createdTime;
+	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
+	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
+	private LocalDateTime updatedTime;
+	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
+	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
 	private LocalDateTime balanceCommissionDate;
 	private BigDecimal designerAssistantCommissionRate;
+	private BigDecimal purchasingCost;
+	private BigDecimal commissionBase;
+
+	public BigDecimal getPurchasingCost() {
+		return purchasingCost;
+	}
+
+	public void setPurchasingCost(BigDecimal purchasingCost) {
+		this.purchasingCost = purchasingCost;
+	}
+
+	public BigDecimal getCommissionBase() {
+		return commissionBase;
+	}
+
+	public void setCommissionBase(BigDecimal commissionBase) {
+		this.commissionBase = commissionBase;
+	}
 
 	public Long getId() {
 		return id;
@@ -213,11 +239,11 @@ public class ProjectCommissionDto implements Serializable {
 	}
 
 	public String getCommissionState() {
-		return CommissionState;
+		return commissionState;
 	}
 
-	public void setCommissionState(String CommissionState) {
-		this.CommissionState = CommissionState;
+	public void setCommissionState(String commissionState) {
+		this.commissionState = commissionState;
 	}
 
 	public BigDecimal getFirstCommission() {
@@ -234,6 +260,44 @@ public class ProjectCommissionDto implements Serializable {
 
 	public void setBalanceCommission(BigDecimal balanceCommission) {
 		this.balanceCommission = balanceCommission;
+	}
+
+	public BigDecimal getFirstCommissionRate() {
+		return firstCommissionRate;
+	}
+
+	public void setFirstCommissionRate(BigDecimal firstCommissionRate) {
+		this.firstCommissionRate = firstCommissionRate;
+	}
+
+	public BigDecimal getBalanceCommissionRate() {
+		return balanceCommissionRate;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setBalanceCommissionRate(BigDecimal balanceCommissionRate) {
+		this.balanceCommissionRate = balanceCommissionRate;
+	}
+
+
+	public LocalDateTime getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(LocalDateTime createdTime) {
+		this.createdTime = createdTime;
+	}
+
+	public LocalDateTime getUpdatedTime() {
+		return updatedTime;
+	}
+
+	public void setUpdatedTime(LocalDateTime updatedTime) {
+		this.updatedTime = updatedTime;
 	}
 
 	@Override
@@ -258,5 +322,7 @@ public class ProjectCommissionDto implements Serializable {
 	public int hashCode() {
 		return getAcNumber() != null ? getAcNumber().hashCode() : 0;
 	}
+
+
 
 }

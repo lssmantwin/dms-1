@@ -19,7 +19,7 @@
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="payProjectRatio" column="pay_project_ratio" typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="contractState" column="contract_state"/>
-        <result property="commisonState" column="commison_state"/>
+        <result property="commissionState" column="commission_state"/>
         <result property="contractDate" column="contract_date" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="actualStartTime" column="actual_start_time"
                 typeHandler="com.dms.handler.LocalDateTimeHandler"/>
@@ -38,7 +38,7 @@
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
     </resultMap>
 
-    <select id="getProjectCommsionCount" parameterType="DataGridRequest" resultType="int">
+    <select id="getProjectCommissionCount" parameterType="DataGridRequest" resultType="int">
         select count(id) from "project_commission"
         <where>
             <if test="commission_state != null">
