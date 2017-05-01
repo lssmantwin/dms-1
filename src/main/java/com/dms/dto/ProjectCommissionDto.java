@@ -26,7 +26,7 @@ public class ProjectCommissionDto {
 	private BigDecimal payContractRatio;
 	private BigDecimal payProjectRatio;
 	private String contractState;
-	private String CommissionState;
+	private String commissionState;
 	private BigDecimal firstCommission;
 	private BigDecimal balanceCommission;
 	private BigDecimal designCommissionRate;
@@ -215,11 +215,11 @@ public class ProjectCommissionDto {
 	}
 
 	public String getCommissionState() {
-		return CommissionState;
+		return commissionState;
 	}
 
-	public void setCommissionState(String CommissionState) {
-		this.CommissionState = CommissionState;
+	public void setCommissionState(String commissionState) {
+		this.commissionState = commissionState;
 	}
 
 	public BigDecimal getFirstCommission() {

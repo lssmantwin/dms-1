@@ -5,6 +5,7 @@
     <!-- 命名空间 -->
     <typeAliases>
         <typeAlias type="com.dms.request.DataGridRequest" alias="DataGridRequest"/>
+        <typeAlias type="com.dms.request.ProjectCommissionFilterRequest" alias="ProjectCommissionFilterRequest"/>
         <typeAlias type="com.dms.domain.Position" alias="Position"/>
         <typeAlias type="com.dms.domain.Month" alias="Month"/>
         <typeAlias type="com.dms.domain.Attendance" alias="Attendance"/>

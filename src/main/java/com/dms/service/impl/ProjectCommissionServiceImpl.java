@@ -2,6 +2,7 @@ package com.dms.service.impl;
 
 import java.util.List;
 
+import com.dms.request.ProjectCommissionFilterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +18,12 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 	private ProjectCommissionDao projectCommissionDao;
 
 	@Override
-	public List<ProjectCommissionDto> getProjectCommissions(DataGridRequest request) {
+	public List<ProjectCommissionDto> getProjectCommissions(ProjectCommissionFilterRequest request) {
 		return projectCommissionDao.getProjectCommissions(request);
 	}
 
 	@Override
-	public int getProjectCommissionCount(DataGridRequest request) {
+	public int getProjectCommissionCount(ProjectCommissionFilterRequest request) {
 		return projectCommissionDao.getProjectCommissionCount(request);
 	}
 

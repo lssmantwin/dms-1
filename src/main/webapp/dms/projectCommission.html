@@ -36,12 +36,13 @@
          url="http://localhost:8080/ws/commission/v1/projectCommissions"
          ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
          idField="id" sizeList="[5,10,20,50]" pageSize="10" allowCellEdit="true" allowCellSelect="true"
-         multiSelect="true" showFilterRow="true">
+         showFilterRow="true">
         <div property="columns">
             <div type="indexcolumn"></div>
             <div field="designer" width="100" headerAlign="center" allowSort="false">designer
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
-                <input property="filter" class="mini-textbox" style="width:100%;" minWidth="100"/>
+                <input id="designerFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="100"
+                       onvaluechanged="onFilterChanged"/>
             </div>
             <div field="designerAssistant" width="100" headerAlign="center" allowSort="false">designerAssistant
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
@@ -70,17 +71,25 @@
             <div field="payProjectRatio" width="100" headerAlign="center" allowSort="false">payProjectRatio
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="contractState" width="100" headerAlign="center" allowSort="false">contractState
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            <div field="contractState" width="100" type="comboboxcolumn" headerAlign="center" allowSort="false">
+                contractState
+                <input property="editor" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
+                       url="http://localhost:8080/ws/commission/v1/states?type=CONTRACT"
+                       ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
+                       allowInput="true" showNullItem="true"/>
                 <input property="filter" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
-                       url="http://localhost:8080/ws/employee/v1/positions"
+                       url="http://localhost:8080/ws/commission/v1/states?type=CONTRACT"
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
                        allowInput="true" showNullItem="true"/>
             </div>
-            <div field="commissionState" width="100" headerAlign="center" allowSort="false">CommissionState
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            <div field="commissionState" width="100" type="comboboxcolumn" headerAlign="center" allowSort="false">
+                commissionState
+                <input property="editor" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
+                       url="http://localhost:8080/ws/commission/v1/states?type=COMMISSION"
+                       ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
+                       allowInput="true" showNullItem="true"/>
                 <input property="filter" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
-                       url="http://localhost:8080/ws/employee/v1/positions"
+                       url="http://localhost:8080/ws/commission/v1/states?type=COMMISSION"
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
                        allowInput="true" showNullItem="true"/>
             </div>
@@ -147,7 +156,6 @@
     function saveData() {
         var data = grid.getChanges();
         var json = mini.encode(data);
-//        alert(json);
         grid.loading("保存中，请稍后......");
         $.ajax({
             url: 'http://localhost:8080/ws/commission/v1/projectCommissions',
@@ -165,6 +173,11 @@
                 alert(jqXHR.responseText);
             }
         });
+    }
+
+    function onFilterChanged() {
+        var designer = mini.get("designerFilter").getValue();
+        grid.load({designer: designer});
     }
 
 </script>

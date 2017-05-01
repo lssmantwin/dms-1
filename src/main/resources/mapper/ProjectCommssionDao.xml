@@ -19,7 +19,7 @@
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="payProjectRatio" column="pay_project_ratio" typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="contractState" column="contract_state"/>
-        <result property="commisonState" column="commison_state"/>
+        <result property="commissionState" column="commission_state"/>
         <result property="contractDate" column="contract_date" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="actualStartTime" column="actual_start_time"
                 typeHandler="com.dms.handler.LocalDateTimeHandler"/>
@@ -39,18 +39,46 @@
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
     </resultMap>
 
-    <select id="getProjectCommissionCount" parameterType="DataGridRequest" resultType="int">
+    <select id="getProjectCommissionCount" parameterType="ProjectCommissionFilterRequest" resultType="int">
         select count(id) from "project_commission"
-        <!--<where>-->
-            <!--<if test="commission_state != null">-->
-                <!--<bind name="commission_state" value="'%' + commission_state + '%'"/>-->
-                <!--name like #{pattern}-->
-            <!--</if>-->
-        <!--</where>-->
+        <where>
+            <if test="designer != null">
+                <bind name="pattern" value="'%' + designer + '%'"/>
+                designer like #{pattern}
+            </if>
+        </where>
     </select>
 
-    <select id="getProjectCommissions" parameterType="DataGridRequest" resultMap="ProjectCommissionMap">
-        select * from "project_commission"
+    <select id="getProjectCommissions" parameterType="ProjectCommissionFilterRequest" resultMap="ProjectCommissionMap">
+        select * from
+        (
+        select *, row_number() over (order by id) rn from "project_commission"
+        <where>
+            <if test="designer != null">
+                <bind name="pattern" value="'%' + designer + '%'"/>
+                designer like #{pattern}
+            </if>
+        </where>
+        ) t
+        <where>
+            t.rn BETWEEN #{start} and #{end}
+            <choose>
+                <when test="sortField == 'designer'">
+                    order by designer
+                </when>
+                <otherwise>
+                    order by id
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="sortOrder == 'desc'">
+                    desc
+                </when>
+                <otherwise>
+                    asc
+                </otherwise>
+            </choose>
+        </where>
     </select>
 
 
