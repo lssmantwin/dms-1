@@ -1,0 +1,23 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="monthGenerateJob" class="com.dms.job.MonthGenerator"/>
+    <bean id="monthGenerateTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="monthGenerateJob"/>
+        <property name="targetMethod" value="generate"/>
+    </bean>
+    <bean id="monthGenerateTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="monthGenerateTask"/>
+        <!-- every month 1th 00:05 execute -->
+        <property name="cronExpression" value="0 5 0 1 * ?"/>
+    </bean>
+    <bean lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="monthGenerateTrigger"/>
+            </list>
+        </property>
+    </bean>
+</beans>
