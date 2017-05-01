@@ -27,7 +27,8 @@ public interface ProjectCommissionWebService {
 
 	@GET
 	@Path("/projectCommissions")
-	DataGridResponse<List<ProjectCommissionDto>> getProjectCommissions(@QueryParam("designer") String designer, @QueryParam("pageIndex") int pageIndex,
+	DataGridResponse<List<ProjectCommissionDto>> getProjectCommissions(@QueryParam("designer") String designer,
+			@QueryParam("contractState") String contractState, @QueryParam("commissionState") String commissionState, @QueryParam("pageIndex") int pageIndex,
 			@QueryParam("pageSize") int pageSize, @QueryParam("sortField") String sortField, @QueryParam("sortOrder") String sortOrder);
 
 }

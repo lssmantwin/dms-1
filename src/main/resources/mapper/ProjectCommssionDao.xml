@@ -42,9 +42,15 @@
     <select id="getProjectCommissionCount" parameterType="ProjectCommissionFilterRequest" resultType="int">
         select count(id) from "project_commission"
         <where>
-            <if test="designer != null">
+            <if test="designer != null and designer != ''">
                 <bind name="pattern" value="'%' + designer + '%'"/>
                 designer like #{pattern}
+            </if>
+            <if test="contractState != null and contractState != ''">
+                and contract_state = #{contractState}
+            </if>
+            <if test="commissionState != null and commissionState != ''">
+                and commission_state = #{commissionState}
             </if>
         </where>
     </select>
@@ -54,9 +60,15 @@
         (
         select *, row_number() over (order by id) rn from "project_commission"
         <where>
-            <if test="designer != null">
+            <if test="designer != null and designer != ''">
                 <bind name="pattern" value="'%' + designer + '%'"/>
                 designer like #{pattern}
+            </if>
+            <if test="contractState != null and contractState != ''">
+                and contract_state = #{contractState}
+            </if>
+            <if test="commissionState != null and commissionState != ''">
+                and commission_state = #{commissionState}
             </if>
         </where>
         ) t

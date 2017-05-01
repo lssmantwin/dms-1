@@ -3,18 +3,17 @@ package com.dms.ws.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.dms.dto.EnumDto;
-import com.dms.request.ProjectCommissionFilterRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dms.dto.EnumDto;
 import com.dms.dto.ProjectCommissionDto;
 import com.dms.enums.CommissionStateEnum;
 import com.dms.enums.ContractStateEnum;
 import com.dms.enums.EnumType;
-import com.dms.request.DataGridRequest;
+import com.dms.request.ProjectCommissionFilterRequest;
 import com.dms.response.DataGridResponse;
 import com.dms.service.ProjectCommissionService;
 import com.dms.ws.ProjectCommissionWebService;
@@ -48,13 +47,14 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 	}
 
 	@Override
-	public DataGridResponse<List<ProjectCommissionDto>> getProjectCommissions(String designer, int pageIndex, int pageSize, String sortField,
-			String sortOrder) {
+	public DataGridResponse<List<ProjectCommissionDto>> getProjectCommissions(String designer, String contractState, String commissionState, int pageIndex,
+			int pageSize, String sortField, String sortOrder) {
 
-		LOGGER.info("get project commissions, designer {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}", designer, pageIndex, pageSize, sortField,
-				sortOrder);
+		LOGGER.info("get project commissions, designer {}, contractState {}, commissionState {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}",
+				designer, contractState, commissionState, pageIndex, pageSize, sortField, sortOrder);
 
-		ProjectCommissionFilterRequest request = generateProjectCommissionFilterRequest(designer, pageIndex, pageSize, sortField, sortOrder);
+		ProjectCommissionFilterRequest request = generateProjectCommissionFilterRequest(designer, contractState, commissionState, pageIndex, pageSize,
+				sortField, sortOrder);
 
 		int count = projectCommissionService.getProjectCommissionCount(request);
 		List<ProjectCommissionDto> projectCommissions = projectCommissionService.getProjectCommissions(request);
@@ -66,12 +66,14 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 		return response;
 	}
 
-	private ProjectCommissionFilterRequest generateProjectCommissionFilterRequest(String designer, int pageIndex, int pageSize, String sortField,
-			String sortOrder) {
+	private ProjectCommissionFilterRequest generateProjectCommissionFilterRequest(String designer, String contractState, String commissionState, int pageIndex,
+			int pageSize, String sortField, String sortOrder) {
 		ProjectCommissionFilterRequest request = new ProjectCommissionFilterRequest();
 		request.setStart(pageIndex * pageSize + 1);
 		request.setEnd((pageIndex + 1) * pageSize);
 		request.setDesigner(designer);
+		request.setContractState(contractState);
+		request.setCommissionState(commissionState);
 		request.setSortField(sortField);
 		request.setSortOrder(sortOrder);
 		return request;

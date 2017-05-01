@@ -77,10 +77,11 @@
                        url="http://localhost:8080/ws/commission/v1/states?type=CONTRACT"
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
                        allowInput="true" showNullItem="true"/>
-                <input property="filter" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
+                <input id="contractStateFilter" property="filter" class="mini-combobox" style="width:100%;"
+                       textField="text" valueField="value"
                        url="http://localhost:8080/ws/commission/v1/states?type=CONTRACT"
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
-                       allowInput="true" showNullItem="true"/>
+                       allowInput="true" showNullItem="true" onvaluechanged="onFilterChanged"/>
             </div>
             <div field="commissionState" width="100" type="comboboxcolumn" headerAlign="center" allowSort="false">
                 commissionState
@@ -88,10 +89,11 @@
                        url="http://localhost:8080/ws/commission/v1/states?type=COMMISSION"
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
                        allowInput="true" showNullItem="true"/>
-                <input property="filter" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
+                <input id="commissionStateFilter" property="filter" class="mini-combobox" style="width:100%;"
+                       textField="text" valueField="value"
                        url="http://localhost:8080/ws/commission/v1/states?type=COMMISSION"
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
-                       allowInput="true" showNullItem="true"/>
+                       allowInput="true" showNullItem="true" onvaluechanged="onFilterChanged"/>
             </div>
             <div field="designCommissionRate" width="100" headerAlign="center" allowSort="false">designCommissionRate
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
@@ -177,7 +179,12 @@
 
     function onFilterChanged() {
         var designer = mini.get("designerFilter").getValue();
-        grid.load({designer: designer});
+        var contractState = mini.get("contractStateFilter").getValue();
+        var commissionState = mini.get("commissionStateFilter").getValue();
+        alert(designer);
+        alert("contract" + contractState);
+        alert("commssion" + commissionState);
+        grid.load({designer: designer, contractState: contractState, commissionState: commissionState});
     }
 
 </script>
