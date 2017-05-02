@@ -73,7 +73,8 @@
             </div>
             <div field="contractState" width="100" type="comboboxcolumn" headerAlign="center" allowSort="false">
                 contractState
-                <input property="editor" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
+                <input property="editor" disable="true" class="mini-combobox" style="width:100%;" textField="text"
+                       valueField="value"
                        url="http://localhost:8080/ws/commission/v1/states?type=CONTRACT"
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
                        allowInput="true" showNullItem="true"/>
@@ -85,7 +86,8 @@
             </div>
             <div field="commissionState" width="100" type="comboboxcolumn" headerAlign="center" allowSort="false">
                 commissionState
-                <input property="editor" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
+                <input property="editor" disable="true" class="mini-combobox" style="width:100%;" textField="text"
+                       valueField="value"
                        url="http://localhost:8080/ws/commission/v1/states?type=COMMISSION"
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
                        allowInput="true" showNullItem="true"/>
@@ -105,17 +107,21 @@
             <div field="actualStartTime" width="100" headerAlign="center" allowSort="false" dateFormat="yyyy-MM-dd">
                 actualStartTime
                 <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
-                <input property="filter" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+                <input id="actualStartTimeFilter" property="filter" class="mini-datepicker" style="width:100%;"
+                       minWidth="100" onvaluechanged="onFilterChanged"/>
             </div>
             <div field="actualEndTime" width="100" headerAlign="center" allowSort="false" dateFormat="yyyy-MM-dd">
                 actualEndTime
                 <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
-                <input property="filter" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+                <input id="actualEndTimeFilter" property="filter" class="mini-datepicker" style="width:100%;"
+                       minWidth="100" onvaluechanged="onFilterChanged"/>
             </div>
             <div field="contractDate" width="100" headerAlign="center" allowSort="false" dateFormat="yyyy-MM-dd">
                 contractDate
                 <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
-                <input property="filter" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+                <input id="contractDateFilter" property="filter" class="mini-datepicker" style="width:100%;"
+                       format="yyyy-MM-dd"
+                       minWidth="100" onvaluechanged="onFilterChanged"/>
             </div>
             <div field="firstCommission" width="100" headerAlign="center" allowSort="false">
                 firstCommission
@@ -125,13 +131,14 @@
                  dateFormat="yyyy-MM-dd">
                 firstCommissionDate
                 <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
-                <input property="filter" class="mini-datepicker" style="width:100%;" minWidth="100"/>
-                <input property="filter" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+                <input id="firstCommissionDateFilter" property="filter" class="mini-datepicker" style="width:100%;"
+                       minWidth="100" onvaluechanged="onFilterChanged"/>
             </div>
             <div field="balanceTime" width="100" headerAlign="center" allowSort="false" dateFormat="yyyy-MM-dd">
                 balanceTime
                 <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
-                <input property="filter" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+                <input id="balanceTimeFilter" property="filter" class="mini-datepicker" style="width:100%;"
+                       minWidth="100" onvaluechanged="onFilterChanged"/>
             </div>
             <div field="balanceCommission" width="100" headerAlign="center" allowSort="false">
                 balanceCommission
@@ -141,7 +148,8 @@
                  dateFormat="yyyy-MM-dd">
                 balanceCommissionDate
                 <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
-                <input property="filter" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+                <input id="balanceCommissionDateFilter" property="filter" class="mini-datepicker" style="width:100%;"
+                       minWidth="100" onvaluechanged="onFilterChanged"/>
             </div>
 
         </div>
@@ -181,7 +189,23 @@
         var designer = mini.get("designerFilter").getValue();
         var contractState = mini.get("contractStateFilter").getValue();
         var commissionState = mini.get("commissionStateFilter").getValue();
-        grid.load({designer: designer, contractState: contractState, commissionState: commissionState});
+        var actualStartTime = mini.get("actualStartTimeFilter").getText();
+        var actualEndTime = mini.get("actualEndTimeFilter").getText();
+        var contractDate = mini.get("contractDateFilter").getText();
+        var firstCommissionDate = mini.get("firstCommissionDateFilter").getText();
+        var balanceTime = mini.get("balanceTimeFilter").getText();
+        var balanceCommissionDate = mini.get("balanceCommissionDateFilter").getText();
+        grid.load({
+            designer: designer,
+            contractState: contractState,
+            commissionState: commissionState,
+            actualStartTime: actualStartTime,
+            actualEndTime: actualEndTime,
+            contractDate: contractDate,
+            firstCommissionDate: firstCommissionDate,
+            balanceTime: balanceTime,
+            balanceCommissionDate: balanceCommissionDate
+        });
     }
 
 </script>

@@ -52,6 +52,24 @@
             <if test="commissionState != null and commissionState != ''">
                 and commission_state = #{commissionState}
             </if>
+            <if test="contractDate != null and contractDate != ''">
+                and contract_date > #{contractDate}
+            </if>
+            <if test="firstCommissionDate != null and firstCommissionDate != ''">
+                and first_commission_date > #{firstCommissionDate}
+            </if>
+            <if test="actualStartTime != null and actualStartTime != ''">
+                and actual_start_time > #{actualStartTime}
+            </if>
+            <if test="actualEndTime != null and actualEndTime != ''">
+                and actual_end_time > #{actualEndTime}
+            </if>
+            <if test="balanceTime != null and balanceTime != ''">
+                and balance_time > #{balanceTime}
+            </if>
+            <if test="balanceCommissionDate != null and balanceCommissionDate != ''">
+                and balance_commission_date > #{balanceCommissionDate}
+            </if>
         </where>
     </select>
 
@@ -69,6 +87,24 @@
             </if>
             <if test="commissionState != null and commissionState != ''">
                 and commission_state = #{commissionState}
+            </if>
+            <if test="contractDate != null and contractDate != ''">
+                and contract_date > #{contractDate}
+            </if>
+            <if test="firstCommissionDate != null and firstCommissionDate != ''">
+                and first_commission_date > #{firstCommissionDate}
+            </if>
+            <if test="actualStartTime != null and actualStartTime != ''">
+                and actual_start_time > #{actualStartTime}
+            </if>
+            <if test="actualEndTime != null and actualEndTime != ''">
+                and actual_end_time > #{actualEndTime}
+            </if>
+            <if test="balanceTime != null and balanceTime != ''">
+                and balance_time > #{balanceTime}
+            </if>
+            <if test="balanceCommissionDate != null and balanceCommissionDate != ''">
+                and balance_commission_date > #{balanceCommissionDate}
             </if>
         </where>
         ) t
