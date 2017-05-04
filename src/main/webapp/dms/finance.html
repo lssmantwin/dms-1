@@ -145,11 +145,14 @@
             return;
         }
 
+        alert("what's this");
+        alert("http://localhost:8080/ws/finance/v1/finances");
         var finances = grid.getChanges();
         var month = mini.get('combo1').getValue();
         var data = {'finances': finances, 'month': month};
+        alert(data)
         var json = mini.encode(data);
-        // alert(json);
+        alert(json);
         grid.loading("保存中，请稍后......");
         $.ajax({
             url: 'http://localhost:8080/ws/finance/v1/finances',

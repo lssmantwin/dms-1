@@ -6,11 +6,16 @@ import com.dms.request.DataGridRequest;
 import java.util.Date;
 import java.util.List;
 
+import java.util.List;
+
+import com.dms.dto.ProjectCommissionDto;
+import com.dms.request.ProjectCommissionFilterRequest;
 
 public interface ProjectCommissionService {
-	List<ProjectCommissionDto> getProjectCommissions(DataGridRequest request);
 
-	int getProjectCommissionCount(DataGridRequest request);
+	List<ProjectCommissionDto> getProjectCommissions(ProjectCommissionFilterRequest request);
+
+	int getProjectCommissionCount(ProjectCommissionFilterRequest request);
 
 	ProjectCommissionDto getProjectCommission(String acNumber);
 
@@ -22,6 +27,10 @@ public interface ProjectCommissionService {
 
 	int saveProjectCommission(ProjectCommissionDto projectCommissionDto) throws IllegalAccessException;
 
+	void updateProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos);
+
 	void updateProjectCommission(ProjectCommissionDto projectCommissionDto);
+
+
 }
 

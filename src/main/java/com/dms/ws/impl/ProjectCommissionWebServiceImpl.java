@@ -1,16 +1,22 @@
 package com.dms.ws.impl;
 
+import com.dms.dto.EnumDto;
 import com.dms.dto.ProjectCommissionDto;
-import com.dms.request.DataGridRequest;
+import com.dms.enums.CommissionStateEnum;
+import com.dms.enums.ContractStateEnum;
+import com.dms.enums.EnumType;
+import com.dms.request.ProjectCommissionFilterRequest;
 import com.dms.response.DataGridResponse;
 import com.dms.service.ProjectCommissionService;
 import com.dms.ws.ProjectCommissionWebService;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("projectCommissionWebService")
 public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebService {
@@ -20,22 +26,41 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 	@Autowired
 	private ProjectCommissionService projectCommissionService;
 
-	@Override
-	public void saveProjectCommissions(List<ProjectCommissionDto> ProjectCommissionDtos) {
-
-		LOGGER.info("save ProjectCommission, {}", ProjectCommissionDtos);
-
-		for (ProjectCommissionDto ProjectCommissionDto : ProjectCommissionDtos) {
-			projectCommissionService.updateProjectCommission(ProjectCommissionDto);
+	public List<EnumDto> getStates(String type) {
+		if (EnumType.CONTRACT.toString().equals(type)) {
+			return Lists.newArrayList(ContractStateEnum.values()).stream().map(m -> new EnumDto(m.getDbConstant(), m.getText())).collect(Collectors.toList());
 		}
+		if (EnumType.COMMISSION.toString().equals(type)) {
+			return Lists.newArrayList(CommissionStateEnum.values()).stream().map(m -> new EnumDto(m.getDbConstant(), m.getText())).collect(Collectors.toList());
+		}
+		return Lists.newArrayList();
 	}
 
 	@Override
-	public DataGridResponse<List<ProjectCommissionDto>> getProjectCommissions(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
+	public void saveProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos) {
 
-		LOGGER.info("get projectCommissions, key {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}", key, pageIndex, pageSize, sortField, sortOrder);
+		LOGGER.info("save project commissions, {}", projectCommissionDtos);
 
-		DataGridRequest request = generateDataGridRequest(key, pageIndex, pageSize, sortField, sortOrder);
+		projectCommissionService.updateProjectCommissions(projectCommissionDtos);
+	}
+
+	@Override
+	public void calculateProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos) {
+
+		LOGGER.info("save project commissions, {}", projectCommissionDtos);
+
+		projectCommissionService.calculateCommission(projectCommissionDtos);
+	}
+
+	@Override
+	public DataGridResponse<List<ProjectCommissionDto>> getProjectCommissions(String designer, String contractState, String commissionState, int pageIndex,
+			int pageSize, String sortField, String sortOrder) {
+
+		LOGGER.info("get project commissions, designer {}, contractState {}, commissionState {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}",
+				designer, contractState, commissionState, pageIndex, pageSize, sortField, sortOrder);
+
+		ProjectCommissionFilterRequest request = generateProjectCommissionFilterRequest(designer, contractState, commissionState, pageIndex, pageSize,
+				sortField, sortOrder);
 
 		int count = projectCommissionService.getProjectCommissionCount(request);
 		List<ProjectCommissionDto> projectCommissions = projectCommissionService.getProjectCommissions(request);
@@ -47,11 +72,14 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 		return response;
 	}
 
-	private DataGridRequest generateDataGridRequest(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
-		DataGridRequest request = new DataGridRequest();
+	private ProjectCommissionFilterRequest generateProjectCommissionFilterRequest(String designer, String contractState, String commissionState, int pageIndex,
+			int pageSize, String sortField, String sortOrder) {
+		ProjectCommissionFilterRequest request = new ProjectCommissionFilterRequest();
 		request.setStart(pageIndex * pageSize + 1);
 		request.setEnd((pageIndex + 1) * pageSize);
-		request.setKey(key);
+		request.setDesigner(designer);
+		request.setContractState(contractState);
+		request.setCommissionState(commissionState);
 		request.setSortField(sortField);
 		request.setSortOrder(sortOrder);
 		return request;

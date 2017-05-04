@@ -36,7 +36,7 @@
     <select id="getEmployeeCount" parameterType="DataGridRequest" resultType="int">
         select count(id) from "employee"
         <where>
-            <if test="key != null">
+            <if test="key != null and key != ''">
                 <bind name="pattern" value="'%' + key + '%'"/>
                 name like #{pattern}
             </if>
@@ -44,13 +44,18 @@
     </select>
 
     <select id="getEmployees" parameterType="DataGridRequest" resultMap="EmployeeMap">
-        select * from (select *, row_number() over (order by id) rn from "employee" ) t
+        select * from
+        (
+        select *, row_number() over (order by id) rn from "employee"
+        <where>
+            <if test="key != null and key != ''">
+                <bind name="pattern" value="'%' + key + '%'"/>
+                name like #{pattern}
+            </if>
+        </where>
+        ) t
         <where>
             t.rn BETWEEN #{start} and #{end}
-            <if test="key != null">
-                <bind name="pattern" value="'%' + key + '%'"/>
-                and t.name like #{pattern}
-            </if>
             <choose>
                 <when test="sortField == 'name'">
                     order by name

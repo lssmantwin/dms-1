@@ -12,6 +12,10 @@
         <result property="contractTotal" column="contract_total" typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="purchaseAgentFee" column="purchase_agent_fee"
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="purchasingCost" column="purchasing_cost"
+                typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="commissionBase" column="commission_base"
+                typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="projectChangeTotal" column="project_change_total"
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="customerPay" column="customer_pay" typeHandler="com.dms.handler.BigDecimalHandler"/>
@@ -31,25 +35,73 @@
                 typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="designerAssistant" column="designer_assistant"/>
         <result property="firstCommission" column="first_commission" typeHandler="com.dms.handler.BigDecimalHandler"/>
-        <result property="balanceCommission" column="balance_commission" typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="firstCommissionRate" column="first_commission_rate" typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="firstCommissionDate" column="first_commission_date" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
+        <result property="balanceCommission" column="balance_commission"
+                typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="designCommissionRate" column="design_commission_rate"
+                typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="designerAssistantCommission" column="designer_assistant_commission"
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="designerAssistantCommissionRate" column="designer_assistant_commission_rate"
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="designerAssistantCommissionDate" column="designer_assistant_commission_date"
+                typeHandler="com.dms.handler.LocalDateTimeHandler"/>
     </resultMap>
 
-    <select id="getProjectCommissionCount" parameterType="DataGridRequest" resultType="int">
+
+    <select id="getProjectCommissionCount" parameterType="ProjectCommissionFilterRequest" resultType="int">
         select count(id) from "project_commission"
         <where>
-            <if test="commission_state != null">
-                <bind name="commission_state" value="'%' + commission_state + '%'"/>
-                name like #{pattern}
+            <if test="designer != null and designer != ''">
+                <bind name="pattern" value="'%' + designer + '%'"/>
+                designer like #{pattern}
+            </if>
+            <if test="contractState != null and contractState != ''">
+                and contract_state = #{contractState}
+            </if>
+            <if test="commissionState != null and commissionState != ''">
+                and commission_state = #{commissionState}
             </if>
         </where>
     </select>
 
-    <select id="getProjectCommissions" parameterType="DataGridRequest" resultMap="ProjectCommissionMap">
-       select * from "project_commission"
+    <select id="getProjectCommissions" parameterType="ProjectCommissionFilterRequest" resultMap="ProjectCommissionMap">
+        select * from
+        (
+        select *, row_number() over (order by id) rn from "project_commission"
+        <where>
+            <if test="designer != null and designer != ''">
+                <bind name="pattern" value="'%' + designer + '%'"/>
+                designer like #{pattern}
+            </if>
+            <if test="contractState != null and contractState != ''">
+                and contract_state = #{contractState}
+            </if>
+            <if test="commissionState != null and commissionState != ''">
+                and commission_state = #{commissionState}
+            </if>
+        </where>
+        ) t
+        <where>
+            t.rn BETWEEN #{start} and #{end}
+            <choose>
+                <when test="sortField == 'designer'">
+                    order by designer
+                </when>
+                <otherwise>
+                    order by id
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="sortOrder == 'desc'">
+                    desc
+                </when>
+                <otherwise>
+                    asc
+                </otherwise>
+            </choose>
+        </where>
     </select>
 
     <select id="getProjectCommission" parameterType="java.lang.String" resultType="int">
@@ -81,14 +133,15 @@
         ,actual_start_time
         ,actual_end_time
         ,balance_time
-        ,customer_name)
+        ,customer_name
+        ,created_time)
         values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.designer}, #{item.acNumber}, #{item.contractId}, #{item.contractTotal}, #{item.purchaseAgentFee},
             #{item.projectChangeTotal}, #{item.customerPay},
             #{item.payContractRatio}, #{item.payProjectRatio}, #{item.contractState},
             ${item.contractDate}, #{item.actualStartTime}, #{item.actualEndTime},
-            #{item.balanceTime},  #{item.customerName})
+            #{item.balanceTime},  #{item.customerName}, #{item.createdTime})
         </foreach>
     </insert>
 
@@ -111,13 +164,13 @@
         ,actual_end_time
         ,balance_time
         ,customer_name
-        ,created_date)
+        ,created_time)
         values
            (#{designer}, #{acNumber}, #{contractId}, #{contractTotal}, #{purchaseAgentFee},
             #{projectChangeTotal}, #{customerPay},
             #{payContractRatio}, #{payProjectRatio}, #{contractState},
             ${contractDate}, #{actualStartTime}, #{actualEndTime},
-            #{balanceTime},  #{createdDate})
+            #{balanceTime},  #{createdTime})
     </insert>
 
 
@@ -179,15 +232,45 @@
         first_commission = #{firstCommission},
         first_commission_date = #{firstCommissionDate},
         balance_commission = #{balanceCommission},
+        commission_base = #{commissionBase},
         balance_commission_date = #{balanceCommissionDate},
         commission_state = #{commissionState},
         designer_assistant = #{designerAssistant},
         design_commission_rate = #{designCommissionRate},
+        designer_assistant_commission = #{designerAssistantCommission},
         designer_assistant_commission_rate = #{designerAssistantCommissionRate},
-        updated_date =  #{updatedDate}
-        design_commission_rate = #{designCommissionRate},
-        designer_assistant_commission_rate = #{designerAssistantCommissionRate}
+        designer_assistant_commission_date = #{designerAssistantCommissionDate},
+        updated_time =  #{updatedTime}
         where ac_number = #{acNumber}
+    </update>
+
+    <update id="updateProjectCommissions" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update "project_commission"
+            set
+            contract_total = #{item.contractTotal},
+            purchasing_cost = #{item.purchasingCost},
+            purchase_agent_fee = #{item.purchaseAgentFee},
+            project_change_total = #{item.projectChangeTotal},
+            customer_pay = #{item.customerPay},
+            pay_contract_ratio = #{item.payContractRatio},
+            pay_project_ratio = #{item.payProjectRatio},
+            contract_state = #{item.contractState},
+            actual_start_time = #{item.actualStartTime},
+            actual_end_time = #{item.actualEndTime},
+            balance_time = #{item.balanceTime},
+            first_commission = #{item.firstCommission},
+            first_commission_date = #{item.firstCommissionDate},
+            balance_commission = #{item.balanceCommission},
+            balance_commission_date = #{item.balanceCommissionDate},
+            commission_state = #{item.commissionState},
+            designer_assistant = #{item.designerAssistant},
+            design_commission_rate = #{item.designCommissionRate},
+            designer_assistant_commission = #{designerAssistantCommission},
+            designer_assistant_commission_date = #{item.designerAssistantCommissionDate},
+            designer_assistant_commission_rate = #{item.designerAssistantCommissionRate}
+            where ac_number = #{item.acNumber}
+        </foreach>
     </update>
 
     <update id="updateProject" parameterType="ProjectCommissionDto">

@@ -2,13 +2,14 @@ package com.dms.dto;
 
 import com.dms.serializable.LocalDateTimeJacksonDeSerializable;
 import com.dms.serializable.LocalDateTimeJacksonSerializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.joda.time.LocalDateTime;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProjectCommissionDto implements Serializable {
 	private Long id;
 	private String designer;
@@ -23,9 +24,8 @@ public class ProjectCommissionDto implements Serializable {
 	private BigDecimal payContractRatio;
 	private BigDecimal payProjectRatio;
 	private String contractState;
-	private String commissionState;
+	private int commissionState;
 	private BigDecimal firstCommissionRate;
-
 	private BigDecimal balanceCommissionRate;
 	private BigDecimal firstCommission;
 	private BigDecimal balanceCommission;
@@ -54,7 +54,12 @@ public class ProjectCommissionDto implements Serializable {
 	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
 	private LocalDateTime balanceCommissionDate;
+	private BigDecimal designerAssistantCommission;
+
 	private BigDecimal designerAssistantCommissionRate;
+	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
+	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
+	private LocalDateTime designerAssistantCommissionDate;
 	private BigDecimal purchasingCost;
 	private BigDecimal commissionBase;
 
@@ -73,7 +78,6 @@ public class ProjectCommissionDto implements Serializable {
 	public void setCommissionBase(BigDecimal commissionBase) {
 		this.commissionBase = commissionBase;
 	}
-
 	public Long getId() {
 		return id;
 	}
@@ -238,11 +242,11 @@ public class ProjectCommissionDto implements Serializable {
 		this.designerAssistantCommissionRate = designerAssistantCommissionRate;
 	}
 
-	public String getCommissionState() {
+	public int getCommissionState() {
 		return commissionState;
 	}
 
-	public void setCommissionState(String commissionState) {
+	public void setCommissionState(int commissionState) {
 		this.commissionState = commissionState;
 	}
 
@@ -300,6 +304,23 @@ public class ProjectCommissionDto implements Serializable {
 		this.updatedTime = updatedTime;
 	}
 
+
+	public BigDecimal getDesignerAssistantCommission() {
+		return designerAssistantCommission;
+	}
+
+	public void setDesignerAssistantCommission(BigDecimal designerAssistantCommission) {
+		this.designerAssistantCommission = designerAssistantCommission;
+	}
+
+	public LocalDateTime getDesignerAssistantCommissionDate() {
+		return designerAssistantCommissionDate;
+	}
+
+	public void setDesignerAssistantCommissionDate(LocalDateTime designerAssistantCommissionDate) {
+		this.designerAssistantCommissionDate = designerAssistantCommissionDate;
+	}
+
 	@Override
 	public String toString() {
 		return new StringBuilder().append("designer: ").append(designer).append(", acNumber: ").append(acNumber).append(", contractId: ").append(contractId)
@@ -322,7 +343,5 @@ public class ProjectCommissionDto implements Serializable {
 	public int hashCode() {
 		return getAcNumber() != null ? getAcNumber().hashCode() : 0;
 	}
-
-
-
 }
+
