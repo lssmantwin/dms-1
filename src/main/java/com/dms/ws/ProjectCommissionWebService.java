@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.springframework.stereotype.Controller;
 
@@ -16,6 +17,14 @@ import com.dms.response.DataGridResponse;
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/commission/v1")
 public interface ProjectCommissionWebService {
+
+	@GET
+	@Path("/export")
+	Response export(@QueryParam("designer") String designer, @QueryParam("contractState") String contractState,
+			@QueryParam("commissionState") String commissionState, @QueryParam("actualStartTime") String actualStartTime,
+			@QueryParam("actualEndTime") String actualEndTime, @QueryParam("contractDate") String contractDate,
+			@QueryParam("firstCommissionDate") String firstCommissionDate, @QueryParam("balanceTime") String balanceTime,
+			@QueryParam("balanceCommissionDate") String balanceCommissionDate);
 
 	@GET
 	@Path("/states")
