@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import com.dms.enums.CommissionStateEnum;
+import com.dms.enums.ContractStateEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -88,10 +90,10 @@ public class ProjectCommissionExportXls implements StreamSource {
 			cell10.setCellValue(dto.getPayProjectRatio() == null ? StringUtils.EMPTY : dto.getPayProjectRatio().toString());
 
 			Cell cell11 = row.createCell(cellNumber++);
-			cell11.setCellValue(dto.getContractState());
+			cell11.setCellValue(ContractStateEnum.fromDbConstant(Integer.valueOf(dto.getContractState()).intValue()).getText());
 
 			Cell cell12 = row.createCell(cellNumber++);
-			cell12.setCellValue(dto.getCommissionState());
+			cell12.setCellValue(CommissionStateEnum.fromDbConstant(Integer.valueOf(dto.getCommissionState()).intValue()).getText());
 
 			Cell cell13 = row.createCell(cellNumber++);
 			cell13.setCellValue(dto.getFirstCommission() == null ? StringUtils.EMPTY : dto.getFirstCommission().toString());
