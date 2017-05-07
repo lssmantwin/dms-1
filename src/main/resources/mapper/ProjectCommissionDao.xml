@@ -12,6 +12,10 @@
         <result property="contractTotal" column="contract_total" typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="purchaseAgentFee" column="purchase_agent_fee"
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="purchasingCost" column="purchasing_cost"
+                typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="commissionBase" column="commission_base"
+                typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="projectChangeTotal" column="project_change_total"
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="customerPay" column="customer_pay" typeHandler="com.dms.handler.BigDecimalHandler"/>
@@ -31,13 +35,20 @@
                 typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="designerAssistant" column="designer_assistant"/>
         <result property="firstCommission" column="first_commission" typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="firstCommissionRate" column="first_commission_rate" typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="firstCommissionDate" column="first_commission_date" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="balanceCommission" column="balance_commission"
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="designCommissionRate" column="design_commission_rate"
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="designerAssistantCommission" column="designer_assistant_commission"
+                typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="designerAssistantCommissionRate" column="designer_assistant_commission_rate"
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="designerAssistantCommissionDate" column="designer_assistant_commission_date"
+                typeHandler="com.dms.handler.LocalDateTimeHandler"/>
     </resultMap>
+
 
     <select id="getProjectCommissionCount" parameterType="ProjectCommissionFilterRequest" resultType="int">
         select count(id) from "project_commission"
@@ -131,8 +142,18 @@
         </choose>
     </select>
 
+    <select id="getProjectCommission" parameterType="java.lang.String" resultType="int">
+        select 1 from "project_commission"
+        <where>
+            <if test="acNumber != null">
+                ac_number = #{acNumber}
+            </if>
+        </where>
+    </select>
 
-    <insert id="getProjects" parameterType="ProjectCommissionDto">
+
+
+    <insert id="saveProjects" parameterType="ProjectCommissionDto">
         INSERT INTO dms.dbo.Project_Commission
         (
         designer
@@ -150,7 +171,48 @@
         ,actual_start_time
         ,actual_end_time
         ,balance_time
-        ,customer_name)
+        ,customer_name
+        ,created_time)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.designer}, #{item.acNumber}, #{item.contractId}, #{item.contractTotal}, #{item.purchaseAgentFee},
+            #{item.projectChangeTotal}, #{item.customerPay},
+            #{item.payContractRatio}, #{item.payProjectRatio}, #{item.contractState},
+            ${item.contractDate}, #{item.actualStartTime}, #{item.actualEndTime},
+            #{item.balanceTime},  #{item.customerName}, #{item.createdTime})
+        </foreach>
+    </insert>
+
+    <insert id="saveProjectCommission" useGeneratedKeys="true" keyProperty="id" parameterType="ProjectCommissionDto">
+        insert into "Project_Commission"
+        (
+        designer
+        ,ac_number
+        ,contract_id
+        ,contract_total
+        ,purchase_agent_fee
+        ,project_change_total
+        ,customer_pay
+        ,pay_contract_ratio
+        ,pay_project_ratio
+        ,contract_state
+        ,branch
+        ,contract_date
+        ,actual_start_time
+        ,actual_end_time
+        ,balance_time
+        ,customer_name
+        ,created_time)
+        values
+           (#{designer}, #{acNumber}, #{contractId}, #{contractTotal}, #{purchaseAgentFee},
+            #{projectChangeTotal}, #{customerPay},
+            #{payContractRatio}, #{payProjectRatio}, #{contractState},
+            ${contractDate}, #{actualStartTime}, #{actualEndTime},
+            #{balanceTime},  #{createdTime})
+    </insert>
+
+
+    <select id="getProjects" parameterType="DataGridRequest" resultMap="ProjectCommissionMap">
         SELECT ci.designer AS 设计师,
         ci.ACNumber AS 受理编号,
         ci.contract_id AS 工程编号,
@@ -185,17 +247,47 @@
         FROM          ERP_Budget_Change
         WHERE      (审核日期 >= '2009-12-31')
         GROUP BY 受理编号) AS bc ON ci.ACNumber = bc.受理编号
-        WHERE     ((ci.actual_start_time BETWEEN #{current_month_start} AND @end) or (ci.end_balance BETWEEN #{current_month_end} AND @end))  (ci.contract_id NOT LIKE 'W%')
+        WHERE     ((ci.actual_start_time BETWEEN #{current_month_start} AND #{current_month_end}) or (ci.end_balance BETWEEN #{current_month_start} AND #{current_month_end})
+          AND  (ci.contract_id NOT LIKE 'W%')
+          AND ci.ACNumber in ( SELECT ac_number from project_commission where comission_state != '已提')
         ORDER BY ci.state,设计师
 
-    </insert>
+    </select>
 
+    <update id="updateProjectCommission" parameterType="ProjectCommissionDto">
+        update "project_commission"
+        set
+        contract_total = #{contractTotal},
+        purchase_agent_fee = #{purchaseAgentFee},
+        project_change_total = #{projectChangeTotal},
+        customer_pay = #{customerPay},
+        pay_contract_ratio = #{payContractRatio},
+        pay_project_ratio = #{payProjectRatio},
+        contract_state = #{contractState},
+        actual_start_time = #{actualStartTime},
+        actual_end_time = #{actualEndTime},
+        balance_time = #{balanceTime},
+        first_commission = #{firstCommission},
+        first_commission_date = #{firstCommissionDate},
+        balance_commission = #{balanceCommission},
+        commission_base = #{commissionBase},
+        balance_commission_date = #{balanceCommissionDate},
+        commission_state = #{commissionState},
+        designer_assistant = #{designerAssistant},
+        design_commission_rate = #{designCommissionRate},
+        designer_assistant_commission = #{designerAssistantCommission},
+        designer_assistant_commission_rate = #{designerAssistantCommissionRate},
+        designer_assistant_commission_date = #{designerAssistantCommissionDate},
+        updated_time =  #{updatedTime}
+        where ac_number = #{acNumber}
+    </update>
 
     <update id="updateProjectCommissions" parameterType="list">
         <foreach collection="list" item="item" index="index" open="" close="" separator=";">
             update "project_commission"
             set
             contract_total = #{item.contractTotal},
+            purchasing_cost = #{item.purchasingCost},
             purchase_agent_fee = #{item.purchaseAgentFee},
             project_change_total = #{item.projectChangeTotal},
             customer_pay = #{item.customerPay},
@@ -212,9 +304,29 @@
             commission_state = #{item.commissionState},
             designer_assistant = #{item.designerAssistant},
             design_commission_rate = #{item.designCommissionRate},
+            designer_assistant_commission = #{designerAssistantCommission},
+            designer_assistant_commission_date = #{item.designerAssistantCommissionDate},
             designer_assistant_commission_rate = #{item.designerAssistantCommissionRate}
             where ac_number = #{item.acNumber}
         </foreach>
     </update>
+
+    <update id="updateProject" parameterType="ProjectCommissionDto">
+        update "project_commission"
+        set
+        purchasing_cost = #{purchasingCost},
+        commission_base = #{commissionBase},
+        design_commission_rate = #{designCommissionRate},
+        first_commission_rate = #{firstCommissionRate},
+        first_commission = #{firstCommission},
+        first_commission_date = #{firstCommissionDate},
+        balance_commission_rate = #{balanceCommissionRate},
+        balance_commission = #{balanceCommission},
+        balance_commission_date = #{balanceCommissionDate},
+        design_commission = #{designCommission},
+        updated_date =  #{updatedDate}
+        where ac_number = #{acNumber}
+    </update>
+
 
 </mapper>

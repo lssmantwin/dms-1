@@ -1,18 +1,16 @@
 package com.dms.dto;
 
-import java.math.BigDecimal;
-
-import org.joda.time.LocalDateTime;
-
 import com.dms.serializable.LocalDateTimeJacksonDeSerializable;
 import com.dms.serializable.LocalDateTimeJacksonSerializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.joda.time.LocalDateTime;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ProjectCommissionDto {
-
+public class ProjectCommissionDto implements Serializable {
 	private Long id;
 	private String designer;
 	private String designerAssistant;
@@ -26,7 +24,9 @@ public class ProjectCommissionDto {
 	private BigDecimal payContractRatio;
 	private BigDecimal payProjectRatio;
 	private String contractState;
-	private String commissionState;
+	private int commissionState;
+	private BigDecimal firstCommissionRate;
+	private BigDecimal balanceCommissionRate;
 	private BigDecimal firstCommission;
 	private BigDecimal balanceCommission;
 	private BigDecimal designCommissionRate;
@@ -47,9 +47,37 @@ public class ProjectCommissionDto {
 	private LocalDateTime balanceTime;
 	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
+	private LocalDateTime createdTime;
+	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
+	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
+	private LocalDateTime updatedTime;
+	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
+	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
 	private LocalDateTime balanceCommissionDate;
-	private BigDecimal designerAssistantCommissionRate;
+	private BigDecimal designerAssistantCommission;
 
+	private BigDecimal designerAssistantCommissionRate;
+	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
+	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
+	private LocalDateTime designerAssistantCommissionDate;
+	private BigDecimal purchasingCost;
+	private BigDecimal commissionBase;
+
+	public BigDecimal getPurchasingCost() {
+		return purchasingCost;
+	}
+
+	public void setPurchasingCost(BigDecimal purchasingCost) {
+		this.purchasingCost = purchasingCost;
+	}
+
+	public BigDecimal getCommissionBase() {
+		return commissionBase;
+	}
+
+	public void setCommissionBase(BigDecimal commissionBase) {
+		this.commissionBase = commissionBase;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -214,11 +242,11 @@ public class ProjectCommissionDto {
 		this.designerAssistantCommissionRate = designerAssistantCommissionRate;
 	}
 
-	public String getCommissionState() {
+	public int getCommissionState() {
 		return commissionState;
 	}
 
-	public void setCommissionState(String commissionState) {
+	public void setCommissionState(int commissionState) {
 		this.commissionState = commissionState;
 	}
 
@@ -236,6 +264,61 @@ public class ProjectCommissionDto {
 
 	public void setBalanceCommission(BigDecimal balanceCommission) {
 		this.balanceCommission = balanceCommission;
+	}
+
+	public BigDecimal getFirstCommissionRate() {
+		return firstCommissionRate;
+	}
+
+	public void setFirstCommissionRate(BigDecimal firstCommissionRate) {
+		this.firstCommissionRate = firstCommissionRate;
+	}
+
+	public BigDecimal getBalanceCommissionRate() {
+		return balanceCommissionRate;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setBalanceCommissionRate(BigDecimal balanceCommissionRate) {
+		this.balanceCommissionRate = balanceCommissionRate;
+	}
+
+
+	public LocalDateTime getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(LocalDateTime createdTime) {
+		this.createdTime = createdTime;
+	}
+
+	public LocalDateTime getUpdatedTime() {
+		return updatedTime;
+	}
+
+	public void setUpdatedTime(LocalDateTime updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+
+
+	public BigDecimal getDesignerAssistantCommission() {
+		return designerAssistantCommission;
+	}
+
+	public void setDesignerAssistantCommission(BigDecimal designerAssistantCommission) {
+		this.designerAssistantCommission = designerAssistantCommission;
+	}
+
+	public LocalDateTime getDesignerAssistantCommissionDate() {
+		return designerAssistantCommissionDate;
+	}
+
+	public void setDesignerAssistantCommissionDate(LocalDateTime designerAssistantCommissionDate) {
+		this.designerAssistantCommissionDate = designerAssistantCommissionDate;
 	}
 
 	@Override
@@ -260,5 +343,5 @@ public class ProjectCommissionDto {
 	public int hashCode() {
 		return getAcNumber() != null ? getAcNumber().hashCode() : 0;
 	}
-
 }
+

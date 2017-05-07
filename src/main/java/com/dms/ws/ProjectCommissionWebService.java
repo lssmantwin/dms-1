@@ -32,7 +32,11 @@ public interface ProjectCommissionWebService {
 
 	@POST
 	@Path("/projectCommissions")
-	void saveProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos);
+	void saveProjectCommissions(List<ProjectCommissionDto> ProjectCommissionDtos);
+
+	@POST
+	@Path("/calculateCommission")
+	void calculateProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos);
 
 	@GET
 	@Path("/projectCommissions")
