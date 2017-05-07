@@ -22,6 +22,6 @@ CREATE TABLE project_commission (
 	first_commission_date datetime,
 	balance_commission decimal(10, 2),
 	balance_commission_date datetime,
-	design_commission_rate decimal(4, 2),
-	designer_assistant_commission_rate decimal(4, 2)
+	design_commission_rate decimal(4, 4),
+	designer_assistant_commission_rate decimal(4, 4)
 )

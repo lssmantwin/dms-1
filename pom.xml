@@ -30,6 +30,7 @@
         <guava-version>21.0</guava-version>
         <resteasy-version>3.1.2.Final</resteasy-version>
         <resteasy-jaxrs-api-version>3.0.12.Final</resteasy-jaxrs-api-version>
+        <quartz-version>2.3.0</quartz-version>
     </properties>
 
     <build>
@@ -318,6 +319,14 @@
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-servlet-initializer</artifactId>
             <version>${resteasy-version}</version>
+        </dependency>
+
+        <!-- quartz -->
+        <!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>${quartz-version}</version>
         </dependency>
 
 

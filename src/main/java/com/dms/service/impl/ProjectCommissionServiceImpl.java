@@ -42,9 +42,18 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
                 commission.setPurchasingCost(BigDecimal.ZERO);
             }
             commission.setCommissionBase(commission.getContractTotal().subtract(commission.getPurchasingCost()));
+            // 设计师助理提成
+            if (commission.getDesignerAssistant() != null && !commission.getDesignerAssistant().equals("")
+                    && commission.getDesignerAssistantCommissionRate() != null && commission.getDesignerAssistantCommission() == null) {
+                BigDecimal designCommissionRate = commission.getDesignCommissionRate().subtract(DmsConstants.DESIGN_COMMISSION_SUB_RATE);
+                commission.setDesignCommissionRate(designCommissionRate.setScale(2, BigDecimal.ROUND_HALF_UP));
+                commission.setDesignerAssistantCommission(commission.getCommissionBase().multiply(commission.getDesignerAssistantCommissionRate()).setScale(2, BigDecimal.ROUND_HALF_UP));
+                commission.setDesignerAssistantCommissionDate(LocalDateTime.now());
+            }
             int commissionState = CommissionStateEnum.COMMISION_STATE_START.getDbConstant();
             if (CommissionStateEnum.COMMISION_STATE_START.getDbConstant() == commission.getCommissionState()) {
                 BigDecimal firstCommission = BigDecimal.ZERO;
+                //小于1万 提成250
                 if (commission.getContractTotal() != null
                         && commission.getContractTotal().compareTo(DmsConstants.MIN_CONTRACT_COMMISSION) <= 0) {
                     firstCommission = DmsConstants.MIN_COMMISSION;
@@ -58,11 +67,12 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 
                 }
                 if (BigDecimal.ZERO != firstCommission) {
-                    commission.setFirstCommission(firstCommission);
+                    commission.setFirstCommission(firstCommission.setScale(2, BigDecimal.ROUND_HALF_UP));
                     commission.setFirstCommissionDate(LocalDateTime.now());
                     commission.setCommissionState(commissionState);
                     commission.setUpdatedTime(LocalDateTime.now());
                 }
+
                 projectCommissionDao.updateProjectCommission(commission);
             } else if (CommissionStateEnum.COMMISION_STATE_FIRST.getDbConstant() == commission.getCommissionState()
                     && commission.getProjectChangeTotal() != null) {
@@ -70,7 +80,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
                 commissionState = CommissionStateEnum.COMMISION_STATE_FINISH.getDbConstant();
                 balanceCommission = commission.getCommissionBase().add(commission.getProjectChangeTotal());
                 balanceCommission = balanceCommission .multiply(commission.getDesignCommissionRate()).subtract(commission.getFirstCommission());
-                commission.setBalanceCommission(balanceCommission);
+                commission.setBalanceCommission(balanceCommission.setScale(2, BigDecimal.ROUND_HALF_UP));
                 commission.setBalanceCommissionDate(LocalDateTime.now());
                 commission.setCommissionState(commissionState);
                 commission.setUpdatedTime(LocalDateTime.now());

@@ -1,61 +1,23 @@
 package com.dms.request;
 
 import java.io.Serializable;
-
-import org.joda.time.LocalDateTime;
-
-import com.dms.serializable.LocalDateTimeJacksonDeSerializable;
-import com.dms.serializable.LocalDateTimeJacksonSerializable;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.math.BigDecimal;
 
 public class ProjectCommissionFilterRequest extends BaseFilterRequest implements Serializable {
 
 	private String designer;
+	private String designerAssistant;
 	private String contractState;
+	private String contractId;
 	private String commissionState;
-
-	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
-	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
-	private LocalDateTime contractDateStart;
-	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
-	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
-	private LocalDateTime contractDateEnd;
-
-	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
-	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
-	private LocalDateTime firstCommissionDateStart;
-	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
-	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
-	private LocalDateTime firstCommissionDateEnd;
-
-	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
-	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
-	private LocalDateTime actualStartTimeStart;
-	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
-	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
-	private LocalDateTime actualStartTimeEnd;
-
-	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
-	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
-	private LocalDateTime actualEndTimeStart;
-	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
-	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
-	private LocalDateTime actualEndTimeEnd;
-
-	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
-	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
-	private LocalDateTime balanceTimeStart;
-	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
-	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
-	private LocalDateTime balanceTimeEnd;
-
-	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
-	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
-	private LocalDateTime balanceCommissionDateStart;
-	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
-	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
-	private LocalDateTime balanceCommissionDateEnd;
+	private String contractDate;
+	private String firstCommissionDate;
+	private String actualStartTime;
+	private String actualEndTime;
+	private String balanceTime;
+	private String balanceCommissionDate;
+	private BigDecimal payContractRatio;
+	private BigDecimal payProjectRatio;
 
 	public String getDesigner() {
 		return designer;
@@ -81,99 +43,85 @@ public class ProjectCommissionFilterRequest extends BaseFilterRequest implements
 		this.commissionState = commissionState;
 	}
 
-	public LocalDateTime getContractDateStart() {
-		return contractDateStart;
+	public String getContractDate() {
+		return contractDate;
 	}
 
-	public void setContractDateStart(LocalDateTime contractDateStart) {
-		this.contractDateStart = contractDateStart;
+	public void setContractDate(String contractDate) {
+		this.contractDate = contractDate;
 	}
 
-	public LocalDateTime getContractDateEnd() {
-		return contractDateEnd;
+	public String getFirstCommissionDate() {
+		return firstCommissionDate;
 	}
 
-	public void setContractDateEnd(LocalDateTime contractDateEnd) {
-		this.contractDateEnd = contractDateEnd;
+	public void setFirstCommissionDate(String firstCommissionDate) {
+		this.firstCommissionDate = firstCommissionDate;
 	}
 
-	public LocalDateTime getFirstCommissionDateStart() {
-		return firstCommissionDateStart;
+	public String getActualStartTime() {
+		return actualStartTime;
 	}
 
-	public void setFirstCommissionDateStart(LocalDateTime firstCommissionDateStart) {
-		this.firstCommissionDateStart = firstCommissionDateStart;
+	public void setActualStartTime(String actualStartTime) {
+		this.actualStartTime = actualStartTime;
 	}
 
-	public LocalDateTime getFirstCommissionDateEnd() {
-		return firstCommissionDateEnd;
+	public String getActualEndTime() {
+		return actualEndTime;
 	}
 
-	public void setFirstCommissionDateEnd(LocalDateTime firstCommissionDateEnd) {
-		this.firstCommissionDateEnd = firstCommissionDateEnd;
+	public void setActualEndTime(String actualEndTime) {
+		this.actualEndTime = actualEndTime;
 	}
 
-	public LocalDateTime getActualStartTimeStart() {
-		return actualStartTimeStart;
+	public String getBalanceTime() {
+		return balanceTime;
 	}
 
-	public void setActualStartTimeStart(LocalDateTime actualStartTimeStart) {
-		this.actualStartTimeStart = actualStartTimeStart;
+	public void setBalanceTime(String balanceTime) {
+		this.balanceTime = balanceTime;
 	}
 
-	public LocalDateTime getActualStartTimeEnd() {
-		return actualStartTimeEnd;
+	public String getBalanceCommissionDate() {
+		return balanceCommissionDate;
 	}
 
-	public void setActualStartTimeEnd(LocalDateTime actualStartTimeEnd) {
-		this.actualStartTimeEnd = actualStartTimeEnd;
+	public void setBalanceCommissionDate(String balanceCommissionDate) {
+		this.balanceCommissionDate = balanceCommissionDate;
 	}
 
-	public LocalDateTime getActualEndTimeStart() {
-		return actualEndTimeStart;
+	public String getContractId() {
+		return contractId;
 	}
 
-	public void setActualEndTimeStart(LocalDateTime actualEndTimeStart) {
-		this.actualEndTimeStart = actualEndTimeStart;
+	public void setContractId(String contractId) {
+		this.contractId = contractId;
 	}
 
-	public LocalDateTime getActualEndTimeEnd() {
-		return actualEndTimeEnd;
+	public BigDecimal getPayContractRatio() {
+		return payContractRatio;
 	}
 
-	public void setActualEndTimeEnd(LocalDateTime actualEndTimeEnd) {
-		this.actualEndTimeEnd = actualEndTimeEnd;
+	public void setPayContractRatio(BigDecimal payContractRatio) {
+		this.payContractRatio = payContractRatio;
 	}
 
-	public LocalDateTime getBalanceTimeStart() {
-		return balanceTimeStart;
+	public BigDecimal getPayProjectRatio() {
+		return payProjectRatio;
 	}
 
-	public void setBalanceTimeStart(LocalDateTime balanceTimeStart) {
-		this.balanceTimeStart = balanceTimeStart;
+	public void setPayProjectRatio(BigDecimal payProjectRatio) {
+		this.payProjectRatio = payProjectRatio;
 	}
 
-	public LocalDateTime getBalanceTimeEnd() {
-		return balanceTimeEnd;
+
+	public String getDesignerAssistant() {
+		return designerAssistant;
 	}
 
-	public void setBalanceTimeEnd(LocalDateTime balanceTimeEnd) {
-		this.balanceTimeEnd = balanceTimeEnd;
+	public void setDesignerAssistant(String designerAssistant) {
+		this.designerAssistant = designerAssistant;
 	}
 
-	public LocalDateTime getBalanceCommissionDateStart() {
-		return balanceCommissionDateStart;
-	}
-
-	public void setBalanceCommissionDateStart(LocalDateTime balanceCommissionDateStart) {
-		this.balanceCommissionDateStart = balanceCommissionDateStart;
-	}
-
-	public LocalDateTime getBalanceCommissionDateEnd() {
-		return balanceCommissionDateEnd;
-	}
-
-	public void setBalanceCommissionDateEnd(LocalDateTime balanceCommissionDateEnd) {
-		this.balanceCommissionDateEnd = balanceCommissionDateEnd;
-	}
 }

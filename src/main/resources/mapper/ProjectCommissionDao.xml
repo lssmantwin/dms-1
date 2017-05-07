@@ -53,15 +53,48 @@
     <select id="getProjectCommissionCount" parameterType="ProjectCommissionFilterRequest" resultType="int">
         select count(id) from "project_commission"
         <where>
+            1 = 1
             <if test="designer != null and designer != ''">
                 <bind name="pattern" value="'%' + designer + '%'"/>
-                designer like #{pattern}
+                and   designer like #{pattern}
+            </if>
+            <if test="designerAssistant != null and designerAssistant != ''">
+                <bind name="designerAssistantpattern" value="'%' + designerAssistant + '%'"/>
+                and  designer_assistant like #{designerAssistantpattern}
             </if>
             <if test="contractState != null and contractState != ''">
-                and contract_state = #{contractState}
+               and contract_state = #{contractState}
             </if>
             <if test="commissionState != null and commissionState != ''">
                 and commission_state = #{commissionState}
+            </if>
+            <if test="contractId != null and contractId != ''">
+                and contract_id = #{contractId}
+            </if>
+            <if test="payContractRatio != null and payContractRatio != ''">
+                and pay_contract_ratio >= #{payContractRatio}
+            </if>
+            <if test="payProjectRatio != null and payProjectRatio != ''">
+                and pay_project_ratio >= #{payProjectRatio}
+            </if>
+
+            <if test="contractDate != null and contractDate != ''">
+                and contract_date > #{contractDate}
+            </if>
+            <if test="firstCommissionDate != null and firstCommissionDate != ''">
+                and first_commission_date > #{firstCommissionDate}
+            </if>
+            <if test="actualStartTime != null and actualStartTime != ''">
+                and actual_start_time > #{actualStartTime}
+            </if>
+            <if test="actualEndTime != null and actualEndTime != ''">
+                and actual_end_time > #{actualEndTime}
+            </if>
+            <if test="balanceTime != null and balanceTime != ''">
+                and balance_time > #{balanceTime}
+            </if>
+            <if test="balanceCommissionDate != null and balanceCommissionDate != ''">
+                and balance_commission_date > #{balanceCommissionDate}
             </if>
         </where>
     </select>
@@ -71,15 +104,48 @@
         (
         select *, row_number() over (order by id) rn from "project_commission"
         <where>
+            1 = 1
             <if test="designer != null and designer != ''">
                 <bind name="pattern" value="'%' + designer + '%'"/>
-                designer like #{pattern}
+                and designer like #{pattern}
+            </if>
+            <if test="designerAssistant != null and designerAssistant != ''">
+                <bind name="designerAssistantpattern" value="'%' + designerAssistant + '%'"/>
+                and  designer_assistant like #{designerAssistantpattern}
+            </if>
+            <if test="contractId != null and contractId != ''">
+                <bind name="contractIdPattern" value="'%' + contractId + '%'"/>
+                and contract_id like #{contractIdPattern}
+            </if>
+            <if test="payContractRatio != null and payContractRatio != ''">
+                and pay_contract_ratio >= #{payContractRatio}
+            </if>
+            <if test="payProjectRatio != null and payProjectRatio != ''">
+                and pay_project_ratio >= #{payProjectRatio}
             </if>
             <if test="contractState != null and contractState != ''">
                 and contract_state = #{contractState}
             </if>
             <if test="commissionState != null and commissionState != ''">
                 and commission_state = #{commissionState}
+            </if>
+            <if test="contractDate != null and contractDate != ''">
+                and contract_date > #{contractDate}
+            </if>
+            <if test="firstCommissionDate != null and firstCommissionDate != ''">
+                and first_commission_date > #{firstCommissionDate}
+            </if>
+            <if test="actualStartTime != null and actualStartTime != ''">
+                and actual_start_time > #{actualStartTime}
+            </if>
+            <if test="actualEndTime != null and actualEndTime != ''">
+                and actual_end_time > #{actualEndTime}
+            </if>
+            <if test="balanceTime != null and balanceTime != ''">
+                and balance_time > #{balanceTime}
+            </if>
+            <if test="balanceCommissionDate != null and balanceCommissionDate != ''">
+                and balance_commission_date > #{balanceCommissionDate}
             </if>
         </where>
         ) t

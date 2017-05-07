@@ -11,4 +11,9 @@ public interface DmsConstants {
     String COMMISION_STATE_FINISH = "已提";
     BigDecimal MIN_CONTRACT_COMMISSION = new BigDecimal(10000);
     BigDecimal MIN_COMMISSION = new BigDecimal(250);
+
+    BigDecimal DESIGN_ASSISTANT_COMMISSION_RATE = new BigDecimal(0.005);
+    BigDecimal DESIGN_ASSISTANT_SUBURBS_COMMISSION_RATE = new BigDecimal(0.005);
+    BigDecimal DESIGN_COMMISSION_SUB_RATE = new BigDecimal(0.001);
+
 }
