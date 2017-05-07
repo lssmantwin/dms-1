@@ -2,3 +2,4 @@
 target
 *.war
 *.iml
+webapp/demo
