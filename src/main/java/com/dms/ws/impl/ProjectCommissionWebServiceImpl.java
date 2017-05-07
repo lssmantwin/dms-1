@@ -76,6 +76,12 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 	}
 
 	@Override
+	public void calculateProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos) {
+		LOGGER.info("save project commissions, {}", projectCommissionDtos);
+		projectCommissionService.calculateCommission(projectCommissionDtos);
+	}
+
+	@Override
 	public DataGridResponse<List<ProjectCommissionDto>> getProjectCommissions(String designer, String contractState, String commissionState,
 			String actualStartTime, String actualEndTime, String contractDate, String firstCommissionDate, String balanceTime, String balanceCommissionDate,
 			int pageIndex, int pageSize, String sortField, String sortOrder) {

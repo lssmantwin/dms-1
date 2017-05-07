@@ -7,6 +7,8 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <link href="../demo.css" rel="stylesheet" type="text/css"/>
     <script src="../../scripts/boot.js" type="text/javascript"></script>
+
+
 </head>
 <body>
 <style type="text/css">
@@ -18,12 +20,15 @@
         height: 100%;
         overflow: hidden;
     }
+
+
 </style>
 <div class="mini-toolbar" style="padding:2px;border-bottom:0;">
     <table style="width:100%;">
         <tr>
             <td style="width:100%;">
                 <a class="mini-button" iconCls="icon-save" plain="true" onclick="saveData()">保存</a>
+                <a class="mini-button" iconCls="icon-node" plain="true" onclick="calculateCommission()">计算提成</a>
                 <a class="mini-button" iconCls="icon-upload" plain="true" onclick="ExportExcel()">导出Excel</a>
             </td>
         </tr>
@@ -34,132 +39,194 @@
 <div class="mini-fit">
 
     <div id="datagrid1" class="mini-datagrid" style="width:100%;height:100%;"
-         url="http://localhost:8080/ws/commission/v1/projectCommissions"
+         url="../ws/commission/v1/projectCommissions"
          ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
-         idField="id" sizeList="[5,10,20,50]" pageSize="10" allowCellEdit="true" allowCellSelect="true"
-         showFilterRow="true">
+         idField="id" allowResize="true" sizeList="[5,10,20,50]" pageSize="10" allowCellEdit="true"
+         allowCellSelect="true" showSummaryRow="true" ondrawsummarycell="onDrawSummaryCell"
+         editNextOnEnterKey="true" editNextRowCell="true"
+         multiSelect="true" showFilterRow="true">
+
         <div property="columns">
             <div type="indexcolumn"></div>
-            <div field="designer" width="70" headerAlign="center" allowSort="false">designer
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="70"/>
-                <input id="designerFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="70"
+            <div type="checkcolumn"></div>
+
+            <div field="designer" headerAlign="center" allowSort="false" width="50">设计师
+                <input id="designerFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="50"
                        onvaluechanged="onFilterChanged"/>
             </div>
-            <div field="designerAssistant" width="70" headerAlign="center" allowSort="false">designerAssistant
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="70"/>
+
+            <div field="acNumber" width="60" headerAlign="center" allowSort="false">受理编号
             </div>
-            <div field="acNumber" width="50" headerAlign="center" allowSort="false">acNumber
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
+
+            <div field="contractId" width="80" headerAlign="center" allowSort="false">工程编号
+                <input id="contractFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="50"
+                       onvaluechanged="onFilterChanged"/>
             </div>
-            <div field="customerName" width="70" headerAlign="center" allowSort="false">customerName
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="70"/>
+
+            <div field="customerName" width="60" headerAlign="center" allowSort="false">客户名字
             </div>
-            <div field="contractTotal" width="50" headerAlign="center" allowSort="false" vtype="float">contractTotal
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
+
+            <div field="payContractRatio" width="60" headerAlign="center" numberFormat="00.00%" allowSort="false"
+                 vtype="float">合同收款比
+                <input id="payContractFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="50"
+                       onvaluechanged="onFilterChanged"/>
             </div>
-            <div field="purchaseAgentFee" width="50" headerAlign="center" allowSort="false" vtype="float">
-                purchaseAgentFee
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
+
+            <div field="payProjectRatio" width="60" headerAlign="center" numberFormat="00.00%" allowSort="false"
+                 vtype="float">总收款比
+                <input id="payProjectFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="50"
+                       onvaluechanged="onFilterChanged"/>
             </div>
-            <div field="projectChangeTotal" width="50" headerAlign="center" allowSort="false" vtype="float">
-                projectChangeTotal
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
-            </div>
-            <div field="customerPay" width="50" headerAlign="center" allowSort="false" vtype="float">customerPay
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
-            </div>
-            <div field="payContractRatio" width="50" headerAlign="center" allowSort="false" vtype="float">
-                payContractRatio
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
-            </div>
-            <div field="payProjectRatio" width="50" headerAlign="center" allowSort="false" vtype="float">payProjectRatio
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
-            </div>
-            <div field="contractState" width="70" type="comboboxcolumn" headerAlign="center" allowSort="false">
-                contractState
-                <input property="editor" disable="true" class="mini-combobox asLabel"
-                       style="width:100%;" textField="text" valueField="value"
-                       url="http://localhost:8080/ws/commission/v1/states?type=CONTRACT"
+
+            <div type="comboboxcolumn" field="commissionState" width="60" headerAlign="center" allowSort="false">提成状态
+                <input property="editor" readonly="true" class="mini-combobox" style="width:100%;" textField="text"
+                       valueField="value"
+                       url="../ws/commission/v1/states?type=COMMISSION"
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
-                       allowInput="true" showNullItem="true" readonly="true"/>
+                       allowInput="true" showNullItem="true"/>
+                <input id="commissionStateFilter" property="filter" class="mini-combobox" style="width:100%;"
+                       textField="text" valueField="value"
+                       url="../ws/commission/v1/states?type=COMMISSION"
+                       ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
+                       allowInput="true" showNullItem="true" onvaluechanged="onFilterChanged"/>
+            </div>
+
+            <div align="center" headeralign="center">
+                首提信息
+                <div property="columns">
+                    <div field="actualStartTime" width="80" headerAlign="center" allowSort="false"
+                         dateFormat="yyyy-MM-dd">
+                        实际开工
+                        <input id="actualStartTimeFilter" property="filter" class="mini-datepicker" style="width:100%;"
+                               minWidth="80" onvaluechanged="onFilterChanged"/>
+                    </div>
+                    <div field="contractTotal" width="100" numberFormat="¥#,0.00" headerAlign="center"
+                         allowSort="false" vtype="float">合同价
+                    </div>
+                    <div field="purchasingCost" width="80" numberFormat="¥#,0.00" headerAlign="center"
+                         allowSort="false" vtype="float">代采金额
+                        <input property="editor" vtype="float" class="mini-textbox" style="width:100%;" minWidth="80"/>
+                    </div>
+                    <div field="commissionBase" width="80" headerAlign="center" numberFormat="¥#,0.00"
+                         allowSort="false" vtype="float">折算后合同价
+                        <input property="editor" class="mini-textbox" style="width:100%;" minWidth="80"/>
+                    </div>
+                    <div field="designCommissionRate" width="60" numberFormat="00.00%" headerAlign="center"
+                         allowSort="false" vtype="float">
+                        提成系数
+                    </div>
+                    <div field="firstCommissionRate" width="60" headerAlign="center" numberFormat="00.00%"
+                         allowSort="false" vtype="float">首提系数
+                    </div>
+
+                    <div field="firstCommission" width="60" headerAlign="center" numberFormat="¥#,0.00" summaryType=""
+                         dataType="currency"
+                         currencyUnit="￥" allowSort="false" vtype="float">首提
+                    </div>
+                    <div field="firstCommissionDate" width="80" headerAlign="center" allowSort="false"
+                         dateFormat="yyyy-MM-dd">
+                        首提日期
+                        <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+                        <input id="firstCommissionDateFilter" property="filter" class="mini-datepicker"
+                               style="width:100%;" minWidth="80" onvaluechanged="onFilterChanged"/>
+                    </div>
+                </div>
+            </div>
+
+            <div align="center" headeralign="center">
+                二次提成信息
+                <div property="columns">
+                    <div field="projectChangeTotal" width="100" numberFormat="¥#,0.00" headerAlign="center"
+                         allowSort="false" vtype="float">
+                        变更总价
+                        <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+                    </div>
+                    <div field="balanceTime" width="80" headerAlign="center" allowSort="false" dateFormat="yyyy-MM-dd">
+                        结算日期
+                        <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+                        <input id="balanceTimeFilter" property="filter" class="mini-datepicker" style="width:100%;"
+                               minWidth="80" onvaluechanged="onFilterChanged"/>
+                    </div>
+                    <div field="balanceCommission" width="60" headerAlign="center" numberFormat="¥#,0.00"
+                         allowSort="false" vtype="float">
+                        二次提成
+                        <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60"/>
+                    </div>
+                    <div field="balanceCommissionDate" width="60" headerAlign="center" allowSort="false"
+                         dateFormat="yyyy-MM-dd">
+                        二次提成日期
+                        <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="60"/>
+                        <input id="balanceCommissionDateFilter" property="filter" class="mini-datepicker"
+                               style="width:100%;" minWidth="80" onvaluechanged="onFilterChanged"/>
+                    </div>
+                </div>
+            </div>
+
+            <div align="center" headeralign="center">
+                设计助理提成
+                <div property="columns">
+                    <div field="designerAssistant" width="60" headerAlign="center" allowSort="false">
+                        设计助理
+                        <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60"/>
+                    </div>
+                    <div field="designerAssistantCommissionRate" width="60" headerAlign="center" numberFormat="00.00%"
+                         allowSort="false" vtype="float">
+                        提成比
+                        <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60"/>
+                    </div>
+                    <div field="designerAssistantCommission" width="60" headerAlign="center" numberFormat="¥#,0.00"
+                         allowSort="false" vtype="float">
+                        提成
+                        <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60"/>
+                    </div>
+                    <div field="designerAssistantCommissionDate" width="60" headerAlign="center" allowSort="false"
+                         dateFormat="yyyy-MM-dd">
+                        提成日期
+                        <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="60"/>
+                        <input property="filter" class="mini-datepicker" style="width:100%;" minWidth="60"/>
+                    </div>
+                </div>
+            </div>
+
+            <div field="customerPay" width="100" headerAlign="center" allowSort="false">已付
+            </div>
+
+            <div field="contractState" width="70" type="comboboxcolumn" headerAlign="center" allowSort="false">
+                状态
                 <input id="contractStateFilter" property="filter" class="mini-combobox" style="width:100%;"
                        textField="text" valueField="value"
                        url="http://localhost:8080/ws/commission/v1/states?type=CONTRACT"
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
                        allowInput="true" showNullItem="true" onvaluechanged="onFilterChanged"/>
             </div>
-            <div field="commissionState" width="70" type="comboboxcolumn" headerAlign="center" allowSort="false">
-                commissionState
-                <input property="editor" disable="true" class="mini-combobox" style="width:100%;" textField="text"
-                       valueField="value"
-                       url="http://localhost:8080/ws/commission/v1/states?type=COMMISSION"
-                       ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
-                       allowInput="true" showNullItem="true"/>
-                <input id="commissionStateFilter" property="filter" class="mini-combobox" style="width:100%;"
-                       textField="text" valueField="value"
-                       url="http://localhost:8080/ws/commission/v1/states?type=COMMISSION"
-                       ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
-                       allowInput="true" showNullItem="true" onvaluechanged="onFilterChanged"/>
+
+            <div field="branch" width="100" headerAlign="center" allowSort="false">网点
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="designCommissionRate" width="50" headerAlign="center" allowSort="false" vtype="float">
-                designCommissionRate
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
-            </div>
-            <div field="designerAssistantCommissionRate" width="50" headerAlign="center" allowSort="false"
+
+
+            <div field="designerAssistantCommissionRate" width="100" headerAlign="center" allowSort="false"
                  vtype="float">
-                designerAssistantCommissionRate
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
+                设计师助理提成比例
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="actualStartTime" width="80" headerAlign="center" allowSort="false" dateFormat="yyyy-MM-dd">
-                actualStartTime
-                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="80"/>
-                <input id="actualStartTimeFilter" property="filter" class="mini-datepicker" style="width:100%;"
-                       minWidth="80" onvaluechanged="onFilterChanged"/>
-            </div>
-            <div field="actualEndTime" width="80" headerAlign="center" allowSort="false" dateFormat="yyyy-MM-dd">
-                actualEndTime
-                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="80"/>
+
+            <div field="actualEndTime" width="100" headerAlign="center" allowSort="false" dateFormat="yyyy-MM-dd">
+                实际竣工
+                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
                 <input id="actualEndTimeFilter" property="filter" class="mini-datepicker" style="width:100%;"
                        minWidth="80" onvaluechanged="onFilterChanged"/>
             </div>
-            <div field="contractDate" width="80" headerAlign="center" allowSort="false" dateFormat="yyyy-MM-dd">
-                contractDate
-                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="80"/>
+
+            <div field="contractDate" width="100" headerAlign="center" allowSort="false" dateFormat="yyyy-MM-dd">
+                签约日期
+                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
                 <input id="contractDateFilter" property="filter" class="mini-datepicker" style="width:100%;"
-                       minWidth="80" onvaluechanged="onFilterChanged"/>
-            </div>
-            <div field="firstCommission" width="50" headerAlign="center" allowSort="false" vtype="float">
-                firstCommission
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
-            </div>
-            <div field="firstCommissionDate" width="80" headerAlign="center" allowSort="false"
-                 dateFormat="yyyy-MM-dd">
-                firstCommissionDate
-                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="80"/>
-                <input id="firstCommissionDateFilter" property="filter" class="mini-datepicker" style="width:100%;"
-                       minWidth="80" onvaluechanged="onFilterChanged"/>
-            </div>
-            <div field="balanceTime" width="80" headerAlign="center" allowSort="false" dateFormat="yyyy-MM-dd">
-                balanceTime
-                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="80"/>
-                <input id="balanceTimeFilter" property="filter" class="mini-datepicker" style="width:100%;"
-                       minWidth="80" onvaluechanged="onFilterChanged"/>
-            </div>
-            <div field="balanceCommission" width="50" headerAlign="center" allowSort="false" vtype="float">
-                balanceCommission
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
-            </div>
-            <div field="balanceCommissionDate" width="80" headerAlign="center" allowSort="false"
-                 dateFormat="yyyy-MM-dd">
-                balanceCommissionDate
-                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="80"/>
-                <input id="balanceCommissionDateFilter" property="filter" class="mini-datepicker" style="width:100%;"
                        minWidth="80" onvaluechanged="onFilterChanged"/>
             </div>
 
         </div>
     </div>
-
 </div>
 
 <!--导出Excel相关HTML-->
@@ -195,7 +262,29 @@
         var json = mini.encode(data);
         grid.loading("保存中，请稍后......");
         $.ajax({
-            url: 'http://localhost:8080/ws/commission/v1/projectCommissions',
+            url: 'http://localhost:8081/ws/commission/v1/projectCommissions',
+            data: json,
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json;charset=utf-8',
+            success: function (text) {
+                grid.reload();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR);
+                alert(textStatus);
+                alert(errorThrown);
+                alert(jqXHR.responseText);
+            }
+        });
+    }
+
+    function calculateCommission() {
+        var data = grid.getSelecteds();
+        var json = mini.encode(data);
+        grid.loading("保存中，请稍后......");
+        $.ajax({
+            url: '../ws/commission/v1/calculateCommission',
             data: json,
             type: 'post',
             dataType: 'json',
@@ -260,7 +349,16 @@
         excelForm.submit();
     }
 
-</script>
+    function onDrawSummaryCell(e) {
+        var result = e.result;
+        var grid = e.sender;
 
+        //客户端汇总计算
+        if (e.field == "firstCommission") {
+            e.cellHtml = "提成: " + e.cellHtml;
+        }
+    }
+
+</script>
 </body>
 </html>
