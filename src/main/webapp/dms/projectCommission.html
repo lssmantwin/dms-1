@@ -54,22 +54,25 @@
             <div field="customerName" width="70" headerAlign="center" allowSort="false">customerName
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="70"/>
             </div>
-            <div field="contractTotal" width="50" headerAlign="center" allowSort="false">contractTotal
+            <div field="contractTotal" width="50" headerAlign="center" allowSort="false" vtype="float">contractTotal
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
-            <div field="purchaseAgentFee" width="50" headerAlign="center" allowSort="false">purchaseAgentFee
+            <div field="purchaseAgentFee" width="50" headerAlign="center" allowSort="false" vtype="float">
+                purchaseAgentFee
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
-            <div field="projectChangeTotal" width="50" headerAlign="center" allowSort="false">projectChangeTotal
+            <div field="projectChangeTotal" width="50" headerAlign="center" allowSort="false" vtype="float">
+                projectChangeTotal
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
-            <div field="customerPay" width="50" headerAlign="center" allowSort="false">customerPay
+            <div field="customerPay" width="50" headerAlign="center" allowSort="false" vtype="float">customerPay
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
-            <div field="payContractRatio" width="50" headerAlign="center" allowSort="false">payContractRatio
+            <div field="payContractRatio" width="50" headerAlign="center" allowSort="false" vtype="float">
+                payContractRatio
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
-            <div field="payProjectRatio" width="50" headerAlign="center" allowSort="false">payProjectRatio
+            <div field="payProjectRatio" width="50" headerAlign="center" allowSort="false" vtype="float">payProjectRatio
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
             <div field="contractState" width="70" type="comboboxcolumn" headerAlign="center" allowSort="false">
@@ -98,10 +101,12 @@
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
                        allowInput="true" showNullItem="true" onvaluechanged="onFilterChanged"/>
             </div>
-            <div field="designCommissionRate" width="50" headerAlign="center" allowSort="false">designCommissionRate
+            <div field="designCommissionRate" width="50" headerAlign="center" allowSort="false" vtype="float">
+                designCommissionRate
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
-            <div field="designerAssistantCommissionRate" width="50" headerAlign="center" allowSort="false">
+            <div field="designerAssistantCommissionRate" width="50" headerAlign="center" allowSort="false"
+                 vtype="float">
                 designerAssistantCommissionRate
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
@@ -123,7 +128,7 @@
                 <input id="contractDateFilter" property="filter" class="mini-datepicker" style="width:100%;"
                        minWidth="80" onvaluechanged="onFilterChanged"/>
             </div>
-            <div field="firstCommission" width="50" headerAlign="center" allowSort="false">
+            <div field="firstCommission" width="50" headerAlign="center" allowSort="false" vtype="float">
                 firstCommission
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
@@ -140,7 +145,7 @@
                 <input id="balanceTimeFilter" property="filter" class="mini-datepicker" style="width:100%;"
                        minWidth="80" onvaluechanged="onFilterChanged"/>
             </div>
-            <div field="balanceCommission" width="50" headerAlign="center" allowSort="false">
+            <div field="balanceCommission" width="50" headerAlign="center" allowSort="false" vtype="float">
                 balanceCommission
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
@@ -177,6 +182,15 @@
     grid.load();
 
     function saveData() {
+
+        grid.validate();
+        if (grid.isValid() == false) {
+            alert("请校验输入单元格内容");
+            var error = grid.getCellErrors()[0];
+            grid.beginEditCell(error.record, error.column);
+            return;
+        }
+
         var data = grid.getChanges();
         var json = mini.encode(data);
         grid.loading("保存中，请稍后......");
@@ -241,7 +255,7 @@
         document.getElementById("firstCommissionDate").value = firstCommissionDate;
         document.getElementById("balanceTime").value = balanceTime;
         document.getElementById("balanceCommissionDate").value = balanceCommissionDate;
-        
+
         var excelForm = document.getElementById("excelForm");
         excelForm.submit();
     }
