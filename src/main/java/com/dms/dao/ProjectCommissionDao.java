@@ -10,18 +10,17 @@ import java.util.List;
 
 public interface ProjectCommissionDao {
 
-    List<ProjectCommissionDto> getProjectCommissions(DataGridRequest request);
+	List<ProjectCommissionDto> getProjectCommissions(DataGridRequest request);
 
-    int getProjectCommissionCount(DataGridRequest request);
+	int getProjectCommissionCount(DataGridRequest request);
 
-    ProjectCommissionDto getProjectCommission(String acNumber);
+	ProjectCommissionDto getProjectCommission(String acNumber);
 
-    int getProjects(Date startDate, Date endDate);
+	int getProjects(Date startDate, Date endDate);
 
-    void saveProjectCommission(List<ProjectCommissionDto> projectCommissions);
+	void saveProjectCommission(List<ProjectCommissionDto> projectCommissions);
 
-    int saveProjectCommission(ProjectCommissionDto projectCommission);
-
+	int saveProjectCommission(ProjectCommissionDto projectCommission);
 
 	List<ProjectCommissionDto> getProjectCommissions(ProjectCommissionFilterRequest request);
 
@@ -29,5 +28,5 @@ public interface ProjectCommissionDao {
 
 	void updateProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos);
 
-    void updateProjectCommission(ProjectCommissionDto projectCommission);
+	void updateProjectCommission(ProjectCommissionDto projectCommission);
 }

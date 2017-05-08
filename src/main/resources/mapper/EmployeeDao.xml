@@ -82,8 +82,10 @@
     </select>
 
     <insert id="saveEmployees" parameterType="list">
-        insert into "employee" (name, "position", hiredate, base_wage, bank_card_number, working_age_subsidy, overtime,
-        meals_subsidy, secrecy_subsidy, communication_fee, jyw_commission_ratio, commencement_ratio, completion_ratio,
+        insert into "employee" (name, "position", hiredate, base_wage, bank_card_number,
+        working_age_subsidy, overtime,
+        meals_subsidy, secrecy_subsidy, communication_fee,
+        jyw_commission_ratio, commencement_ratio, completion_ratio,
         renovate_commossion_ratio)
         values
         <foreach collection="list" item="item" index="index" separator=",">
