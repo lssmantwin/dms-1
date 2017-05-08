@@ -50,17 +50,17 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
                 commission.setDesignerAssistantCommission(commission.getCommissionBase().multiply(commission.getDesignerAssistantCommissionRate()).setScale(2, BigDecimal.ROUND_HALF_UP));
                 commission.setDesignerAssistantCommissionDate(LocalDateTime.now());
             }
-            int commissionState = CommissionStateEnum.COMMISSION_STATE_START.getDbConstant();
-            if (CommissionStateEnum.COMMISSION_STATE_START.getDbConstant() == commission.getCommissionState()) {
+			CommissionStateEnum commissionState = CommissionStateEnum.COMMISSION_STATE_START;
+            if (CommissionStateEnum.COMMISSION_STATE_START  == commission.getCommissionState()) {
                 BigDecimal firstCommission = BigDecimal.ZERO;
                 //小于1万 提成250
                 if (commission.getContractTotal() != null
                         && commission.getContractTotal().compareTo(DmsConstants.MIN_CONTRACT_COMMISSION) <= 0) {
                     firstCommission = DmsConstants.MIN_COMMISSION;
-                    commissionState = CommissionStateEnum.COMMISSION_STATE_FINISH.getDbConstant();
+                    commissionState = CommissionStateEnum.COMMISSION_STATE_FINISH;
                 } else {
                     if (commission.getDesignCommissionRate() != null && commission.getFirstCommissionRate() != null) {
-                        commissionState = CommissionStateEnum.COMMISSION_STATE_FIRST.getDbConstant();
+                        commissionState = CommissionStateEnum.COMMISSION_STATE_FIRST;
                         firstCommission = commission.getCommissionBase().multiply(commission.getDesignCommissionRate()).
                                 multiply(commission.getFirstCommissionRate());
                     }
@@ -74,10 +74,10 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
                 }
 
                 projectCommissionDao.updateProjectCommission(commission);
-            } else if (CommissionStateEnum.COMMISSION_STATE_FIRST.getDbConstant() == commission.getCommissionState()
+            } else if (CommissionStateEnum.COMMISSION_STATE_FIRST == commission.getCommissionState()
                     && commission.getProjectChangeTotal() != null) {
                 BigDecimal balanceCommission = BigDecimal.ZERO;
-                commissionState = CommissionStateEnum.COMMISSION_STATE_FINISH.getDbConstant();
+                commissionState = CommissionStateEnum.COMMISSION_STATE_FINISH;
                 balanceCommission = commission.getCommissionBase().add(commission.getProjectChangeTotal());
                 balanceCommission = balanceCommission .multiply(commission.getDesignCommissionRate()).subtract(commission.getFirstCommission());
                 commission.setBalanceCommission(balanceCommission.setScale(2, BigDecimal.ROUND_HALF_UP));
@@ -102,13 +102,13 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
         //projectCommissionDao.saveProjectCommission(projectCommission);
     }
 
-    @Override
-    public void updateProjectCommission(ProjectCommissionDto projectCommission) {
-        if (projectCommission.getCommissionBase() == null && projectCommission.getPurchasingCost() != null) {
-            projectCommission.getContractTotal().subtract(projectCommission.getPurchasingCost());
-        }
-        projectCommissionDao.updateProjectCommission(projectCommission);
-    }
+	@Override
+	public void updateProjectCommission(ProjectCommissionDto projectCommission) {
+		if (projectCommission.getCommissionBase() == null && projectCommission.getPurchasingCost() != null) {
+			projectCommission.getContractTotal().subtract(projectCommission.getPurchasingCost());
+		}
+		projectCommissionDao.updateProjectCommission(projectCommission);
+	}
 
 	@Override
 	public List<ProjectCommissionDto> getProjectCommissions(ProjectCommissionFilterRequest request) {
@@ -122,8 +122,8 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 
 	@Override
 	public void updateProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos) {
-        for (ProjectCommissionDto projectCommissionDto : projectCommissionDtos) {
-            projectCommissionDao.updateProjectCommission(projectCommissionDto);
-        }
+		for (ProjectCommissionDto projectCommissionDto : projectCommissionDtos) {
+			projectCommissionDao.updateProjectCommission(projectCommissionDto);
+		}
 	}
 }

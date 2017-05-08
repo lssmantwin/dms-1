@@ -79,7 +79,7 @@
                        textField="text" valueField="value"
                        url="../ws/commission/v1/states?type=COMMISSION"
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
-                       allowInput="true" showNullItem="true" onvaluechanged="onFilterChanged"/>
+                       allowInput="true" showNullItem="true" onvaluechanged="onFilterChanged()"/>
             </div>
 
             <div header="首提信息">
@@ -260,7 +260,7 @@
         var payProjectRatio = mini.get("payProjectFilter").getValue();
         var designerAssistant = mini.get("designerAssistantFilter").getValue();
         var firstCommissionDate = mini.get("firstCommissionDateFilter").getText();
-        alert(designer);
+        alert(commissionState);
         grid.load({
             designer: designer,
             designerAssistant: designerAssistant,
