@@ -78,12 +78,7 @@
                        onvaluechanged="onFilterChanged"/>
             </div>
 
-            <div type="comboboxcolumn" field="commissionState" width="60" headerAlign="center" allowSort="false">提成状态
-                <input property="editor" readonly="true" class="mini-combobox" style="width:100%;" textField="text"
-                       valueField="value"
-                       url="../ws/commission/v1/states?type=COMMISSION"
-                       ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
-                       allowInput="true" showNullItem="true"/>
+            <div field="commissionState" width="60" headerAlign="center" allowSort="false">提成状态
                 <input id="commissionStateFilter" property="filter" class="mini-combobox" style="width:100%;"
                        textField="text" valueField="value"
                        url="../ws/commission/v1/states?type=COMMISSION"
@@ -191,13 +186,8 @@
             <div field="customerPay" width="100" headerAlign="center" allowSort="false">已付
             </div>
 
-            <div field="contractState" width="70" type="comboboxcolumn" headerAlign="center" allowSort="false">
+            <div field="contractState" width="70" headerAlign="center" allowSort="false">
                 状态
-                <input property="editor" readonly="true" class="mini-combobox asLabel"
-                       style="width:100%;" textField="text" valueField="value"
-                       url="http://localhost:8080/ws/commission/v1/states?type=CONTRACT"
-                       ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
-                       allowInput="true" showNullItem="true" readonly="true"/>
                 <input id="contractStateFilter" property="filter" class="mini-combobox" style="width:100%;"
                        textField="text" valueField="value"
                        url="http://localhost:8080/ws/commission/v1/states?type=CONTRACT"

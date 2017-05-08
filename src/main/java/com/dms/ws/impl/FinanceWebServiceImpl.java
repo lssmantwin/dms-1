@@ -1,5 +1,13 @@
 package com.dms.ws.impl;
 
+import java.math.BigDecimal;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.dms.dto.FinanceDto;
 import com.dms.request.DataGridRequest;
 import com.dms.request.FinanceRequest;
@@ -8,13 +16,6 @@ import com.dms.service.EmployeeService;
 import com.dms.service.FinanceService;
 import com.dms.utils.PersonalIncomeTaxUtils;
 import com.dms.ws.FinanceWebService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 @Service("financeWebService")
 public class FinanceWebServiceImpl implements FinanceWebService {
@@ -50,12 +51,7 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 
 		for (FinanceDto financeDto : request.getFinances()) {
 			financeDto.setMonth(request.getMonth());
-			BigDecimal grossPay = financeDto.getBaseWage().add(financeDto.getOvertime()).add(financeDto.getMealsSubsidy()).add(financeDto.getSecrecySubsidy())
-					.add(financeDto.getBonus()).add(financeDto.getWorkingAgeSubsidy()).add(financeDto.getPerformanceAppraisal())
-					.add(financeDto.getCommunicationFee()).add(financeDto.getOtherSubsidy()).subtract(financeDto.getCharge())
-					.subtract(financeDto.getExhibitionCharge()).subtract(financeDto.getCasualLeave()).subtract(financeDto.getSickLeave())
-					.subtract(financeDto.getStorageCharge());
-			financeDto.setGrossPay(grossPay);
+			financeDto.setGrossPay(calculateGrossPay(financeDto));
 			financeDto.setBeforeTaxSalary(financeDto.getGrossPay().subtract(financeDto.getMedicalInsurance()).subtract(financeDto.getHousingFund()));
 			BigDecimal personalIncomeTax = PersonalIncomeTaxUtils.getPersonalIncomeTax(financeDto.getBeforeTaxSalary());
 			financeDto.setPersonalIncomeTax(personalIncomeTax);
@@ -66,6 +62,53 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 				financeService.updateFinance(financeDto);
 			}
 		}
+	}
+
+	private BigDecimal calculateGrossPay(FinanceDto financeDto) {
+		BigDecimal grossPay = BigDecimal.ZERO;
+		if (financeDto.getBaseWage() != null) {
+			grossPay = grossPay.add(financeDto.getBaseWage());
+		}
+		if (financeDto.getOvertime() != null) {
+			grossPay = grossPay.add(financeDto.getOvertime());
+		}
+		if (financeDto.getMealsSubsidy() != null) {
+			grossPay = grossPay.add(financeDto.getMealsSubsidy());
+		}
+		if (financeDto.getSecrecySubsidy() != null) {
+			grossPay = grossPay.add(financeDto.getSecrecySubsidy());
+		}
+		if (financeDto.getBonus() != null) {
+			grossPay = grossPay.add(financeDto.getBonus());
+		}
+		if (financeDto.getWorkingAgeSubsidy() != null) {
+			grossPay = grossPay.add(financeDto.getWorkingAgeSubsidy());
+		}
+		if (financeDto.getPerformanceAppraisal() != null) {
+			grossPay = grossPay.add(financeDto.getPerformanceAppraisal());
+		}
+		if (financeDto.getCommunicationFee() != null) {
+			grossPay = grossPay.add(financeDto.getCommunicationFee());
+		}
+		if (financeDto.getOtherSubsidy() != null) {
+			grossPay = grossPay.add(financeDto.getOtherSubsidy());
+		}
+		if (financeDto.getCharge() != null) {
+			grossPay.subtract(financeDto.getCharge());
+		}
+		if (financeDto.getExhibitionCharge() != null) {
+			grossPay.subtract(financeDto.getExhibitionCharge());
+		}
+		if (financeDto.getCasualLeave() != null) {
+			grossPay.subtract(financeDto.getCasualLeave());
+		}
+		if (financeDto.getSickLeave() != null) {
+			grossPay.subtract(financeDto.getSickLeave());
+		}
+		if (financeDto.getStorageCharge() != null) {
+			grossPay.subtract(financeDto.getStorageCharge());
+		}
+		return grossPay;
 	}
 
 	private DataGridRequest generateDataGridRequest(String key, int pageIndex, int pageSize, String sortField, String sortOrder, String month) {

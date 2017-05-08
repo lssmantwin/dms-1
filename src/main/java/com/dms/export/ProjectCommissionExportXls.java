@@ -90,19 +90,15 @@ public class ProjectCommissionExportXls implements StreamSource {
 			cell10.setCellValue(dto.getPayProjectRatio() == null ? StringUtils.EMPTY : dto.getPayProjectRatio().toString());
 
 			Cell cell11 = row.createCell(cellNumber++);
-			if (StringUtils.isNotBlank(dto.getContractState())) {
-				ContractStateEnum state = ContractStateEnum.fromDbConstant(Integer.parseInt(dto.getContractState()));
-				if (state != null) {
-					cell11.setCellValue(state.getText());
-				}
+			ContractStateEnum contractState = dto.getContractState();
+			if (contractState != null) {
+				cell11.setCellValue(contractState.getText());
 			}
 
 			Cell cell12 = row.createCell(cellNumber++);
-			if (dto.getCommissionState() != 0) {
-				CommissionStateEnum state = CommissionStateEnum.fromDbConstant(dto.getCommissionState());
-				if (state != null) {
-					cell12.setCellValue(state.getText());
-				}
+			CommissionStateEnum commissionState = dto.getCommissionState();
+			if (commissionState != null) {
+				cell12.setCellValue(commissionState.getText());
 			}
 
 			Cell cell13 = row.createCell(cellNumber++);

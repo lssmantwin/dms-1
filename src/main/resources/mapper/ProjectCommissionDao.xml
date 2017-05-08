@@ -22,8 +22,10 @@
         <result property="payContractRatio" column="pay_contract_ratio"
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="payProjectRatio" column="pay_project_ratio" typeHandler="com.dms.handler.BigDecimalHandler"/>
-        <result property="contractState" column="contract_state"/>
-        <result property="commissionState" column="commission_state"/>
+        <result property="contractState" column="contract_state"
+                typeHandler="com.dms.handler.ContractStateEnumHandler"/>
+        <result property="commissionState" column="commission_state"
+                typeHandler="com.dms.handler.CommissionStateEnumHandler"/>
         <result property="contractDate" column="contract_date" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="actualStartTime" column="actual_start_time"
                 typeHandler="com.dms.handler.LocalDateTimeHandler"/>
@@ -35,8 +37,10 @@
                 typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="designerAssistant" column="designer_assistant"/>
         <result property="firstCommission" column="first_commission" typeHandler="com.dms.handler.BigDecimalHandler"/>
-        <result property="firstCommissionRate" column="first_commission_rate" typeHandler="com.dms.handler.BigDecimalHandler"/>
-        <result property="firstCommissionDate" column="first_commission_date" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
+        <result property="firstCommissionRate" column="first_commission_rate"
+                typeHandler="com.dms.handler.BigDecimalHandler"/>
+        <result property="firstCommissionDate" column="first_commission_date"
+                typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="balanceCommission" column="balance_commission"
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="designCommissionRate" column="design_commission_rate"
@@ -152,7 +156,6 @@
     </select>
 
 
-
     <insert id="saveProjects" parameterType="ProjectCommissionDto">
         INSERT INTO dms.dbo.Project_Commission
         (
@@ -179,7 +182,7 @@
             #{item.projectChangeTotal}, #{item.customerPay},
             #{item.payContractRatio}, #{item.payProjectRatio}, #{item.contractState},
             ${item.contractDate}, #{item.actualStartTime}, #{item.actualEndTime},
-            #{item.balanceTime},  #{item.customerName}, #{item.createdTime})
+            #{item.balanceTime}, #{item.customerName}, #{item.createdTime})
         </foreach>
     </insert>
 

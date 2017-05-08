@@ -1,14 +1,20 @@
 package com.dms.dto;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+
+import org.joda.time.LocalDateTime;
+
+import com.dms.enums.CommissionStateEnum;
+import com.dms.enums.ContractStateEnum;
+import com.dms.serializable.CommissionStateJacksonSerializable;
+import com.dms.serializable.ContractStateJacksonSerializable;
 import com.dms.serializable.LocalDateTimeJacksonDeSerializable;
 import com.dms.serializable.LocalDateTimeJacksonSerializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.joda.time.LocalDateTime;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProjectCommissionDto implements Serializable {
 	private Long id;
@@ -23,8 +29,10 @@ public class ProjectCommissionDto implements Serializable {
 	private BigDecimal customerPay;
 	private BigDecimal payContractRatio;
 	private BigDecimal payProjectRatio;
-	private String contractState;
-	private int commissionState;
+	@JsonSerialize(using = ContractStateJacksonSerializable.class)
+	private ContractStateEnum contractState;
+	@JsonSerialize(using = CommissionStateJacksonSerializable.class)
+	private CommissionStateEnum commissionState;
 	private BigDecimal firstCommissionRate;
 	private BigDecimal balanceCommissionRate;
 	private BigDecimal firstCommission;
@@ -78,6 +86,7 @@ public class ProjectCommissionDto implements Serializable {
 	public void setCommissionBase(BigDecimal commissionBase) {
 		this.commissionBase = commissionBase;
 	}
+
 	public Long getId() {
 		return id;
 	}
@@ -170,12 +179,16 @@ public class ProjectCommissionDto implements Serializable {
 		this.payProjectRatio = payProjectRatio;
 	}
 
-	public String getContractState() {
+	public ContractStateEnum getContractState() {
 		return contractState;
 	}
 
-	public void setContractState(String contractState) {
+	public void setContractState(ContractStateEnum contractState) {
 		this.contractState = contractState;
+	}
+
+	public void setCommissionState(CommissionStateEnum commissionState) {
+		this.commissionState = commissionState;
 	}
 
 	public BigDecimal getDesignCommissionRate() {
@@ -242,12 +255,8 @@ public class ProjectCommissionDto implements Serializable {
 		this.designerAssistantCommissionRate = designerAssistantCommissionRate;
 	}
 
-	public int getCommissionState() {
+	public CommissionStateEnum getCommissionState() {
 		return commissionState;
-	}
-
-	public void setCommissionState(int commissionState) {
-		this.commissionState = commissionState;
 	}
 
 	public BigDecimal getFirstCommission() {
@@ -278,7 +287,6 @@ public class ProjectCommissionDto implements Serializable {
 		return balanceCommissionRate;
 	}
 
-
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -286,7 +294,6 @@ public class ProjectCommissionDto implements Serializable {
 	public void setBalanceCommissionRate(BigDecimal balanceCommissionRate) {
 		this.balanceCommissionRate = balanceCommissionRate;
 	}
-
 
 	public LocalDateTime getCreatedTime() {
 		return createdTime;
@@ -303,7 +310,6 @@ public class ProjectCommissionDto implements Serializable {
 	public void setUpdatedTime(LocalDateTime updatedTime) {
 		this.updatedTime = updatedTime;
 	}
-
 
 	public BigDecimal getDesignerAssistantCommission() {
 		return designerAssistantCommission;
@@ -344,4 +350,3 @@ public class ProjectCommissionDto implements Serializable {
 		return getAcNumber() != null ? getAcNumber().hashCode() : 0;
 	}
 }
-
