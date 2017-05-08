@@ -3,6 +3,7 @@ package com.dms.ws.impl;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,8 +65,12 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 			updateEmployees.add(employeeDto);
 		}
 
-		employeeService.saveEmployees(addEmployees);
-		employeeService.updateEmployees(updateEmployees);
+		if (CollectionUtils.isNotEmpty(addEmployees)) {
+			employeeService.saveEmployees(addEmployees);
+		}
+		if (CollectionUtils.isNotEmpty(updateEmployees)) {
+			employeeService.updateEmployees(updateEmployees);
+		}
 	}
 
 	@Override

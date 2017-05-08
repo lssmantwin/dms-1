@@ -27,10 +27,6 @@
                 <span class="separator"></span>
                 <a class="mini-button" iconCls="icon-save" plain="true" onclick="saveData()">保存</a>
             </td>
-            <!--<td style="white-space:nowrap;"><label style="font-family:Verdana;">名称: </label>-->
-            <!--<input id="key" class="mini-textbox" emptyText="请输入姓名" style="width:150px;" onenter="onKeyEnter"/>-->
-            <!--<a class="mini-button" iconCls="icon-search" plain="true" onclick="onSearch()">查询</a>-->
-            <!--</td>-->
         </tr>
     </table>
 </div>
@@ -122,7 +118,6 @@
 
         var data = grid.getChanges();
         var json = mini.encode(data);
-        alert(json);
         grid.loading("保存中，请稍后......");
         $.ajax({
             url: "../ws/employee/v1/employees",
@@ -134,9 +129,6 @@
                 grid.reload();
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                alert(jqXHR);
-                alert(textStatus);
-                alert(errorThrown);
                 alert(jqXHR.responseText);
             }
         });
