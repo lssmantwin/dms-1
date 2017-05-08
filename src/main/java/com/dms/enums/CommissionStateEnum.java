@@ -2,7 +2,7 @@ package com.dms.enums;
 
 public enum CommissionStateEnum implements Enums {
 
-	COMMISION_STATE_START(0, "未提"), COMMISION_STATE_FIRST(1, "首提"), COMMISION_STATE_FINISH(2, "已提");
+	COMMISSION_STATE_START(0, "未提"), COMMISSION_STATE_FIRST(1, "首提"), COMMISSION_STATE_FINISH(2, "已提");
 
 	private int dbConstant;
 	private String text;

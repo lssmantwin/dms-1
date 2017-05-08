@@ -150,24 +150,26 @@
         </where>
         ) t
         <where>
-            t.rn BETWEEN #{start} and #{end}
-            <choose>
-                <when test="sortField == 'designer'">
-                    order by designer
-                </when>
-                <otherwise>
-                    order by id
-                </otherwise>
-            </choose>
-            <choose>
-                <when test="sortOrder == 'desc'">
-                    desc
-                </when>
-                <otherwise>
-                    asc
-                </otherwise>
-            </choose>
+            <if test="end > 0">
+                t.rn BETWEEN #{start} and #{end}
+            </if>
         </where>
+        <choose>
+            <when test="sortField == 'designer'">
+                order by designer
+            </when>
+            <otherwise>
+                order by id
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="sortOrder == 'desc'">
+                desc
+            </when>
+            <otherwise>
+                asc
+            </otherwise>
+        </choose>
     </select>
 
     <select id="getProjectCommission" parameterType="java.lang.String" resultType="int">

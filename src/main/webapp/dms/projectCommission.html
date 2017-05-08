@@ -3,7 +3,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Fit Layout</title>
+    <title>Project Commission</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <link href="../demo.css" rel="stylesheet" type="text/css"/>
     <script src="../../scripts/boot.js" type="text/javascript"></script>
@@ -27,21 +27,10 @@
     <table style="width:100%;">
         <tr>
             <td style="width:100%;">
-                <!--<input id="combo1" class="mini-combobox" style="width:150px;" textField="text" valueField="value"-->
-                <!--url="http://localhost:8080/ws/employee/v1/months"-->
-                <!--ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"-->
-                <!--required="true" allowInput="true" showNullItem="false" onvaluechanged="onMonthChange"/>-->
-                <!--<span class="separator"></span>-->
-                <!--<a class="mini-button" iconCls="icon-add" plain="true" onclick="addRow()">增加</a>-->
-                <!--<span class="separator"></span>-->
                 <a class="mini-button" iconCls="icon-save" plain="true" onclick="saveData()">保存</a>
-                <input type="button" value="计算提成" onclick="calculateCommission()" style="margin-left:50px;"/>
-                <input type="button" value="导出Excel" onclick="ExportExcel()" style="margin-left:50px;"/>
+                <a class="mini-button" iconCls="icon-node" plain="true" onclick="calculateCommission()">计算提成</a>
+                <a class="mini-button" iconCls="icon-upload" plain="true" onclick="ExportExcel()">导出Excel</a>
             </td>
-            <!--<td style="white-space:nowrap;"><label style="font-family:Verdana;">名称: </label>-->
-            <!--<input id="key" class="mini-textbox" emptyText="请输入姓名" style="width:150px;" onenter="onKeyEnter"/>-->
-            <!--<a class="mini-button" iconCls="icon-search" plain="true" onclick="onSearch()">查询</a>-->
-            <!--</td>-->
         </tr>
     </table>
 </div>
@@ -102,7 +91,7 @@
                     <div field="contractTotal" width="100" numberFormat="¥#,0.00" headerAlign="center" allowSort="false">合同价
                     </div>
                     <div field="purchasingCost"  width="80" numberFormat="¥#,0.00" headerAlign="center" allowSort="false">代采金额
-                    <input property="editor" vtype="float" class="mini-textbox" style="width:100%;" minWidth="80"/></div>
+                        <input property="editor" vtype="float" class="mini-textbox" style="width:100%;" minWidth="80"/></div>
                     <div field="commissionBase" width="80" headerAlign="center" numberFormat="¥#,0.00" allowSort="false">折算后合同价
                     </div>
                     <div field="designCommissionRate" width="60" numberFormat="00.00%" headerAlign="center" allowSort="false">
@@ -117,7 +106,7 @@
                     <div field="firstCommissionDate" width="80" headerAlign="center" allowSort="false" dateFormat="yyyy-MM-dd">
                         首提日期
                         <input id="firstCommissionDateFilter" property="filter" class="mini-datepicker" style="width:100%;"
-                                   minWidth="100" onvaluechanged="onFilterChanged"/>
+                               minWidth="100" onvaluechanged="onFilterChanged"/>
                     </div>
                 </div>
             </div>
@@ -168,7 +157,7 @@
             </div>
 
             <div field="customerPay" width="100" numberFormat="¥#,0.00"  headerAlign="center" allowSort="false">已付
-             </div>
+            </div>
             <div field="contractState" width="60" headerAlign="center" allowSort="false">状态
             </div>
             <div field="branch" width="80" headerAlign="center" allowSort="false">网点
@@ -191,6 +180,19 @@
 
 </div>
 
+<!--导出Excel相关HTML-->
+<form id="excelForm" action="http://localhost:8080/ws/commission/v1/export" method="get">
+    <input type="hidden" name="designer" id="designer"/>
+    <input type="hidden" name="contractState" id="contractState"/>
+    <input type="hidden" name="commissionState" id="commissionState"/>
+    <input type="hidden" name="actualStartTime" id="actualStartTime"/>
+    <input type="hidden" name="actualEndTime" id="actualEndTime"/>
+    <input type="hidden" name="contractDate" id="contractDate"/>
+    <input type="hidden" name="firstCommissionDate" id="firstCommissionDate"/>
+    <input type="hidden" name="balanceTime" id="balanceTime"/>
+    <input type="hidden" name="balanceCommissionDate" id="balanceCommissionDate"/>
+</form>
+
 <script type="text/javascript">
 
     mini.parse();
@@ -198,6 +200,15 @@
     grid.load();
 
     function saveData() {
+
+        grid.validate();
+        if (grid.isValid() == false) {
+            alert("请校验输入单元格内容");
+            var error = grid.getCellErrors()[0];
+            grid.beginEditCell(error.record, error.column);
+            return;
+        }
+
         var data = grid.getChanges();
         var json = mini.encode(data);
         grid.loading("保存中，请稍后......");
@@ -219,12 +230,12 @@
         });
     }
 
-     function calculateCommission() {
+    function calculateCommission() {
         var data = grid.getSelecteds();
         var json = mini.encode(data);
         grid.loading("保存中，请稍后......");
         $.ajax({
-            url: 'http://localhost:8081/ws/commission/v1/calculateCommission',
+            url: '../ws/commission/v1/calculateCommission',
             data: json,
             type: 'post',
             dataType: 'json',
@@ -260,6 +271,32 @@
             firstCommissionDate: firstCommissionDate,
         });
     }
+
+    function ExportExcel() {
+        var designer = mini.get("designerFilter").getValue();
+        var contractState = mini.get("contractStateFilter").getValue();
+        var commissionState = mini.get("commissionStateFilter").getValue();
+        var actualStartTime = mini.get("actualStartTimeFilter").getText();
+        var actualEndTime = mini.get("actualEndTimeFilter").getText();
+        var contractDate = mini.get("contractDateFilter").getText();
+        var firstCommissionDate = mini.get("firstCommissionDateFilter").getText();
+        var balanceTime = mini.get("balanceTimeFilter").getText();
+        var balanceCommissionDate = mini.get("balanceCommissionDateFilter").getText();
+
+        document.getElementById("designer").value = designer;
+        document.getElementById("contractState").value = contractState;
+        document.getElementById("commissionState").value = commissionState;
+        document.getElementById("actualStartTime").value = actualStartTime;
+        document.getElementById("actualEndTime").value = actualEndTime;
+        document.getElementById("contractDate").value = contractDate;
+        document.getElementById("firstCommissionDate").value = firstCommissionDate;
+        document.getElementById("balanceTime").value = balanceTime;
+        document.getElementById("balanceCommissionDate").value = balanceCommissionDate;
+
+        var excelForm = document.getElementById("excelForm");
+        excelForm.submit();
+    }
+
     function onDrawSummaryCell(e) {
         var result = e.result;
         var grid = e.sender;
@@ -267,10 +304,9 @@
         //客户端汇总计算
         if (e.field == "firstCommission") {
             e.cellHtml = "提成: " + e.cellHtml;
-       }
+        }
     }
 
 </script>
 </body>
-
 </html>

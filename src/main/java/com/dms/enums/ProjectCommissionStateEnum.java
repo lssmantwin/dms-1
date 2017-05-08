@@ -2,7 +2,7 @@ package com.dms.enums;
 
 public enum ProjectCommissionStateEnum {
 
-	NO_COMMISION(1), FIRST_COMMISION(2), END_COMMISION(3);
+	NO_COMMISSION(1), FIRST_COMMISSION(2), END_COMMISSION(3);
 
 	private int dbConstant;
 

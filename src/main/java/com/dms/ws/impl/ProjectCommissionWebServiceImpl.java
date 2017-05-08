@@ -5,16 +5,22 @@ import com.dms.dto.ProjectCommissionDto;
 import com.dms.enums.CommissionStateEnum;
 import com.dms.enums.ContractStateEnum;
 import com.dms.enums.EnumType;
+import com.dms.export.ProjectCommissionExportXls;
 import com.dms.request.ProjectCommissionFilterRequest;
 import com.dms.response.DataGridResponse;
 import com.dms.service.ProjectCommissionService;
+import com.dms.utils.FileFactory;
 import com.dms.ws.ProjectCommissionWebService;
 import com.google.common.collect.Lists;
+import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,94 +28,117 @@ import java.util.stream.Collectors;
 @Service("projectCommissionWebService")
 public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ProjectCommissionWebServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectCommissionWebServiceImpl.class);
 
-	@Autowired
-	private ProjectCommissionService projectCommissionService;
+    @Autowired
+    private ProjectCommissionService projectCommissionService;
 
-	public List<EnumDto> getStates(String type) {
-		if (EnumType.CONTRACT.toString().equals(type)) {
-			return Lists.newArrayList(ContractStateEnum.values()).stream().map(m -> new EnumDto(m.getDbConstant(), m.getText())).collect(Collectors.toList());
-		}
-		if (EnumType.COMMISSION.toString().equals(type)) {
-			return Lists.newArrayList(CommissionStateEnum.values()).stream().map(m -> new EnumDto(m.getDbConstant(), m.getText())).collect(Collectors.toList());
-		}
-		return Lists.newArrayList();
-	}
+    @Override
+    public Response export(String designer, String designerAssistant,
+                           String contractState, String commissionState, String contractId,//
+                           String payContractRatio, String payProjectRatio,//
+                           String actualStartTime, String actualEndTime, String contractDate, //
+                           String firstCommissionDate, String balanceTime, String balanceCommissionDate) {
 
-	@Override
-	public void saveProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos) {
+        LOGGER.info("export project commission");
 
-		LOGGER.info("save project commissions, {}", projectCommissionDtos);
+        ProjectCommissionFilterRequest request = generateProjectCommissionFilterRequest(designer, designerAssistant, contractState, commissionState, contractId, payContractRatio, payProjectRatio, actualStartTime,
+                actualEndTime, contractDate, firstCommissionDate, balanceTime, balanceCommissionDate, 0, 0, null, null);
 
-		projectCommissionService.updateProjectCommissions(projectCommissionDtos);
-	}
+        List<ProjectCommissionDto> projectCommissions = projectCommissionService.getProjectCommissions(request);
 
-	@Override
+        InputStream in = null;
 
-	public void calculateProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos) {
+        try {
+            in = new ProjectCommissionExportXls(projectCommissions).getStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-		LOGGER.info("save project commissions, {}", projectCommissionDtos);
-
-		projectCommissionService.calculateCommission(projectCommissionDtos);
-	}
+        return FileFactory.getResponse(in, LocalDateTime.now().toString("yyyyMMddHHmmSS"));
+    }
 
 
-	public DataGridResponse<List<ProjectCommissionDto>> getProjectCommissions(String designer, String designerAssistant,
-			String contractState, String commissionState, String contractId,//
-			 String payContractRatio, String payProjectRatio,//
-			String actualStartTime, String actualEndTime, String contractDate, //
-			 String firstCommissionDate, String balanceTime, String balanceCommissionDate,//
-			int pageIndex, int pageSize, String sortField, String sortOrder) {
+    @Override
+    public List<EnumDto> getStates(String type) {
+        if (EnumType.CONTRACT.toString().equals(type)) {
+            return Lists.newArrayList(ContractStateEnum.values()).stream().map(m -> new EnumDto(m.getDbConstant(), m.getText())).collect(Collectors.toList());
+        }
+        if (EnumType.COMMISSION.toString().equals(type)) {
+            return Lists.newArrayList(CommissionStateEnum.values()).stream().map(m -> new EnumDto(m.getDbConstant(), m.getText())).collect(Collectors.toList());
+        }
+        return Lists.newArrayList();
+    }
 
-		LOGGER.info(
-				"get project commissions, designer {}, designerAssistant {}, contractState {}, contractId {},payContractRatio {}," +//
-				" payProjectRatio {},  commissionState {}, actualStartTime {}, actualEndTime {}, contractDate {}, firstCommissionDate {}, " +//
-				"balanceTime {}, balanceCommissionDate {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}",//
-				designer, designerAssistant, contractState, commissionState, contractId, payContractRatio, payProjectRatio, actualStartTime, actualEndTime, contractDate, firstCommissionDate, balanceTime, balanceCommissionDate,
-				pageIndex, pageSize, sortField, sortOrder);
+    @Override
+    public void saveProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos) {
 
-		ProjectCommissionFilterRequest request = generateProjectCommissionFilterRequest(designer, designerAssistant, contractState, commissionState,contractId, payContractRatio, payProjectRatio, actualStartTime,
-				 actualEndTime, contractDate, firstCommissionDate, balanceTime, balanceCommissionDate, pageIndex, pageSize, sortField, sortOrder);
+        LOGGER.info("save project commissions, {}", projectCommissionDtos);
 
-		int count = projectCommissionService.getProjectCommissionCount(request);
-		List<ProjectCommissionDto> projectCommissions = projectCommissionService.getProjectCommissions(request);
+        projectCommissionService.updateProjectCommissions(projectCommissionDtos);
+    }
 
-		DataGridResponse<List<ProjectCommissionDto>> response = new DataGridResponse<>();
-		response.setTotal(count);
-		response.setData(projectCommissions);
+    @Override
+    public void calculateProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos) {
+        LOGGER.info("save project commissions, {}", projectCommissionDtos);
+        projectCommissionService.calculateCommission(projectCommissionDtos);
+    }
 
-		return response;
-	}
+    public DataGridResponse<List<ProjectCommissionDto>> getProjectCommissions(String designer, String designerAssistant,
+                                                                              String contractState, String commissionState, String contractId,//
+                                                                              String payContractRatio, String payProjectRatio,//
+                                                                              String actualStartTime, String actualEndTime, String contractDate, //
+                                                                              String firstCommissionDate, String balanceTime, String balanceCommissionDate,//
+                                                                              int pageIndex, int pageSize, String sortField, String sortOrder) {
 
-	private ProjectCommissionFilterRequest generateProjectCommissionFilterRequest(String designer, String designerAssistant,
-			  String contractState, String commissionState, String contractId, //
-			 String payContractRatio, String payProjectRatio,  String actualStartTime,//
-			 String actualEndTime, String contractDate, String firstCommissionDate, String balanceTime, String balanceCommissionDate,
-			int pageIndex, int pageSize, String sortField, String sortOrder) {
-		ProjectCommissionFilterRequest request = new ProjectCommissionFilterRequest();
-		request.setStart(pageIndex * pageSize + 1);
-		request.setEnd((pageIndex + 1) * pageSize);
-		request.setDesigner(designer);
-		request.setDesignerAssistant(designerAssistant);
-		request.setContractId(contractId);
-		request.setContractState(contractState);
-		if (payContractRatio != null && !payContractRatio.equals("")) {
-			request.setPayContractRatio(new BigDecimal(payContractRatio));
-		}
-		if (payProjectRatio != null && !payProjectRatio.equals("")) {
-			request.setPayProjectRatio(new BigDecimal(payProjectRatio));
-		}
-		request.setCommissionState(commissionState);
-		request.setActualEndTime(actualStartTime);
-		request.setActualEndTime(actualEndTime);
-		request.setContractDate(contractDate);
-		request.setFirstCommissionDate(firstCommissionDate);
-		request.setBalanceTime(balanceTime);
-		request.setBalanceCommissionDate(balanceCommissionDate);
-		request.setSortField(sortField);
-		request.setSortOrder(sortOrder);
-		return request;
-	}
+        LOGGER.info(
+                "get project commissions, designer {}, designerAssistant {}, contractState {}, contractId {},payContractRatio {}," +//
+                        " payProjectRatio {},  commissionState {}, actualStartTime {}, actualEndTime {}, contractDate {}, firstCommissionDate {}, " +//
+                        "balanceTime {}, balanceCommissionDate {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}",//
+                designer, designerAssistant, contractState, commissionState, contractId, payContractRatio, payProjectRatio, actualStartTime, actualEndTime, contractDate, firstCommissionDate, balanceTime, balanceCommissionDate,
+                pageIndex, pageSize, sortField, sortOrder);
+
+        ProjectCommissionFilterRequest request = generateProjectCommissionFilterRequest(designer, designerAssistant, contractState, commissionState, contractId, payContractRatio, payProjectRatio, actualStartTime,
+                actualEndTime, contractDate, firstCommissionDate, balanceTime, balanceCommissionDate, pageIndex, pageSize, sortField, sortOrder);
+
+        int count = projectCommissionService.getProjectCommissionCount(request);
+        List<ProjectCommissionDto> projectCommissions = projectCommissionService.getProjectCommissions(request);
+
+        DataGridResponse<List<ProjectCommissionDto>> response = new DataGridResponse<>();
+        response.setTotal(count);
+        response.setData(projectCommissions);
+
+        return response;
+    }
+
+    private ProjectCommissionFilterRequest generateProjectCommissionFilterRequest(String designer, String designerAssistant,
+                                                                                  String contractState, String commissionState, String contractId, //
+                                                                                  String payContractRatio, String payProjectRatio, String actualStartTime,//
+                                                                                  String actualEndTime, String contractDate, String firstCommissionDate, String balanceTime, String balanceCommissionDate,
+                                                                                  int pageIndex, int pageSize, String sortField, String sortOrder) {
+        ProjectCommissionFilterRequest request = new ProjectCommissionFilterRequest();
+        request.setStart(pageIndex * pageSize + 1);
+        request.setEnd((pageIndex + 1) * pageSize);
+        request.setDesigner(designer);
+        request.setDesignerAssistant(designerAssistant);
+        request.setContractId(contractId);
+        request.setContractState(contractState);
+        if (payContractRatio != null && !payContractRatio.equals("")) {
+            request.setPayContractRatio(new BigDecimal(payContractRatio));
+        }
+        if (payProjectRatio != null && !payProjectRatio.equals("")) {
+            request.setPayProjectRatio(new BigDecimal(payProjectRatio));
+        }
+        request.setCommissionState(commissionState);
+        request.setActualEndTime(actualStartTime);
+        request.setActualEndTime(actualEndTime);
+        request.setContractDate(contractDate);
+        request.setFirstCommissionDate(firstCommissionDate);
+        request.setBalanceTime(balanceTime);
+        request.setBalanceCommissionDate(balanceCommissionDate);
+        request.setSortField(sortField);
+        request.setSortOrder(sortOrder);
+        return request;
+    }
 
 }
