@@ -61,11 +61,11 @@
                 <bind name="pattern" value="'%' + designer + '%'"/>
                 designer like #{pattern}
             </if>
-            <if test="contractState != null and contractState != ''">
-                and contract_state = #{contractState}
+            <if test="contractState != null">
+                and contract_state = #{contractState, typeHandler=com.dms.handler.ContractStateEnumHandler}
             </if>
-            <if test="commissionState != null and commissionState != ''">
-                and commission_state = #{commissionState}
+            <if test="commissionState != null">
+                and commission_state = #{commissionState, typeHandler=com.dms.handler.CommissionStateEnumHandler}
             </if>
             <if test="contractDate != null and contractDate != ''">
                 and contract_date > #{contractDate}
@@ -97,11 +97,11 @@
                 <bind name="pattern" value="'%' + designer + '%'"/>
                 designer like #{pattern}
             </if>
-            <if test="contractState != null and contractState != ''">
-                and contract_state = #{contractState}
+            <if test="contractState != null">
+                and contract_state = #{contractState, typeHandler=com.dms.handler.ContractStateEnumHandler}
             </if>
-            <if test="commissionState != null and commissionState != ''">
-                and commission_state = #{commissionState}
+            <if test="commissionState != null">
+                and commission_state = #{commissionState, typeHandler=com.dms.handler.CommissionStateEnumHandler}
             </if>
             <if test="contractDate != null and contractDate != ''">
                 and contract_date > #{contractDate}
@@ -180,7 +180,7 @@
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.designer}, #{item.acNumber}, #{item.contractId}, #{item.contractTotal}, #{item.purchaseAgentFee},
             #{item.projectChangeTotal}, #{item.customerPay},
-            #{item.payContractRatio}, #{item.payProjectRatio}, #{item.contractState},
+            #{item.payContractRatio}, #{item.payProjectRatio}, #{item.contractState, typeHandler=com.dms.handler.ContractStateEnumHandler},
             ${item.contractDate}, #{item.actualStartTime}, #{item.actualEndTime},
             #{item.balanceTime}, #{item.customerName}, #{item.createdTime})
         </foreach>
@@ -209,7 +209,7 @@
         values
            (#{designer}, #{acNumber}, #{contractId}, #{contractTotal}, #{purchaseAgentFee},
             #{projectChangeTotal}, #{customerPay},
-            #{payContractRatio}, #{payProjectRatio}, #{contractState},
+            #{payContractRatio}, #{payProjectRatio}, #{contractState, typeHandler=com.dms.handler.ContractStateEnumHandler},
             ${contractDate}, #{actualStartTime}, #{actualEndTime},
             #{balanceTime},  #{createdTime})
     </insert>
@@ -266,7 +266,7 @@
         customer_pay = #{customerPay},
         pay_contract_ratio = #{payContractRatio},
         pay_project_ratio = #{payProjectRatio},
-        contract_state = #{contractState},
+        contract_state = #{contractState, typeHandler=com.dms.handler.ContractStateEnumHandler},
         actual_start_time = #{actualStartTime},
         actual_end_time = #{actualEndTime},
         balance_time = #{balanceTime},
@@ -275,7 +275,7 @@
         balance_commission = #{balanceCommission},
         commission_base = #{commissionBase},
         balance_commission_date = #{balanceCommissionDate},
-        commission_state = #{commissionState},
+        commission_state = #{commissionState, typeHandler=com.dms.handler.CommissionStateEnumHandler},
         designer_assistant = #{designerAssistant},
         design_commission_rate = #{designCommissionRate},
         designer_assistant_commission = #{designerAssistantCommission},
@@ -296,7 +296,7 @@
             customer_pay = #{item.customerPay},
             pay_contract_ratio = #{item.payContractRatio},
             pay_project_ratio = #{item.payProjectRatio},
-            contract_state = #{item.contractState},
+            contract_state = #{item.contractState, typeHandler=com.dms.handler.ContractStateEnumHandler},
             actual_start_time = #{item.actualStartTime},
             actual_end_time = #{item.actualEndTime},
             balance_time = #{item.balanceTime},
@@ -304,7 +304,7 @@
             first_commission_date = #{item.firstCommissionDate},
             balance_commission = #{item.balanceCommission},
             balance_commission_date = #{item.balanceCommissionDate},
-            commission_state = #{item.commissionState},
+            commission_state = #{item.commissionState, typeHandler=com.dms.handler.CommissionStateEnumHandler},
             designer_assistant = #{item.designerAssistant},
             design_commission_rate = #{item.designCommissionRate},
             designer_assistant_commission = #{designerAssistantCommission},

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,8 +112,8 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 		request.setStart(pageIndex * pageSize + 1);
 		request.setEnd((pageIndex + 1) * pageSize);
 		request.setDesigner(designer);
-		request.setContractState(contractState);
-		request.setCommissionState(commissionState);
+		request.setContractState(StringUtils.isBlank(contractState) ? null : ContractStateEnum.fromDbConstant(Integer.valueOf(contractState)));
+		request.setCommissionState(StringUtils.isBlank(commissionState) ? null : CommissionStateEnum.fromDbConstant(Integer.valueOf(commissionState)));
 		request.setActualEndTime(actualStartTime);
 		request.setActualEndTime(actualEndTime);
 		request.setContractDate(contractDate);

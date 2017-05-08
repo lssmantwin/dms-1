@@ -257,7 +257,7 @@
         var json = mini.encode(data);
         grid.loading("保存中，请稍后......");
         $.ajax({
-            url: 'http://localhost:8081/ws/commission/v1/projectCommissions',
+            url: '../ws/commission/v1/projectCommissions',
             data: json,
             type: 'post',
             dataType: 'json',
@@ -266,9 +266,6 @@
                 grid.reload();
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                alert(jqXHR);
-                alert(textStatus);
-                alert(errorThrown);
                 alert(jqXHR.responseText);
             }
         });
@@ -288,9 +285,6 @@
                 grid.reload();
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                alert(jqXHR);
-                alert(textStatus);
-                alert(errorThrown);
                 alert(jqXHR.responseText);
             }
         });

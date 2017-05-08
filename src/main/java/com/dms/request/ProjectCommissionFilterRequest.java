@@ -2,11 +2,14 @@ package com.dms.request;
 
 import java.io.Serializable;
 
+import com.dms.enums.CommissionStateEnum;
+import com.dms.enums.ContractStateEnum;
+
 public class ProjectCommissionFilterRequest extends BaseFilterRequest implements Serializable {
 
 	private String designer;
-	private String contractState;
-	private String commissionState;
+	private ContractStateEnum contractState;
+	private CommissionStateEnum commissionState;
 	private String contractDate;
 	private String firstCommissionDate;
 	private String actualStartTime;
@@ -22,19 +25,19 @@ public class ProjectCommissionFilterRequest extends BaseFilterRequest implements
 		this.designer = designer;
 	}
 
-	public String getContractState() {
+	public ContractStateEnum getContractState() {
 		return contractState;
 	}
 
-	public void setContractState(String contractState) {
+	public void setContractState(ContractStateEnum contractState) {
 		this.contractState = contractState;
 	}
 
-	public String getCommissionState() {
+	public CommissionStateEnum getCommissionState() {
 		return commissionState;
 	}
 
-	public void setCommissionState(String commissionState) {
+	public void setCommissionState(CommissionStateEnum commissionState) {
 		this.commissionState = commissionState;
 	}
 
