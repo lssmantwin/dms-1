@@ -70,11 +70,8 @@
                 <input id="payProjectFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="50"
                        onvaluechanged="onFilterChanged()"/>
             </div>
-            <div type="comboboxcolumn" field="commissionState" width="60" headerAlign="center" allowSort="false">提成状态
-                <input property="editor" readonly ="true" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
-                       url="../ws/commission/v1/states?type=COMMISSION"
-                       ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
-                       allowInput="true" showNullItem="true"/>
+            <div field="commissionState" width="60" headerAlign="center" allowSort="false">提成状态
+
                 <input id="commissionStateFilter" property="filter" class="mini-combobox" style="width:100%;"
                        textField="text" valueField="value"
                        url="../ws/commission/v1/states?type=COMMISSION"
@@ -181,7 +178,7 @@
 </div>
 
 <!--导出Excel相关HTML-->
-<form id="excelForm" action="http://localhost:8080/ws/commission/v1/export" method="get">
+<form id="excelForm" action="../ws/commission/v1/export" method="get">
     <input type="hidden" name="designer" id="designer"/>
     <input type="hidden" name="contractState" id="contractState"/>
     <input type="hidden" name="commissionState" id="commissionState"/>

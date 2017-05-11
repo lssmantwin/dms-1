@@ -7,7 +7,7 @@ import org.joda.time.LocalDateTime;
 
 import com.dms.enums.CommissionStateEnum;
 import com.dms.serializable.CommissionStateJacksonSerializable;
-import com.dms.serializable.ContractStateJacksonSerializable;
+import com.dms.serializable.CommissionStateJacksonDeSerializable;
 import com.dms.serializable.LocalDateTimeJacksonDeSerializable;
 import com.dms.serializable.LocalDateTimeJacksonSerializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -30,6 +30,7 @@ public class ProjectCommissionDto implements Serializable {
 	private BigDecimal payProjectRatio;
 	private String contractState;
 	@JsonSerialize(using = CommissionStateJacksonSerializable.class)
+	@JsonDeserialize(using = CommissionStateJacksonDeSerializable.class)
 	private CommissionStateEnum commissionState;
 	private BigDecimal firstCommissionRate;
 	private BigDecimal balanceCommissionRate;

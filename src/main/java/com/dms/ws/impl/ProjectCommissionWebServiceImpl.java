@@ -1,5 +1,19 @@
 package com.dms.ws.impl;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.ws.rs.core.Response;
+
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.LocalDateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.dms.dto.EnumDto;
 import com.dms.dto.ProjectCommissionDto;
 import com.dms.enums.CommissionStateEnum;
@@ -129,7 +143,7 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
         if (payProjectRatio != null && !payProjectRatio.equals("")) {
             request.setPayProjectRatio(new BigDecimal(payProjectRatio));
         }
-        request.setCommissionState(commissionState);
+		request.setCommissionState(StringUtils.isBlank(commissionState) ? null : CommissionStateEnum.fromDbConstant(Integer.valueOf(commissionState)));
         request.setActualEndTime(actualStartTime);
         request.setActualEndTime(actualEndTime);
         request.setContractDate(contractDate);
@@ -140,5 +154,4 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
         request.setSortOrder(sortOrder);
         return request;
     }
-
 }

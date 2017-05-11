@@ -14,6 +14,6 @@ public interface DmsConstants {
 
     BigDecimal DESIGN_ASSISTANT_COMMISSION_RATE = new BigDecimal(0.005);
     BigDecimal DESIGN_ASSISTANT_SUBURBS_COMMISSION_RATE = new BigDecimal(0.005);
-    BigDecimal DESIGN_COMMISSION_SUB_RATE = new BigDecimal(0.001);
+    BigDecimal DESIGN_COMMISSION_SUB_RATE = new BigDecimal(0.0001);
 
 }

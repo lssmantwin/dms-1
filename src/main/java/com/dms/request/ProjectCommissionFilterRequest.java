@@ -3,13 +3,15 @@ package com.dms.request;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import com.dms.enums.CommissionStateEnum;
+
 public class ProjectCommissionFilterRequest extends BaseFilterRequest implements Serializable {
 
 	private String designer;
 	private String designerAssistant;
 	private String contractState;
 	private String contractId;
-	private String commissionState;
+	private CommissionStateEnum commissionState;
 	private String contractDate;
 	private String firstCommissionDate;
 	private String actualStartTime;
@@ -35,11 +37,11 @@ public class ProjectCommissionFilterRequest extends BaseFilterRequest implements
 		this.contractState = contractState;
 	}
 
-	public String getCommissionState() {
+	public CommissionStateEnum getCommissionState() {
 		return commissionState;
 	}
 
-	public void setCommissionState(String commissionState) {
+	public void setCommissionState(CommissionStateEnum commissionState) {
 		this.commissionState = commissionState;
 	}
 

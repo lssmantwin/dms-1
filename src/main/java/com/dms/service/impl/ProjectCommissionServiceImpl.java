@@ -46,7 +46,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
             if (commission.getDesignerAssistant() != null && !commission.getDesignerAssistant().equals("")
                     && commission.getDesignerAssistantCommissionRate() != null && commission.getDesignerAssistantCommission() == null) {
                 BigDecimal designCommissionRate = commission.getDesignCommissionRate().subtract(DmsConstants.DESIGN_COMMISSION_SUB_RATE);
-                commission.setDesignCommissionRate(designCommissionRate.setScale(2, BigDecimal.ROUND_HALF_UP));
+                commission.setDesignCommissionRate(designCommissionRate.setScale(4, BigDecimal.ROUND_HALF_UP));
                 commission.setDesignerAssistantCommission(commission.getCommissionBase().multiply(commission.getDesignerAssistantCommissionRate()).setScale(2, BigDecimal.ROUND_HALF_UP));
                 commission.setDesignerAssistantCommissionDate(LocalDateTime.now());
             }
