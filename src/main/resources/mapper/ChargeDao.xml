@@ -1,0 +1,24 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dms.dao.ChargeDao">
+
+    <resultMap id="ChargeDetailMap" type="ChargeDetailDto">
+        <id property="id" column="id"/>
+        <result property="chargeTime" column="charge_time" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
+        <result property="employeeId" column="employee_id"/>
+        <result property="employeeName" column="employee_name"/>
+        <result property="charge" column="charge"/>
+        <result property="chargeBalance" column="charge_balance"/>
+    </resultMap>
+
+    <select id="getChargeDetails" resultMap="ChargeDetailMap">
+        select cd.id, cd.charge_time, cd.employee_id, e.name as employee_name, cd.charge, cd.charge_balance from charge_detail cd join employee e on cd.employee_id = e.id order by cd.charge_time, cd.employee_id
+    </select>
+
+    <insert id="audit" parameterType="ChargeDetailDto">
+        insert into charge_detail (charge_time, employee_id, charge, charge_balance) values
+        (GETDATE(), #{employeeId}, #{charge}, #{chargeBalance})
+    </insert>
+
+</mapper>

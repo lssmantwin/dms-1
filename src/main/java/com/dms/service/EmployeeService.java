@@ -1,5 +1,6 @@
 package com.dms.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.dms.domain.Attendance;
@@ -23,5 +24,9 @@ public interface EmployeeService {
 	void saveEmployees(List<EmployeeDto> employeeDtos);
 
 	void updateEmployees(List<EmployeeDto> employeeDtos);
+
+	EmployeeDto getEmployee(Long employeeId);
+
+	void updateCharge(Long employeeId, BigDecimal charge);
 
 }

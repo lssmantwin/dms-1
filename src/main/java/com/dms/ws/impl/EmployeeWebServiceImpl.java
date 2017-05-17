@@ -1,8 +1,12 @@
 package com.dms.ws.impl;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.dms.dto.EnumDto;
+import com.dms.enums.CompanyEnum;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -34,6 +38,11 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 	@Override
 	public List<Attendance> getAttendance() {
 		return employeeService.getAttendance();
+	}
+
+	@Override
+	public List<EnumDto> getCompanies() {
+		return Lists.newArrayList(CompanyEnum.values()).stream().map(e -> new EnumDto(e.getDbConstant(), e.getText())).collect(Collectors.toList());
 	}
 
 	@Override

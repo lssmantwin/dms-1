@@ -8,10 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dms.dto.ChargeDetailDto;
+import com.dms.dto.EmployeeDto;
 import com.dms.dto.FinanceDto;
 import com.dms.request.DataGridRequest;
 import com.dms.request.FinanceRequest;
 import com.dms.response.DataGridResponse;
+import com.dms.service.ChargeService;
 import com.dms.service.EmployeeService;
 import com.dms.service.FinanceService;
 import com.dms.utils.PersonalIncomeTaxUtils;
@@ -26,6 +29,8 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 	private FinanceService financeService;
 	@Autowired
 	private EmployeeService employeeService;
+	@Autowired
+	private ChargeService chargeService;
 
 	@Override
 	public DataGridResponse<List<FinanceDto>> getFinances(String key, int pageIndex, int pageSize, String sortField, String sortOrder, String month) {
@@ -58,6 +63,21 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 			financeDto.setAfterTaxSalary(financeDto.getBeforeTaxSalary().subtract(personalIncomeTax));
 			if (financeDto.getId() == null) {
 				financeService.saveFinance(financeDto);
+				if (!financeDto.getAlreadyCharge()) {
+					EmployeeDto employeeDto = employeeService.getEmployee(financeDto.getEmployeeId());
+
+					BigDecimal charge = employeeDto.getChargePerMonth()
+							.add(employeeDto.getCharge() == null ? BigDecimal.ZERO : employeeDto.getChargePerMonth());
+
+					ChargeDetailDto chargeDetailDto = new ChargeDetailDto();
+					chargeDetailDto.setEmployeeId(Long.valueOf(employeeDto.getId()));
+					chargeDetailDto.setCharge(employeeDto.getChargePerMonth());
+					chargeDetailDto.setChargeBalance(employeeDto.getTotalCharge().subtract(charge));
+
+					chargeService.audit(chargeDetailDto);
+
+					employeeService.updateCharge(Long.valueOf(employeeDto.getId()), charge);
+				}
 			} else {
 				financeService.updateFinance(financeDto);
 			}

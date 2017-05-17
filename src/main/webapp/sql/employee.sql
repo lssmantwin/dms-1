@@ -12,7 +12,16 @@
   jyw_commission_ratio int,
   commencement_ratio int,
   completion_ratio int,
-  renovate_commossion_ratio int,
+  renovate_commission_ratio int,
   bank_card_number varchar(30) not null,
+  identity_card_number varchar(20) not null,
+  transportation_allowance decimal(10,2),
+  post_allowance decimal(10,2),
+  leave_date datetime,
+  storage_charge decimal(10,2),
+  total_charge decimal(10,2),
+  charge_per_month decimal(10,2),
+  charge decimal(10,2),
+  company_id int not null
  )
 

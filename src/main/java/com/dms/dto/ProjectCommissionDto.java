@@ -62,7 +62,6 @@ public class ProjectCommissionDto implements Serializable {
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
 	private LocalDateTime balanceCommissionDate;
 	private BigDecimal designerAssistantCommission;
-
 	private BigDecimal designerAssistantCommissionRate;
 	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)

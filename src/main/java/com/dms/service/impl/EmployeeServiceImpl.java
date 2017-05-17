@@ -1,5 +1,6 @@
 package com.dms.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import com.dms.domain.Attendance;
 import com.dms.domain.Month;
 import com.dms.domain.Position;
 import com.dms.dto.EmployeeDto;
-import com.dms.dto.FinanceDto;
 import com.dms.request.DataGridRequest;
 import com.dms.service.EmployeeService;
 
@@ -45,8 +45,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeDao.getEmployees(request);
 	}
 
-
-
 	@Override
 	public void saveEmployees(List<EmployeeDto> employeeDtos) {
 		employeeDao.saveEmployees(employeeDtos);
@@ -57,5 +55,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employeeDao.updateEmployees(employeeDtos);
 	}
 
+	@Override
+	public EmployeeDto getEmployee(Long employeeId) {
+		return employeeDao.getEmployee(employeeId);
+	}
 
+	@Override
+	public void updateCharge(Long employeeId, BigDecimal charge) {
+		employeeDao.updateCharge(employeeId, charge);
+	}
 }

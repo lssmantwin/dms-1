@@ -18,7 +18,16 @@
         <result property="jywCommissionRatio" column="jyw_commission_ratio"/>
         <result property="commencementRatio" column="commencement_ratio"/>
         <result property="completionRatio" column="completion_ratio"/>
-        <result property="renovateCommossionRatio" column="renovate_commossion_ratio"/>
+        <result property="renovateCommissionRatio" column="renovate_commission_ratio"/>
+        <result property="identityCardNumber" column="identity_card_number"/>
+        <result property="transportationAllowance" column="transportation_allowance"/>
+        <result property="postAllowance" column="post_allowance"/>
+        <result property="leaveDate" column="leave_date" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
+        <result property="storageCharge" column="storage_charge"/>
+        <result property="totalCharge" column="total_charge"/>
+        <result property="chargePerMonth" column="charge_per_month"/>
+        <result property="charge" column="charge"/>
+        <result property="companyId" column="company_id"/>
     </resultMap>
 
     <select id="getAttendance" resultType="Attendance">
@@ -86,14 +95,25 @@
         working_age_subsidy, overtime,
         meals_subsidy, secrecy_subsidy, communication_fee,
         jyw_commission_ratio, commencement_ratio, completion_ratio,
-        renovate_commossion_ratio)
+        renovate_commission_ratio, identity_card_number, transportation_allowance, post_allowance, leave_date,
+        storage_charge, total_charge, charge_per_month, charge, company_id)
         values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.name}, #{item.position}, #{item.hiredate}, #{item.baseWage}, #{item.bankCardNumber},
             #{item.workingAgeSubsidy}, #{item.overtime},
             #{item.mealsSubsidy}, #{item.secrecySubsidy}, #{item.communicationFee},
             ${item.jywCommissionRatio}, #{item.commencementRatio}, #{item.completionRatio},
-            #{item.renovateCommossionRatio})
+            #{item.renovateCommissionRatio},
+            #{item.identityCardNumber},
+            #{item.transportationAllowance},
+            #{item.postAllowance},
+            #{item.leaveDate},
+            #{item.storageCharge},
+            #{item.totalCharge},
+            #{item.chargePerMonth},
+            #{item.charge},
+            #{item.companyId}
+            )
         </foreach>
     </insert>
 
@@ -113,9 +133,27 @@
             jyw_commission_ratio = ${item.jywCommissionRatio},
             commencement_ratio = #{item.commencementRatio},
             completion_ratio = #{item.completionRatio},
-            renovate_commossion_ratio = #{item.renovateCommossionRatio}
+            renovate_commission_ratio = #{item.renovateCommissionRatio},
+            identity_card_number = #{item.identityCardNumber},
+            transportation_allowance = #{item.transportationAllowance},
+            post_allowance = #{item.postAllowance},
+            leave_date = #{item.leaveDate},
+            storage_charge = #{item.storageCharge},
+            total_charge = #{item.totalCharge},
+            charge_per_month = #{item.chargePerMonth},
+            charge = #{item.charge},
+            company_id = #{item.companyId}
             where id = #{item.id}
         </foreach>
+    </update>
+
+
+    <select id="getEmployee" parameterType="long" resultMap="EmployeeMap">
+        select * from employee where id = #{employeeId}
+    </select>
+
+    <update id="updateCharge">
+        update employee set charge = #{charge} where id = #{id}
     </update>
 
 </mapper>
