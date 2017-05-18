@@ -24,7 +24,7 @@
         <tr>
             <td style="width:100%;">
                 <input id="combo1" class="mini-combobox" style="width:150px;" textField="text" valueField="value"
-                       url="http://localhost:8080/ws/employee/v1/months"
+                       url="../ws/employee/v1/months"
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
                        required="true" allowInput="true" showNullItem="false" onvaluechanged="onMonthChange"/>
                 <span class="separator"></span>
@@ -38,7 +38,7 @@
 <div class="mini-fit">
 
     <div id="datagrid1" class="mini-datagrid" style="width:100%;height:100%;"
-         url="http://localhost:8080/ws/finance/v1/finances"
+         url="../ws/finance/v1/finances"
          ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
          idField="id" sizeList="[5,10,20,50]" pageSize="10" allowCellEdit="true" allowCellSelect="true"
          multiSelect="true">
@@ -48,7 +48,7 @@
             </div>
             <div field="attendance" width="100" type="comboboxcolumn" headerAlign="center" allowSort="false">考勤
                 <input property="editor" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
-                       url="http://localhost:8080/ws/employee/v1/attendance" required="true" allowInput="true"/>
+                       url="../ws/employee/v1/attendance" required="true" allowInput="true"/>
             </div>
             <div field="bonus" width="50" headerAlign="center" allowSort="true" vtype="float">提成
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
@@ -146,7 +146,7 @@
         alert(json);
         grid.loading("保存中，请稍后......");
         $.ajax({
-            url: 'http://localhost:8080/ws/finance/v1/finances',
+            url: '../ws/finance/v1/finances',
             data: json,
             type: 'post',
             dataType: 'json',

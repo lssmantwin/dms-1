@@ -188,7 +188,7 @@
                 状态
                 <input id="contractStateFilter" property="filter" class="mini-combobox" style="width:100%;"
                        textField="text" valueField="value"
-                       url="http://localhost:8080/ws/commission/v1/states?type=CONTRACT"
+                       url="../ws/commission/v1/states?type=CONTRACT"
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
                        allowInput="true" showNullItem="true" onvaluechanged="onFilterChanged"/>
             </div>
@@ -223,7 +223,7 @@
 </div>
 
 <!--导出Excel相关HTML-->
-<form id="excelForm" action="http://localhost:8080/ws/commission/v1/export" method="get">
+<form id="excelForm" action="../ws/commission/v1/export" method="get">
     <input type="hidden" name="designer" id="designer"/>
     <input type="hidden" name="contractState" id="contractState"/>
     <input type="hidden" name="commissionState" id="commissionState"/>

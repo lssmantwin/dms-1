@@ -34,7 +34,7 @@
 <div class="mini-fit">
 
     <div id="datagrid1" class="mini-datagrid" style="width:100%;height:100%;"
-         url="http://localhost:8080/ws/employee/v1/employees"
+         url="../ws/employee/v1/employees"
          ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
          idField="id" sizeList="[5,10,20,50]" pageSize="10" allowCellEdit="true" allowCellSelect="true"
          showFilterRow="true">
@@ -48,7 +48,7 @@
             </div>
             <div field="companyId" width="100" type="comboboxcolumn" headerAlign="center" allowSort="false">公司
                 <input property="editor" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
-                       url="http://localhost:8080/ws/employee/v1/companies"
+                       url="../ws/employee/v1/companies"
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
                        required="true" allowInput="true" showNullItem="false"/>
             </div>
@@ -57,7 +57,7 @@
             </div>
             <div field="position" width="100" type="comboboxcolumn" headerAlign="center" allowSort="false">职位
                 <input property="editor" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
-                       url="http://localhost:8080/ws/employee/v1/positions"
+                       url="../ws/employee/v1/positions"
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
                        required="true" allowInput="true" showNullItem="false"/>
             </div>
@@ -158,7 +158,7 @@
         var json = mini.encode(data);
         grid.loading("保存中，请稍后......");
         $.ajax({
-            url: "http://localhost:8080/ws/employee/v1/employees",
+            url: "../ws/employee/v1/employees",
             data: json,
             type: 'post',
             dataType: 'json',
