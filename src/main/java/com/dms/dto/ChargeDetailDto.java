@@ -3,10 +3,10 @@ package com.dms.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import com.dms.serializable.ShortLocalDateTimeJacksonSerializable;
 import org.joda.time.LocalDateTime;
 
 import com.dms.serializable.LocalDateTimeJacksonDeSerializable;
-import com.dms.serializable.LocalDateTimeJacksonSerializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -17,7 +17,7 @@ public class ChargeDetailDto implements Serializable {
 	private String id;
 	private Long employeeId;
 	private String employeeName;
-	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
+	@JsonSerialize(using = ShortLocalDateTimeJacksonSerializable.class)
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
 	private LocalDateTime chargeTime;
 	private BigDecimal charge;
