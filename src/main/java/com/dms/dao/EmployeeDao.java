@@ -1,15 +1,15 @@
 package com.dms.dao;
 
+import java.math.BigDecimal;
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.dms.domain.Attendance;
 import com.dms.domain.Month;
 import com.dms.domain.Position;
 import com.dms.dto.EmployeeDto;
-import com.dms.dto.FinanceDto;
-import com.dms.request.DataGridRequest;
-import org.apache.ibatis.annotations.Param;
-
-import java.math.BigDecimal;
-import java.util.List;
+import com.dms.request.BaseFilterRequest;
 
 public interface EmployeeDao {
 
@@ -19,19 +19,13 @@ public interface EmployeeDao {
 
 	List<Position> getPositions();
 
-	int getEmployeeCount(DataGridRequest request);
+	int getEmployeeCount(BaseFilterRequest request);
 
-	List<EmployeeDto> getEmployees(DataGridRequest request);
-
-	List<FinanceDto> getFinances(DataGridRequest request);
+	List<EmployeeDto> getEmployees(BaseFilterRequest request);
 
 	void saveEmployees(List<EmployeeDto> employeeDtos);
 
 	void updateEmployees(List<EmployeeDto> employeeDtos);
-
-	void saveFinance(FinanceDto financeDto);
-
-	void updateFinance(FinanceDto financeDto);
 
 	EmployeeDto getEmployee(Long employeeId);
 

@@ -41,10 +41,12 @@
          url="../ws/finance/v1/finances"
          ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
          idField="id" sizeList="[5,10,20,50]" pageSize="10" allowCellEdit="true" allowCellSelect="true"
-         multiSelect="true">
+         multiSelect="true" showFilterRow="true">
         <div property="columns">
             <div type="indexcolumn"></div>
             <div field="employeeName" width="100" headerAlign="center" allowSort="true">姓名
+                <input id="nameFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="100"
+                       onvaluechanged="onFilterChanged"/>
             </div>
             <div field="attendance" width="100" type="comboboxcolumn" headerAlign="center" allowSort="false">考勤
                 <input property="editor" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
@@ -161,6 +163,11 @@
                 alert(jqXHR.responseText);
             }
         });
+    }
+
+    function onFilterChanged() {
+        var employeeName = mini.get("nameFilter").getValue();
+        grid.load({employeeName: employeeName});
     }
 
 </script>

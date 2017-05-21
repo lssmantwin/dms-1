@@ -1,13 +1,14 @@
 package com.dms.service.impl;
 
-import com.dms.dao.FinanceDao;
-import com.dms.dto.FinanceDto;
-import com.dms.request.DataGridRequest;
-import com.dms.service.FinanceService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.dms.dao.FinanceDao;
+import com.dms.dto.FinanceDto;
+import com.dms.request.FinanceFilterRequest;
+import com.dms.service.FinanceService;
 
 @Service
 public class FinanceServiceImpl implements FinanceService {
@@ -16,7 +17,7 @@ public class FinanceServiceImpl implements FinanceService {
 	private FinanceDao financeDao;
 
 	@Override
-	public List<FinanceDto> getFinances(DataGridRequest request) {
+	public List<FinanceDto> getFinances(FinanceFilterRequest request) {
 		return financeDao.getFinances(request);
 	}
 

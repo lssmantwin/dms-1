@@ -41,7 +41,7 @@ public interface EmployeeWebService {
 
 	@GET
 	@Path("/employees")
-	DataGridResponse<List<EmployeeDto>> getEmployees(@QueryParam("key") String key, @QueryParam("pageIndex") int pageIndex,
+	DataGridResponse<List<EmployeeDto>> getEmployees(@QueryParam("employeeName") String employeeName, @QueryParam("pageIndex") int pageIndex,
 			@QueryParam("pageSize") int pageSize, @QueryParam("sortField") String sortField, @QueryParam("sortOrder") String sortOrder);
 
 }

@@ -1,13 +1,13 @@
 package com.dms.service;
 
-import com.dms.dto.FinanceDto;
-import com.dms.request.DataGridRequest;
-
 import java.util.List;
+
+import com.dms.dto.FinanceDto;
+import com.dms.request.FinanceFilterRequest;
 
 public interface FinanceService {
 
-	List<FinanceDto> getFinances(DataGridRequest request);
+	List<FinanceDto> getFinances(FinanceFilterRequest request);
 
 	void saveFinance(FinanceDto financeDto);
 

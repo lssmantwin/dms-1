@@ -32,7 +32,7 @@
         <result property="alreadyCharge" column="already_charge" typeHandler="com.dms.handler.BooleanHandler"/>
     </resultMap>
 
-    <select id="getFinances" parameterType="DataGridRequest" resultMap="FinanceMap">
+    <select id="getFinances" parameterType="FinanceFilterRequest" resultMap="FinanceMap">
         select t.eid as employee_id, t.name as employee_name, t.base_wage, t.overtime, t.meals_subsidy,
         t.secrecy_subsidy, t.communication_fee,
         t.fid as finance_id, t.month,
@@ -51,9 +51,17 @@
         f.housing_fund, f.before_tax_salary, f.personal_income_tax, f.after_tax_salary, f.already_charge,
         row_number() over (order by e.id) as rn from employee e left join finance f on e.id = f.employee_id and
         f."month" = #{month}
+        <where>
+            <if test="employeeName != null and employeeName != ''">
+                <bind name="pattern" value="'%' + employeeName + '%'"/>
+                e.name like #{pattern}
+            </if>
+        </where>
         ) t
         <where>
-            t.rn BETWEEN #{start} and #{end}
+            <if test="end > 0">
+                t.rn BETWEEN #{start} and #{end}
+            </if>
         </where>
     </select>
 

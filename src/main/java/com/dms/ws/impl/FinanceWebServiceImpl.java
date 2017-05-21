@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.dms.dto.ChargeDetailDto;
 import com.dms.dto.EmployeeDto;
 import com.dms.dto.FinanceDto;
-import com.dms.request.DataGridRequest;
+import com.dms.request.FinanceFilterRequest;
 import com.dms.request.FinanceRequest;
 import com.dms.response.DataGridResponse;
 import com.dms.service.ChargeService;
@@ -33,11 +33,12 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 	private ChargeService chargeService;
 
 	@Override
-	public DataGridResponse<List<FinanceDto>> getFinances(String key, int pageIndex, int pageSize, String sortField, String sortOrder, String month) {
+	public DataGridResponse<List<FinanceDto>> getFinances(String employeeName, int pageIndex, int pageSize, String sortField, String sortOrder, String month) {
 
-		LOGGER.info("get finances, key {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}", key, pageIndex, pageSize, sortField, sortOrder);
+		LOGGER.info("get finances, employeeName {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}", employeeName, pageIndex, pageSize, sortField,
+				sortOrder);
 
-		DataGridRequest request = generateDataGridRequest(key, pageIndex, pageSize, sortField, sortOrder, month);
+		FinanceFilterRequest request = generateFilterRequest(employeeName, pageIndex, pageSize, sortField, sortOrder, month);
 
 		int count = employeeService.getEmployeeCount(request);
 		List<FinanceDto> finances = financeService.getFinances(request);
@@ -131,11 +132,11 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 		return grossPay;
 	}
 
-	private DataGridRequest generateDataGridRequest(String key, int pageIndex, int pageSize, String sortField, String sortOrder, String month) {
-		DataGridRequest request = new DataGridRequest();
+	private FinanceFilterRequest generateFilterRequest(String employeeName, int pageIndex, int pageSize, String sortField, String sortOrder, String month) {
+		FinanceFilterRequest request = new FinanceFilterRequest();
 		request.setStart(pageIndex * pageSize + 1);
 		request.setEnd((pageIndex + 1) * pageSize);
-		request.setKey(key);
+		request.setEmployeeName(employeeName);
 		request.setSortField(sortField);
 		request.setSortOrder(sortOrder);
 		request.setMonth(month);

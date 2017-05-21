@@ -1,15 +1,15 @@
 package com.dms.dao;
 
-import com.dms.dto.FinanceDto;
-import com.dms.request.DataGridRequest;
-
 import java.util.List;
+
+import com.dms.dto.FinanceDto;
+import com.dms.request.FinanceFilterRequest;
 
 public interface FinanceDao {
 
-    List<FinanceDto> getFinances(DataGridRequest request);
+	List<FinanceDto> getFinances(FinanceFilterRequest request);
 
-    void saveFinance(FinanceDto financeDto);
+	void saveFinance(FinanceDto financeDto);
 
-    void updateFinance(FinanceDto financeDto);
+	void updateFinance(FinanceDto financeDto);
 }

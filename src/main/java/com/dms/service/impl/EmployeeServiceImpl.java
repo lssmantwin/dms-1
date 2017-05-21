@@ -11,7 +11,7 @@ import com.dms.domain.Attendance;
 import com.dms.domain.Month;
 import com.dms.domain.Position;
 import com.dms.dto.EmployeeDto;
-import com.dms.request.DataGridRequest;
+import com.dms.request.BaseFilterRequest;
 import com.dms.service.EmployeeService;
 
 @Service
@@ -36,12 +36,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public int getEmployeeCount(DataGridRequest request) {
+	public int getEmployeeCount(BaseFilterRequest request) {
 		return employeeDao.getEmployeeCount(request);
 	}
 
 	@Override
-	public List<EmployeeDto> getEmployees(DataGridRequest request) {
+	public List<EmployeeDto> getEmployees(BaseFilterRequest request) {
 		return employeeDao.getEmployees(request);
 	}
 
