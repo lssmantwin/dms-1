@@ -19,6 +19,8 @@ public interface EmployeeDao {
 
     int getEmployeeCount(DataGridRequest request);
 
+    EmployeeDto getEmployee(String name);
+
     List<EmployeeDto> getEmployees(DataGridRequest request);
 
     List<FinanceDto> getFinances(DataGridRequest request);

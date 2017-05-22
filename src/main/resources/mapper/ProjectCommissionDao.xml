@@ -99,6 +99,15 @@
         </where>
     </select>
 
+    <select id="getProject" parameterType="String" resultType="ProjectCommissionDto">
+        select * from "project_commission"
+        <where>
+            <if test="acNumber != null and acNumber != ''">
+                and  ac_number = #{acNumber}
+            </if>
+        </where>
+    </select>
+
     <select id="getProjectCommissions" parameterType="ProjectCommissionFilterRequest" resultMap="ProjectCommissionMap">
         select * from
         (
@@ -113,6 +122,11 @@
                 <bind name="designerAssistantpattern" value="'%' + designerAssistant + '%'"/>
                 and  designer_assistant like #{designerAssistantpattern}
             </if>
+            <if test="acNumber != null and acNumber != ''">
+                <bind name="acNumberPattern" value="'%' + acNumber + '%'"/>
+                and ac_number like #{acNumberPattern}
+            </if>
+
             <if test="contractId != null and contractId != ''">
                 <bind name="contractIdPattern" value="'%' + contractId + '%'"/>
                 and contract_id like #{contractIdPattern}
@@ -236,28 +250,28 @@
            (#{designer}, #{acNumber}, #{contractId}, #{contractTotal}, #{purchaseAgentFee},
             #{projectChangeTotal}, #{customerPay},
             #{payContractRatio}, #{payProjectRatio}, #{contractState, typeHandler=com.dms.handler.ContractStateEnumHandler},
-            ${contractDate}, #{actualStartTime}, #{actualEndTime},
+            #{contractDate}, #{actualStartTime}, #{actualEndTime},
             #{balanceTime},  #{createdTime})
     </insert>
 
 
     <select id="getProjects" parameterType="DataGridRequest" resultMap="ProjectCommissionMap">
-        SELECT ci.designer AS 设计师,
-        ci.ACNumber AS 受理编号,
-        ci.contract_id AS 工程编号,
-        ci.contract_total AS 合同价,
-        rp.代采金额,
-        bc.变更总价,
-        ISNULL(hr.已付, 0) AS 已付,
-        hr.已付 / ci.contract_total AS 合同收款比,
-        hr.已付 / (ci.contract_total + ISNULL(bc.变更总价, 0)) AS 总收款比,
-        CASE ci.state WHEN 9 THEN '归档' WHEN 8 THEN '结算' WHEN 7 THEN '竣工' WHEN 6 THEN '在建' END AS 状态,
-        derivedtbl_1.ACName AS 网点,
-        ci.contract_date AS 签约日期,
-        ci.actual_start_time AS 实际开工,
-        ci.actual_end_time AS 实际竣工,
-        ci.balance_time AS 结算日期,
-        View_Max_Flow_Form.CustName as 客户名字
+        SELECT ci.designer AS designer,
+        ci.ACNumber AS acNumber,
+        ci.contract_id AS contractId,
+        ci.contract_total AS contractTotal,
+        rp.代采金额 as purchaseAgentFee,
+        bc.变更总价 as projectChangeTotal,
+        ISNULL(hr.已付, 0) AS customerPay,
+        hr.已付 / ci.contract_total AS payContractRatio,
+        hr.已付 / (ci.contract_total + ISNULL(bc.变更总价, 0)) AS payProjectRatio,
+        CASE ci.state WHEN 9 THEN '归档' WHEN 8 THEN '结算' WHEN 7 THEN '竣工' WHEN 6 THEN '在建' END AS contractState,
+        derivedtbl_1.ACName AS branch,
+        ci.contract_date AS contractDate,
+        ci.actual_start_time AS actualStartTime,
+        ci.actual_end_time AS actualEndTime,
+        ci.balance_time AS balanceTime,
+        View_Max_Flow_Form.CustName as customerName
         FROM   Contract_Info AS ci
         INNER JOIN   View_Max_Flow_Form ON ci.ACNumber = View_Max_Flow_Form.ACNumber LEFT OUTER JOIN
         (SELECT     ID, ACType, ACName, ACCont, ACNumb, ACOrder, ACLogic, ACText
@@ -276,7 +290,7 @@
         FROM          ERP_Budget_Change
         WHERE      (审核日期 >= '2009-12-31')
         GROUP BY 受理编号) AS bc ON ci.ACNumber = bc.受理编号
-        WHERE     ((ci.actual_start_time BETWEEN #{current_month_start} AND #{current_month_end}) or (ci.end_balance BETWEEN #{current_month_start} AND #{current_month_end})
+        WHERE     ((ci.actual_start_time BETWEEN #{currentDayStart} AND #{currentDayEnd}) or (ci.end_balance BETWEEN #{currentDayStart} AND #{currentDayEnd})
           AND  (ci.contract_id NOT LIKE 'W%')
           AND ci.ACNumber in ( SELECT ac_number from project_commission where comission_state != '已提')
         ORDER BY ci.state,设计师

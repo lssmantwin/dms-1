@@ -49,14 +49,16 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 
     @Override
     public Response export(String designer, String designerAssistant,
-                           String contractState, String commissionState, String contractId,//
+                           String contractState, String commissionState,//
+                           String acNumber,String contractId,//
                            String payContractRatio, String payProjectRatio,//
                            String actualStartTime, String actualEndTime, String contractDate, //
                            String firstCommissionDate, String balanceTime, String balanceCommissionDate) {
 
         LOGGER.info("export project commission");
 
-        ProjectCommissionFilterRequest request = generateProjectCommissionFilterRequest(designer, designerAssistant, contractState, commissionState, contractId, payContractRatio, payProjectRatio, actualStartTime,
+        ProjectCommissionFilterRequest request = generateProjectCommissionFilterRequest(designer, designerAssistant, contractState,//
+                acNumber, commissionState, contractId, payContractRatio, payProjectRatio, actualStartTime,//
                 actualEndTime, contractDate, firstCommissionDate, balanceTime, balanceCommissionDate, 0, 0, null, null);
 
         List<ProjectCommissionDto> projectCommissions = projectCommissionService.getProjectCommissions(request);
@@ -93,26 +95,34 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
     }
 
     @Override
-    public void calculateProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos) {
-        LOGGER.info("save project commissions, {}", projectCommissionDtos);
-        projectCommissionService.calculateCommission(projectCommissionDtos);
+    public void calculateFirstCommissions(List<ProjectCommissionDto> projectCommissionDtos) {
+        LOGGER.info("Calculate First project commissions, {}", projectCommissionDtos);
+        projectCommissionService.calculateFirstCommission(projectCommissionDtos);
+    }
+
+    @Override
+    public void calculateBalanceCommissions(List<ProjectCommissionDto> projectCommissionDtos) {
+        LOGGER.info("Calculate balance project commissions, {}", projectCommissionDtos);
+        projectCommissionService.calculateBalanceCommission(projectCommissionDtos);
     }
 
     public DataGridResponse<List<ProjectCommissionDto>> getProjectCommissions(String designer, String designerAssistant,
-                                                                              String contractState, String commissionState, String contractId,//
+                                                                              String contractState, String commissionState,//
+                                                                              String acNumber , String contractId,//
                                                                               String payContractRatio, String payProjectRatio,//
                                                                               String actualStartTime, String actualEndTime, String contractDate, //
                                                                               String firstCommissionDate, String balanceTime, String balanceCommissionDate,//
                                                                               int pageIndex, int pageSize, String sortField, String sortOrder) {
 
         LOGGER.info(
-                "get project commissions, designer {}, designerAssistant {}, contractState {}, contractId {},payContractRatio {}," +//
+                "get project commissions, designer {}, designerAssistant {}, contractState {}, acNumber {}, contractId {}, payContractRatio {}," +//
                         " payProjectRatio {},  commissionState {}, actualStartTime {}, actualEndTime {}, contractDate {}, firstCommissionDate {}, " +//
                         "balanceTime {}, balanceCommissionDate {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}",//
-                designer, designerAssistant, contractState, commissionState, contractId, payContractRatio, payProjectRatio, actualStartTime, actualEndTime, contractDate, firstCommissionDate, balanceTime, balanceCommissionDate,
+                designer, designerAssistant, contractState, commissionState, acNumber, contractId, payContractRatio, payProjectRatio, actualStartTime, actualEndTime, contractDate, firstCommissionDate, balanceTime, balanceCommissionDate,
                 pageIndex, pageSize, sortField, sortOrder);
 
-        ProjectCommissionFilterRequest request = generateProjectCommissionFilterRequest(designer, designerAssistant, contractState, commissionState, contractId, payContractRatio, payProjectRatio, actualStartTime,
+        ProjectCommissionFilterRequest request = generateProjectCommissionFilterRequest(designer, designerAssistant, contractState, commissionState,//
+                acNumber, contractId, payContractRatio, payProjectRatio, actualStartTime,
                 actualEndTime, contractDate, firstCommissionDate, balanceTime, balanceCommissionDate, pageIndex, pageSize, sortField, sortOrder);
 
         int count = projectCommissionService.getProjectCommissionCount(request);
@@ -126,7 +136,8 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
     }
 
     private ProjectCommissionFilterRequest generateProjectCommissionFilterRequest(String designer, String designerAssistant,
-                                                                                  String contractState, String commissionState, String contractId, //
+                                                                                  String contractState, String commissionState,//
+                                                                                  String acNumber,  String contractId, //
                                                                                   String payContractRatio, String payProjectRatio, String actualStartTime,//
                                                                                   String actualEndTime, String contractDate, String firstCommissionDate, String balanceTime, String balanceCommissionDate,
                                                                                   int pageIndex, int pageSize, String sortField, String sortOrder) {
@@ -136,6 +147,7 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
         request.setDesigner(designer);
         request.setDesignerAssistant(designerAssistant);
         request.setContractId(contractId);
+        request.setAcNumber(acNumber);
         request.setContractState(contractState);
         if (payContractRatio != null && !payContractRatio.equals("")) {
             request.setPayContractRatio(new BigDecimal(payContractRatio));

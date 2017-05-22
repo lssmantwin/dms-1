@@ -1,16 +1,21 @@
 package com.dms.service.impl;
 
+import com.dms.constant.DmsConstant;
+import com.dms.dao.EmployeeDao;
 import com.dms.dao.ProjectCommissionDao;
+import com.dms.dto.EmployeeDto;
 import com.dms.dto.ProjectCommissionDto;
 import com.dms.enums.CommissionStateEnum;
 import com.dms.request.ProjectCommissionFilterRequest;
 import com.dms.service.ProjectCommissionService;
+import com.dms.utils.DateUtils;
 import com.dms.utils.DmsConstants;
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -20,22 +25,25 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
     @Autowired
     private ProjectCommissionDao projectCommissionDao;
 
+    @Autowired
+    private EmployeeDao employeeDao;
+
     public ProjectCommissionServiceImpl(ProjectCommissionDao projectCommissionDao) {
         this.projectCommissionDao = projectCommissionDao;
     }
 
     @Override
-    public ProjectCommissionDto getProjectCommission(String acNumber) {
-        return projectCommissionDao.getProjectCommission(acNumber);
+    public ProjectCommissionDto getProject(String acNumber) {
+        return projectCommissionDao.getProject(acNumber);
     }
 
     @Override
-    public int getProjects(Date startDate, Date endDate) {
-        return 0;
+    public List<ProjectCommissionDto> getProjects(Date startDate, Date endDate) {
+        return projectCommissionDao.getProjects(startDate, endDate);
     }
 
     @Override
-    public void calculateCommission(List<ProjectCommissionDto> projectCommissionDtos) {
+    public void calculateFirstCommission(List<ProjectCommissionDto> projectCommissionDtos) {
         for (ProjectCommissionDto commission : projectCommissionDtos) {
 
             if (commission.getPurchasingCost() == null) {
@@ -50,8 +58,8 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
                 commission.setDesignerAssistantCommission(commission.getCommissionBase().multiply(commission.getDesignerAssistantCommissionRate()).setScale(2, BigDecimal.ROUND_HALF_UP));
                 commission.setDesignerAssistantCommissionDate(LocalDateTime.now());
             }
-			CommissionStateEnum commissionState = CommissionStateEnum.COMMISSION_STATE_START;
-            if (CommissionStateEnum.COMMISSION_STATE_START  == commission.getCommissionState()) {
+            CommissionStateEnum commissionState = CommissionStateEnum.COMMISSION_STATE_START;
+            if (CommissionStateEnum.COMMISSION_STATE_START == commission.getCommissionState()) {
                 BigDecimal firstCommission = BigDecimal.ZERO;
                 //小于1万 提成250
                 if (commission.getContractTotal() != null
@@ -74,7 +82,15 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
                 }
 
                 projectCommissionDao.updateProjectCommission(commission);
-            } else if (CommissionStateEnum.COMMISSION_STATE_FIRST == commission.getCommissionState()
+            }
+        }
+
+    }
+    @Override
+    public void calculateBalanceCommission(List<ProjectCommissionDto> projectCommissionDtos) {
+        for (ProjectCommissionDto commission : projectCommissionDtos) {
+            CommissionStateEnum commissionState;
+            if (CommissionStateEnum.COMMISSION_STATE_FIRST == commission.getCommissionState()
                     && commission.getProjectChangeTotal() != null) {
                 BigDecimal balanceCommission = BigDecimal.ZERO;
                 commissionState = CommissionStateEnum.COMMISSION_STATE_FINISH;
@@ -87,7 +103,6 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
                 projectCommissionDao.updateProjectCommission(commission);
             }
         }
-
 
     }
 
@@ -110,7 +125,34 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 		projectCommissionDao.updateProjectCommission(projectCommission);
 	}
 
-	@Override
+    @Override
+    public void sychronzieProejcts() {
+       List<ProjectCommissionDto> projects = getProjects(DateUtils.getCurrentDayStart(), DateUtils.getCurrentDayEnd());
+       for (ProjectCommissionDto project : projects) {
+           ProjectCommissionDto projectCommissionDto = projectCommissionDao.getProject(project.getAcNumber());
+           if (projectCommissionDto == null){
+               projectCommissionDto.setCreatedTime(LocalDateTime.now());
+               if (project.getDesigner() != null) {
+                   //取得设计师的提成系数
+                   EmployeeDto employee = employeeDao.getEmployee(project.getDesigner());
+                   if (project.getContractId().startsWith(DmsConstants.FX_PROJECT)) {
+                       project.setDesignCommissionRate(employee.getRenovateCommossionRatio());
+                       project.setFirstCommissionRate(employee.getCommencementRatio());
+                   } else if(project.getContractId().startsWith(DmsConstants.JYW_PROJECT)) {
+                       project.setDesignCommissionRate(employee.getJywCommissionRatio());
+                       project.setFirstCommissionRate(employee.getCommencementRatio());
+                   }
+                   project.setDesignCommissionRate(employee.getJywCommissionRatio());
+               }
+               projectCommissionDao.saveProjectCommission(projectCommissionDto);
+           } else {
+               projectCommissionDto.setUpdatedTime(LocalDateTime.now());
+               projectCommissionDao.updateProjectCommission(projectCommissionDto);
+           }
+       }
+    }
+
+    @Override
 	public List<ProjectCommissionDto> getProjectCommissions(ProjectCommissionFilterRequest request) {
 		return projectCommissionDao.getProjectCommissions(request);
 	}

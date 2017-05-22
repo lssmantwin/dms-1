@@ -16,7 +16,9 @@ public interface ProjectCommissionDao {
 
 	ProjectCommissionDto getProjectCommission(String acNumber);
 
-	int getProjects(Date startDate, Date endDate);
+	List<ProjectCommissionDto> getProjects(Date startDate, Date endDate);
+
+	ProjectCommissionDto getProject(String acNumber);
 
 	void saveProjectCommission(List<ProjectCommissionDto> projectCommissions);
 

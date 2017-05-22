@@ -23,6 +23,7 @@ public interface ProjectCommissionWebService {
 	Response export(@QueryParam("designer") String designer,
 					@QueryParam("designerAssistant") String designerAssistant,
 					@QueryParam("contractState") String contractState, @QueryParam("commissionState") String commissionState,
+					@QueryParam("acNumber") String acNumber,
 					@QueryParam("contractId") String contractId, @QueryParam("payContractRatio") String payContractRatio,
 					@QueryParam("payProjectRatio") String payProjectRatio, @QueryParam("actualStartTime") String actualStartTime,
 					@QueryParam("actualEndTime") String actualEndTime,
@@ -38,14 +39,19 @@ public interface ProjectCommissionWebService {
 	void saveProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos);
 
 	@POST
-	@Path("/calculateCommission")
-	void calculateProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos);
+	@Path("/calculateFirstCommission")
+	void calculateFirstCommissions(List<ProjectCommissionDto> projectCommissionDtos);
+
+	@POST
+	@Path("/calculateBalanceCommission")
+	void calculateBalanceCommissions(List<ProjectCommissionDto> projectCommissionDtos);
 
 	@GET
 	@Path("/projectCommissions")
 	DataGridResponse<List<ProjectCommissionDto>> getProjectCommissions(@QueryParam("designer") String designer,
 			@QueryParam("designerAssistant") String designerAssistant,
 			@QueryParam("contractState") String contractState, @QueryParam("commissionState") String commissionState,
+			@QueryParam("acNumber") String acNumber,
 			@QueryParam("contractId") String contractId, @QueryParam("payContractRatio") String payContractRatio,
 			 @QueryParam("payProjectRatio") String payProjectRatio, @QueryParam("actualStartTime") String actualStartTime,
 			@QueryParam("actualEndTime") String actualEndTime,

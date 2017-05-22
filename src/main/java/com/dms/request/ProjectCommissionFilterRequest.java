@@ -10,6 +10,7 @@ public class ProjectCommissionFilterRequest extends BaseFilterRequest implements
 	private String designer;
 	private String designerAssistant;
 	private String contractState;
+	private String acNumber;
 	private String contractId;
 	private CommissionStateEnum commissionState;
 	private String contractDate;
@@ -126,4 +127,11 @@ public class ProjectCommissionFilterRequest extends BaseFilterRequest implements
 		this.designerAssistant = designerAssistant;
 	}
 
+	public String getAcNumber() {
+		return acNumber;
+	}
+
+	public void setAcNumber(String acNumber) {
+		this.acNumber = acNumber;
+	}
 }

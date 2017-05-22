@@ -29,6 +29,10 @@
         select * from "month" order by text desc
     </select>
 
+    <select id="getEmployee" resultType="EmployeeDto">
+        select * from "employee" order by name desc
+    </select>
+
     <select id="getPositions" resultType="Position">
         select * from "position" order by "value"
     </select>
