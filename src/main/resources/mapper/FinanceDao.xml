@@ -29,9 +29,10 @@
         <result property="beforeTaxSalary" column="before_tax_salary"/>
         <result property="personalIncomeTax" column="personal_income_tax"/>
         <result property="afterTaxSalary" column="after_tax_salary"/>
+        <result property="alreadyCharge" column="already_charge" typeHandler="com.dms.handler.BooleanHandler"/>
     </resultMap>
 
-    <select id="getFinances" parameterType="DataGridRequest" resultMap="FinanceMap">
+    <select id="getFinances" parameterType="FinanceFilterRequest" resultMap="FinanceMap">
         select t.eid as employee_id, t.name as employee_name, t.base_wage, t.overtime, t.meals_subsidy,
         t.secrecy_subsidy, t.communication_fee,
         t.fid as finance_id, t.month,
@@ -39,7 +40,7 @@
         t.other_subsidy, t.exhibition_charge, t.charge,
         t.charge_comments, t.casual_leave, t.sick_leave,
         t.storage_charge, t.gross_pay, t.medical_insurance,
-        t.housing_fund, t.before_tax_salary, t.personal_income_tax, t.after_tax_salary
+        t.housing_fund, t.before_tax_salary, t.personal_income_tax, t.after_tax_salary, t.already_charge
         from (
         select e.id as eid, e.name, e.base_wage, e.overtime, e.meals_subsidy, e.secrecy_subsidy,
         e.communication_fee, e.working_age_subsidy, f.id as fid, f.month, f.attendance,
@@ -47,22 +48,30 @@
         f.other_subsidy, f.exhibition_charge, f.charge,
         f.charge_comments, f.casual_leave, f.sick_leave,
         f.storage_charge, f.gross_pay, f.medical_insurance,
-        f.housing_fund, f.before_tax_salary, f.personal_income_tax, f.after_tax_salary,
+        f.housing_fund, f.before_tax_salary, f.personal_income_tax, f.after_tax_salary, f.already_charge,
         row_number() over (order by e.id) as rn from employee e left join finance f on e.id = f.employee_id and
         f."month" = #{month}
+        <where>
+            <if test="employeeName != null and employeeName != ''">
+                <bind name="pattern" value="'%' + employeeName + '%'"/>
+                e.name like #{pattern}
+            </if>
+        </where>
         ) t
         <where>
-            t.rn BETWEEN #{start} and #{end}
+            <if test="end > 0">
+                t.rn BETWEEN #{start} and #{end}
+            </if>
         </where>
     </select>
 
     <insert id="saveFinance" parameterType="FinanceDto">
         insert into "finance" (created_on, employee_id, month, attendance, bonus, performance_appraisal,
          other_subsidy, exhibition_charge, charge, charge_comments, casual_leave, sick_leave, storage_charge,
-         gross_pay, medical_insurance, housing_fund, before_tax_salary, personal_income_tax, after_tax_salary)
+         gross_pay, medical_insurance, housing_fund, before_tax_salary, personal_income_tax, after_tax_salary, already_charge)
         values (current_timestamp, #{employeeId}, #{month}, #{attendance}, #{bonus}, #{performanceAppraisal},
          #{otherSubsidy}, #{exhibitionCharge}, #{charge}, #{chargeComments}, #{casualLeave}, #{sickLeave}, #{storageCharge},
-         #{grossPay}, #{medicalInsurance}, #{housingFund}, #{beforeTaxSalary}, #{personalIncomeTax}, #{afterTaxSalary})
+         #{grossPay}, #{medicalInsurance}, #{housingFund}, #{beforeTaxSalary}, #{personalIncomeTax}, #{afterTaxSalary}, 1)
     </insert>
 
     <update id="updateFinance" parameterType="FinanceDto">

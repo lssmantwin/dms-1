@@ -34,6 +34,7 @@ public class FinanceDto implements Serializable {
 	private BigDecimal beforeTaxSalary;
 	private BigDecimal personalIncomeTax;
 	private BigDecimal afterTaxSalary;
+	private Boolean alreadyCharge = Boolean.FALSE;
 
 	public Long getId() {
 		return id;
@@ -241,5 +242,13 @@ public class FinanceDto implements Serializable {
 
 	public void setAfterTaxSalary(BigDecimal afterTaxSalary) {
 		this.afterTaxSalary = afterTaxSalary;
+	}
+
+	public Boolean getAlreadyCharge() {
+		return alreadyCharge;
+	}
+
+	public void setAlreadyCharge(Boolean alreadyCharge) {
+		this.alreadyCharge = alreadyCharge;
 	}
 }

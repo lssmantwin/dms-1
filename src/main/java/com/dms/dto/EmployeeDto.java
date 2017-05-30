@@ -3,11 +3,11 @@ package com.dms.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.joda.time.LocalDateTime;
 
 import com.dms.serializable.LocalDateTimeJacksonDeSerializable;
 import com.dms.serializable.LocalDateTimeJacksonSerializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -30,7 +30,18 @@ public class EmployeeDto implements Serializable {
 	private BigDecimal jywCommissionRatio;
 	private BigDecimal commencementRatio;
 	private BigDecimal completionRatio;
-	private BigDecimal renovateCommossionRatio;
+	private BigDecimal renovateCommissionRatio;
+	private String identityCardNumber;
+	private BigDecimal transportationAllowance;
+	private BigDecimal postAllowance;
+	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
+	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
+	private LocalDateTime leaveDate;
+	private BigDecimal storageCharge;
+	private BigDecimal totalCharge;
+	private BigDecimal chargePerMonth;
+	private BigDecimal charge;
+	private int companyId;
 
 	public String getId() {
 		return id;
@@ -144,11 +155,85 @@ public class EmployeeDto implements Serializable {
 		this.completionRatio = completionRatio;
 	}
 
+
 	public BigDecimal getRenovateCommossionRatio() {
-		return renovateCommossionRatio;
+		return renovateCommissionRatio;
 	}
 
 	public void setRenovateCommossionRatio(BigDecimal renovateCommossionRatio) {
-		this.renovateCommossionRatio = renovateCommossionRatio;
+		this.renovateCommissionRatio = renovateCommossionRatio;
 	}
+
+	public String getIdentityCardNumber() {
+		return identityCardNumber;
+	}
+
+	public void setIdentityCardNumber(String identityCardNumber) {
+		this.identityCardNumber = identityCardNumber;
+	}
+
+	public BigDecimal getTransportationAllowance() {
+		return transportationAllowance;
+	}
+
+	public void setTransportationAllowance(BigDecimal transportationAllowance) {
+		this.transportationAllowance = transportationAllowance;
+	}
+
+	public BigDecimal getPostAllowance() {
+		return postAllowance;
+	}
+
+	public void setPostAllowance(BigDecimal postAllowance) {
+		this.postAllowance = postAllowance;
+	}
+
+	public LocalDateTime getLeaveDate() {
+		return leaveDate;
+	}
+
+	public void setLeaveDate(LocalDateTime leaveDate) {
+		this.leaveDate = leaveDate;
+	}
+
+	public BigDecimal getStorageCharge() {
+		return storageCharge;
+	}
+
+	public void setStorageCharge(BigDecimal storageCharge) {
+		this.storageCharge = storageCharge;
+	}
+
+	public BigDecimal getTotalCharge() {
+		return totalCharge;
+	}
+
+	public void setTotalCharge(BigDecimal totalCharge) {
+		this.totalCharge = totalCharge;
+	}
+
+	public BigDecimal getChargePerMonth() {
+		return chargePerMonth;
+	}
+
+	public void setChargePerMonth(BigDecimal chargePerMonth) {
+		this.chargePerMonth = chargePerMonth;
+	}
+
+	public BigDecimal getCharge() {
+		return charge;
+	}
+
+	public void setCharge(BigDecimal charge) {
+		this.charge = charge;
+	}
+
+	public int getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
+	}
+
 }

@@ -1,19 +1,5 @@
 package com.dms.ws.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.ws.rs.core.Response;
-
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.LocalDateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.dms.dto.EnumDto;
 import com.dms.dto.ProjectCommissionDto;
 import com.dms.enums.CommissionStateEnum;
@@ -26,6 +12,7 @@ import com.dms.service.ProjectCommissionService;
 import com.dms.utils.FileFactory;
 import com.dms.ws.ProjectCommissionWebService;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +23,7 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -106,7 +94,26 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
         projectCommissionService.calculateBalanceCommission(projectCommissionDtos);
     }
 
-    public DataGridResponse<List<ProjectCommissionDto>> getProjectCommissions(String designer, String designerAssistant,
+    @Override
+    public void updateDesignAssistant(String designAssistant) {
+        System.out.println("design A" + designAssistant);
+    }
+
+//    public static Map<Integer, Map<Integer, List<String>>> getExcel(InputStream in,int lessrow)
+//            throws IOException {
+//        Map<Integer, Map<Integer, List<String>>> map = new HashMap<Integer, Map<Integer, List<String>>>();// 总map
+//        Map<Integer, List<String>> sheetMap = null;// 每个sheet的map
+//        List<String> list = null;// 每行一个list
+//        Workbook workBook = null;
+//        try {
+//            workBook = new HSSFWorkbook(in);
+//
+//        } catch (Exception e) {
+//            workBook = new HSSFWorkbook(in);
+//        }
+//
+//    }
+        public DataGridResponse<List<ProjectCommissionDto>> getProjectCommissions(String designer, String designerAssistant,
                                                                               String contractState, String commissionState,//
                                                                               String acNumber , String contractId,//
                                                                               String payContractRatio, String payProjectRatio,//

@@ -19,5 +19,6 @@ create table finance (
   housing_fund decimal(10,2),
   before_tax_salary decimal(10,2),
   personal_income_tax decimal(10,2),
-  after_tax_salary decimal(10,2)
+  after_tax_salary decimal(10,2),
+  already_charge bit not null default 0
 )

@@ -1,7 +1,9 @@
 package com.dms.ws;
 
+import java.util.Base64;
 import java.util.List;
 
+import javax.jws.WebParam;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -45,6 +47,10 @@ public interface ProjectCommissionWebService {
 	@POST
 	@Path("/calculateBalanceCommission")
 	void calculateBalanceCommissions(List<ProjectCommissionDto> projectCommissionDtos);
+
+	@POST
+	@Path("/importDesignAssistant")
+	void updateDesignAssistant(@QueryParam("designAssistant") String designAssistant);
 
 	@GET
 	@Path("/projectCommissions")

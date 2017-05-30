@@ -82,7 +82,8 @@
                 and contract_date > #{contractDate}
             </if>
             <if test="firstCommissionDate != null and firstCommissionDate != ''">
-                and first_commission_date > #{firstCommissionDate}
+                and first_commission_date >= #{firstCommissionStartDate}
+                and first_commission_date &lt;= #{firstCommissionEndDate}
             </if>
             <if test="actualStartTime != null and actualStartTime != ''">
                 and actual_start_time > #{actualStartTime}
@@ -137,9 +138,7 @@
             <if test="payProjectRatio != null and payProjectRatio != ''">
                 and pay_project_ratio >= #{payProjectRatio}
             </if>
-            <if test="contractState != null">
-                and contract_state = #{contractState, typeHandler=com.dms.handler.ContractStateEnumHandler}
-            </if>
+
             <if test="commissionState != null">
                 and commission_state = #{commissionState, typeHandler=com.dms.handler.CommissionStateEnumHandler}
             </if>
@@ -147,7 +146,8 @@
                 and contract_date > #{contractDate}
             </if>
             <if test="firstCommissionDate != null and firstCommissionDate != ''">
-                and first_commission_date > #{firstCommissionDate}
+                and first_commission_date >= #{firstCommissionStartDate}
+                and first_commission_date &lt; #{firstCommissionEndDate}
             </if>
             <if test="actualStartTime != null and actualStartTime != ''">
                 and actual_start_time > #{actualStartTime}
@@ -159,7 +159,8 @@
                 and balance_time > #{balanceTime}
             </if>
             <if test="balanceCommissionDate != null and balanceCommissionDate != ''">
-                and balance_commission_date > #{balanceCommissionDate}
+                and balance_commission_date >= #{balanceCommissionStartDate}
+                and balance_commission_date &lt; #{balanceCommissionEndDate}
             </if>
         </where>
         ) t

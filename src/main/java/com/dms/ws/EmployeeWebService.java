@@ -9,6 +9,7 @@ import com.dms.domain.Attendance;
 import com.dms.domain.Month;
 import com.dms.domain.Position;
 import com.dms.dto.EmployeeDto;
+import com.dms.dto.EnumDto;
 import com.dms.response.DataGridResponse;
 import org.springframework.stereotype.Controller;
 
@@ -21,6 +22,10 @@ public interface EmployeeWebService {
 	@GET
 	@Path("/attendance")
 	List<Attendance> getAttendance();
+
+	@GET
+	@Path("/companies")
+	List<EnumDto> getCompanies();
 
 	@GET
 	@Path("/months")
@@ -36,7 +41,7 @@ public interface EmployeeWebService {
 
 	@GET
 	@Path("/employees")
-	DataGridResponse<List<EmployeeDto>> getEmployees(@QueryParam("key") String key, @QueryParam("pageIndex") int pageIndex,
+	DataGridResponse<List<EmployeeDto>> getEmployees(@QueryParam("employeeName") String employeeName, @QueryParam("pageIndex") int pageIndex,
 			@QueryParam("pageSize") int pageSize, @QueryParam("sortField") String sortField, @QueryParam("sortOrder") String sortOrder);
 
 }

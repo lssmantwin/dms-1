@@ -8,6 +8,7 @@ public class BaseFilterRequest implements Serializable {
 	private int end;
 	private String sortField;
 	private String sortOrder;
+	private String employeeName;
 
 	public int getStart() {
 		return start;
@@ -39,5 +40,13 @@ public class BaseFilterRequest implements Serializable {
 
 	public void setSortOrder(String sortOrder) {
 		this.sortOrder = sortOrder;
+	}
+
+	public String getEmployeeName() {
+		return employeeName;
+	}
+
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
 	}
 }

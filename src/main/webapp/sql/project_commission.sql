@@ -1,31 +1,5 @@
 CREATE TABLE project_commission (
-<<<<<<< HEAD
-	id int primary key identity(1,1),
-	designer nvarchar(50),
-	ac_number varchar(6),
-	contract_id varchar(20),
-	customer_name varchar(20),
-	contract_total decimal(10, 2),
-	purchase_agent_fee decimal(10, 2),
-	project_change_total decimal(10, 2),
-	branch varchar(20),
-	customer_pay decimal(10, 2),
-	pay_contract_ratio decimal(10, 2),
-	pay_project_ratio decimal(10, 2),
-	contract_state varchar(10),
-	commission_state varchar(10),
-	contract_date datetime,
-	actual_start_time datetime,
-	actual_end_time datetime,
-	balance_time datetime,
-	designer_assistant varchar(20),
-	first_commission decimal(10, 2),
-	first_commission_date datetime,
-	balance_commission decimal(10, 2),
-	balance_commission_date datetime,
-	design_commission_rate decimal(4, 4),
-	designer_assistant_commission_rate decimal(4, 4)
-=======
+
   id                                 INT PRIMARY KEY IDENTITY (1, 1),
   designer                           NVARCHAR(50),
   ac_number                          VARCHAR(6),
@@ -53,5 +27,5 @@ CREATE TABLE project_commission (
   designer_assistant_commission_rate DECIMAL(4, 2),
   commission_base                    DECIMAL(10, 2),
   designer_assistant_commission      DECIMAL(10, 2)
->>>>>>> upstream/master
+
 )

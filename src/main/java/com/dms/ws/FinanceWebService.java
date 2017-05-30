@@ -17,8 +17,9 @@ public interface FinanceWebService {
 
 	@GET
 	@Path("/finances")
-	DataGridResponse<List<FinanceDto>> getFinances(@QueryParam("key") String key, @QueryParam("pageIndex") int pageIndex, @QueryParam("pageSize") int pageSize,
-			@QueryParam("sortField") String sortField, @QueryParam("sortOrder") String sortOrder, @QueryParam("month") String month);
+	DataGridResponse<List<FinanceDto>> getFinances(@QueryParam("employeeName") String employeeName, @QueryParam("pageIndex") int pageIndex,
+			@QueryParam("pageSize") int pageSize, @QueryParam("sortField") String sortField, @QueryParam("sortOrder") String sortOrder,
+			@QueryParam("month") String month);
 
 	@POST
 	@Path("/finances")

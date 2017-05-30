@@ -1,7 +1,7 @@
 package com.dms.ws.impl;
 
-import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -14,12 +14,11 @@ import com.dms.domain.Attendance;
 import com.dms.domain.Month;
 import com.dms.domain.Position;
 import com.dms.dto.EmployeeDto;
-import com.dms.dto.FinanceDto;
-import com.dms.request.DataGridRequest;
-import com.dms.request.FinanceRequest;
+import com.dms.dto.EnumDto;
+import com.dms.enums.CompanyEnum;
+import com.dms.request.BaseFilterRequest;
 import com.dms.response.DataGridResponse;
 import com.dms.service.EmployeeService;
-import com.dms.utils.PersonalIncomeTaxUtils;
 import com.dms.ws.EmployeeWebService;
 import com.google.common.collect.Lists;
 
@@ -34,6 +33,11 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 	@Override
 	public List<Attendance> getAttendance() {
 		return employeeService.getAttendance();
+	}
+
+	@Override
+	public List<EnumDto> getCompanies() {
+		return Lists.newArrayList(CompanyEnum.values()).stream().map(e -> new EnumDto(e.getDbConstant(), e.getText())).collect(Collectors.toList());
 	}
 
 	@Override
@@ -74,11 +78,12 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 	}
 
 	@Override
-	public DataGridResponse<List<EmployeeDto>> getEmployees(String key, int pageIndex, int pageSize, String sortField, String sortOrder) {
+	public DataGridResponse<List<EmployeeDto>> getEmployees(String employeeName, int pageIndex, int pageSize, String sortField, String sortOrder) {
 
-		LOGGER.info("get employees, key {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}", key, pageIndex, pageSize, sortField, sortOrder);
+		LOGGER.info("get employees, employeeName {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}", employeeName, pageIndex, pageSize, sortField,
+				sortOrder);
 
-		DataGridRequest request = generateDataGridRequest(key, pageIndex, pageSize, sortField, sortOrder, null);
+		BaseFilterRequest request = generateFilterRequest(employeeName, pageIndex, pageSize, sortField, sortOrder);
 
 		int count = employeeService.getEmployeeCount(request);
 		List<EmployeeDto> employees = employeeService.getEmployees(request);
@@ -91,14 +96,13 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 		return response;
 	}
 
-	private DataGridRequest generateDataGridRequest(String key, int pageIndex, int pageSize, String sortField, String sortOrder, String month) {
-		DataGridRequest request = new DataGridRequest();
+	private BaseFilterRequest generateFilterRequest(String employeeName, int pageIndex, int pageSize, String sortField, String sortOrder) {
+		BaseFilterRequest request = new BaseFilterRequest();
 		request.setStart(pageIndex * pageSize + 1);
 		request.setEnd((pageIndex + 1) * pageSize);
-		request.setKey(key);
+		request.setEmployeeName(employeeName);
 		request.setSortField(sortField);
 		request.setSortOrder(sortOrder);
-		request.setMonth(month);
 		return request;
 	}
 

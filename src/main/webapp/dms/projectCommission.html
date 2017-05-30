@@ -5,10 +5,8 @@
 <head>
     <title>Project Commission</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <link href="../demo.css" rel="stylesheet" type="text/css"/>
-    <script src="../../scripts/boot.js" type="text/javascript"></script>
-
-
+    <link href="../css/demo.css" rel="stylesheet" type="text/css"/>
+    <script src="../scripts/boot.js" type="text/javascript"></script>
 </head>
 <body>
 <style type="text/css">
@@ -31,9 +29,20 @@
                 <a class="mini-button" iconCls="icon-node" plain="true" onclick="calculateFirstCommission()">首次提成</a>
                 <a class="mini-button" iconCls="icon-node" plain="true" onclick="calculateBalanceCommission()">二次提成</a>
                 <a class="mini-button" iconCls="icon-upload" plain="true" onclick="ExportExcel()">导出Excel</a>
+                
+                <input id="designAssistants" type = "file"  name="Fdata" limitType="*.xlsx" /> <a class="mini-button" iconCls="icon-upload" plain="true" onclick="ImportExcel()">导入设计助理</a>
             </td>
         </tr>
     </table>
+
+    <form action="rest/file/upload" method="post" enctype="multipart/form-data">
+
+        <p>
+            Select a file : <input type="file" name="uploadedFile" size="50" />
+        </p>
+
+        <input type="submit" value="Upload It" />
+    </form>
 </div>
 
 <!--撑满页面-->
@@ -106,12 +115,11 @@
                          currencyUnit="￥"  allowSort="false">首提
                     </div>
 
-                    <div field="firstCommissionDate" width="80" headerAlign="center"  allowSort="false" dateFormat="yyyy-MM">
+                    <div field="firstCommissionDate" width="80" headerAlign="center"  allowSort="false" dateFormat="yyyy-MM" >
                         首提日期
                         <input id="firstCommissionDateFilter" property="filter" class="mini-monthpicker" style="width:100%;"
-                               minWidth="100" onvaluechanged="onFilterChanged"/>
-                        <input id="firstCommission" property="firstCommissionDate" class="mini-monthpicker" style="width:100%;"
-                               minWidth="100" readonly="true"/>
+                               minWidth="100" onvaluechanged="onFilterChanged()"/>
+
                     </div>
                 </div>
             </div>
@@ -164,6 +172,7 @@
             <div field="customerPay" width="100" numberFormat="¥#,0.00"  headerAlign="center" allowSort="false">已付
             </div>
             <div field="contractState" width="60" headerAlign="center" allowSort="false">状态
+
             </div>
             <div field="branch" width="80" headerAlign="center" allowSort="false">网点
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
@@ -303,28 +312,44 @@
 
     function ExportExcel() {
         var designer = mini.get("designerFilter").getValue();
-        var contractState = mini.get("contractStateFilter").getValue();
         var commissionState = mini.get("commissionStateFilter").getValue();
-        var actualStartTime = mini.get("actualStartTimeFilter").getText();
-        var actualEndTime = mini.get("actualEndTimeFilter").getText();
-        var contractDate = mini.get("contractDateFilter").getText();
+        var acNumber = mini.get("acNumberFilter").getValue();
+        var payContractRatio = mini.get("payContractFilter").getValue();
+        var payProjectRatio = mini.get("payProjectFilter").getValue();
+        var designerAssistant = mini.get("designerAssistantFilter").getValue();
         var firstCommissionDate = mini.get("firstCommissionDateFilter").getText();
-        var balanceTime = mini.get("balanceTimeFilter").getText();
-        var balanceCommissionDate = mini.get("balanceCommissionDateFilter").getText();
 
         document.getElementById("designer").value = designer;
-        document.getElementById("contractState").value = contractState;
         document.getElementById("commissionState").value = commissionState;
-        document.getElementById("actualStartTime").value = actualStartTime;
-        document.getElementById("actualEndTime").value = actualEndTime;
-        document.getElementById("contractDate").value = contractDate;
         document.getElementById("firstCommissionDate").value = firstCommissionDate;
-        document.getElementById("balanceTime").value = balanceTime;
-        document.getElementById("balanceCommissionDate").value = balanceCommissionDate;
 
         var excelForm = document.getElementById("excelForm");
         excelForm.submit();
     }
+
+     function ImportExcel() {
+        var designAssistant = document.getElementById("designAssistants");
+          alert(designAssistant)
+
+        grid.loading("保存中，请稍后......");
+        $.ajax({
+            url: '../ws/commission/v1/importDesignAssistant',
+            type: 'post',
+            dataType: 'json',
+              data:{"designAssistant":designAssistant},
+            contentType: 'application/json;charset=utf-8',
+            success: function (text) {
+                grid.reload();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR);
+                alert(textStatus);
+                alert(errorThrown);
+                alert(jqXHR.responseText);
+            }
+        });
+
+     }
 
     function onDrawSummaryCell(e) {
         var result = e.result;
