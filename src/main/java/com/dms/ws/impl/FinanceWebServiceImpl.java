@@ -58,7 +58,7 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 		for (FinanceDto financeDto : request.getFinances()) {
 			financeDto.setMonth(request.getMonth());
 			financeDto.setGrossPay(calculateGrossPay(financeDto));
-			financeDto.setBeforeTaxSalary(financeDto.getGrossPay().subtract(financeDto.getMedicalInsurance()).subtract(financeDto.getHousingFund()));
+			financeDto.setBeforeTaxSalary(calculateBeforeTaxSalary(financeDto));
 			BigDecimal personalIncomeTax = PersonalIncomeTaxUtils.getPersonalIncomeTax(financeDto.getBeforeTaxSalary());
 			financeDto.setPersonalIncomeTax(personalIncomeTax);
 			financeDto.setAfterTaxSalary(financeDto.getBeforeTaxSalary().subtract(personalIncomeTax));
@@ -99,14 +99,20 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 		if (financeDto.getSecrecySubsidy() != null) {
 			grossPay = grossPay.add(financeDto.getSecrecySubsidy());
 		}
-		if (financeDto.getBonus() != null) {
-			grossPay = grossPay.add(financeDto.getBonus());
+		if (financeDto.getBonusCard() != null) {
+			grossPay = grossPay.add(financeDto.getBonusCard());
+		}
+		if (financeDto.getBonusCash() != null) {
+			grossPay = grossPay.add(financeDto.getBonusCash());
 		}
 		if (financeDto.getWorkingAgeSubsidy() != null) {
 			grossPay = grossPay.add(financeDto.getWorkingAgeSubsidy());
 		}
-		if (financeDto.getPerformanceAppraisal() != null) {
-			grossPay = grossPay.add(financeDto.getPerformanceAppraisal());
+		if (financeDto.getPerformanceAppraisalCard() != null) {
+			grossPay = grossPay.add(financeDto.getPerformanceAppraisalCard());
+		}
+		if (financeDto.getPerformanceAppraisalCash() != null) {
+			grossPay = grossPay.add(financeDto.getPerformanceAppraisalCash());
 		}
 		if (financeDto.getCommunicationFee() != null) {
 			grossPay = grossPay.add(financeDto.getCommunicationFee());
@@ -130,6 +136,59 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 			grossPay.subtract(financeDto.getStorageCharge());
 		}
 		return grossPay;
+	}
+
+	private BigDecimal calculateBeforeTaxSalary(FinanceDto financeDto) {
+		BigDecimal beforeTaxSalary = BigDecimal.ZERO;
+		if (financeDto.getBaseWage() != null) {
+			beforeTaxSalary = beforeTaxSalary.add(financeDto.getBaseWage());
+		}
+		if (financeDto.getOvertime() != null) {
+			beforeTaxSalary = beforeTaxSalary.add(financeDto.getOvertime());
+		}
+		if (financeDto.getMealsSubsidy() != null) {
+			beforeTaxSalary = beforeTaxSalary.add(financeDto.getMealsSubsidy());
+		}
+		if (financeDto.getSecrecySubsidy() != null) {
+			beforeTaxSalary = beforeTaxSalary.add(financeDto.getSecrecySubsidy());
+		}
+		if (financeDto.getBonusCard() != null) {
+			beforeTaxSalary = beforeTaxSalary.add(financeDto.getBonusCard());
+		}
+		if (financeDto.getWorkingAgeSubsidy() != null) {
+			beforeTaxSalary = beforeTaxSalary.add(financeDto.getWorkingAgeSubsidy());
+		}
+		if (financeDto.getPerformanceAppraisalCard() != null) {
+			beforeTaxSalary = beforeTaxSalary.add(financeDto.getPerformanceAppraisalCard());
+		}
+		if (financeDto.getCommunicationFee() != null) {
+			beforeTaxSalary = beforeTaxSalary.add(financeDto.getCommunicationFee());
+		}
+		if (financeDto.getOtherSubsidy() != null) {
+			beforeTaxSalary = beforeTaxSalary.add(financeDto.getOtherSubsidy());
+		}
+		if (financeDto.getCharge() != null) {
+			beforeTaxSalary.subtract(financeDto.getCharge());
+		}
+		if (financeDto.getExhibitionCharge() != null) {
+			beforeTaxSalary.subtract(financeDto.getExhibitionCharge());
+		}
+		if (financeDto.getCasualLeave() != null) {
+			beforeTaxSalary.subtract(financeDto.getCasualLeave());
+		}
+		if (financeDto.getSickLeave() != null) {
+			beforeTaxSalary.subtract(financeDto.getSickLeave());
+		}
+		if (financeDto.getStorageCharge() != null) {
+			beforeTaxSalary.subtract(financeDto.getStorageCharge());
+		}
+		if (financeDto.getMedicalInsurance() != null) {
+			beforeTaxSalary.subtract(financeDto.getMedicalInsurance());
+		}
+		if (financeDto.getHousingFund() != null) {
+			beforeTaxSalary.subtract(financeDto.getHousingFund());
+		}
+		return beforeTaxSalary;
 	}
 
 	private FinanceFilterRequest generateFilterRequest(String employeeName, int pageIndex, int pageSize, String sortField, String sortOrder, String month) {
