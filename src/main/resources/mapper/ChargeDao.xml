@@ -12,8 +12,16 @@
         <result property="chargeBalance" column="charge_balance"/>
     </resultMap>
 
-    <select id="getChargeDetails" resultMap="ChargeDetailMap">
-        select cd.id, cd.charge_time, cd.employee_id, e.name as employee_name, cd.charge, cd.charge_balance from charge_detail cd join employee e on cd.employee_id = e.id order by cd.charge_time, cd.employee_id
+    <select id="getChargeDetails" parameterType="BaseFilterRequest" resultMap="ChargeDetailMap">
+        select cd.id, cd.charge_time, cd.employee_id, e.name as employee_name, cd.charge, cd.charge_balance
+        from charge_detail cd join employee e on cd.employee_id = e.id
+        <where>
+            <if test="employeeName != null and employeeName != ''">
+                <bind name="pattern" value="'%' + employeeName + '%'"/>
+                e.name like #{pattern}
+            </if>
+        </where>
+        order by cd.charge_time, cd.employee_id
     </select>
 
     <insert id="audit" parameterType="ChargeDetailDto">
