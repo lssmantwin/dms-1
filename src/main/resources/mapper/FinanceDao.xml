@@ -13,9 +13,11 @@
         <result property="secrecySubsidy" column="secrecy_subsidy"/>
         <result property="communicationFee" column="communication_fee"/>
         <result property="attendance" column="attendance"/>
-        <result property="bonus" column="bonus"/>
+        <result property="bonusCard" column="bonus_card"/>
+        <result property="bonusCash" column="bonus_cash"/>
         <result property="workingAgeSubsidy" column="working_age_subsidy"/>
-        <result property="performanceAppraisal" column="performance_appraisal"/>
+        <result property="performanceAppraisalCard" column="performance_appraisal_card"/>
+        <result property="performanceAppraisalCash" column="performance_appraisal_cash"/>
         <result property="otherSubsidy" column="other_subsidy"/>
         <result property="exhibitionCharge" column="exhibition_charge"/>
         <result property="charge" column="charge"/>
@@ -36,7 +38,8 @@
         select t.eid as employee_id, t.name as employee_name, t.base_wage, t.overtime, t.meals_subsidy,
         t.secrecy_subsidy, t.communication_fee,
         t.fid as finance_id, t.month,
-        t.attendance, t.bonus, t.working_age_subsidy, t.performance_appraisal,
+        t.attendance, t.bonus_card, t.bonus_cash, t.working_age_subsidy, t.performance_appraisal_card,
+        t.performance_appraisal_cash,
         t.other_subsidy, t.exhibition_charge, t.charge,
         t.charge_comments, t.casual_leave, t.sick_leave,
         t.storage_charge, t.gross_pay, t.medical_insurance,
@@ -44,7 +47,7 @@
         from (
         select e.id as eid, e.name, e.base_wage, e.overtime, e.meals_subsidy, e.secrecy_subsidy,
         e.communication_fee, e.working_age_subsidy, f.id as fid, f.month, f.attendance,
-        f.bonus, f.performance_appraisal,
+        f.bonus_card, f.bonus_cash, f.performance_appraisal_card, f.performance_appraisal_cash,
         f.other_subsidy, f.exhibition_charge, f.charge,
         f.charge_comments, f.casual_leave, f.sick_leave,
         f.storage_charge, f.gross_pay, f.medical_insurance,
@@ -66,10 +69,10 @@
     </select>
 
     <insert id="saveFinance" parameterType="FinanceDto">
-        insert into "finance" (created_on, employee_id, month, attendance, bonus, performance_appraisal,
+        insert into "finance" (created_on, employee_id, month, attendance, bonus_card, bonus_cash, performance_appraisal_card, performance_appraisal_cash,
          other_subsidy, exhibition_charge, charge, charge_comments, casual_leave, sick_leave, storage_charge,
          gross_pay, medical_insurance, housing_fund, before_tax_salary, personal_income_tax, after_tax_salary, already_charge)
-        values (current_timestamp, #{employeeId}, #{month}, #{attendance}, #{bonus}, #{performanceAppraisal},
+        values (current_timestamp, #{employeeId}, #{month}, #{attendance}, #{bonusCard}, #{bonusCash}, #{performanceAppraisalCard}, #{performanceAppraisalCash},
          #{otherSubsidy}, #{exhibitionCharge}, #{charge}, #{chargeComments}, #{casualLeave}, #{sickLeave}, #{storageCharge},
          #{grossPay}, #{medicalInsurance}, #{housingFund}, #{beforeTaxSalary}, #{personalIncomeTax}, #{afterTaxSalary}, 1)
     </insert>
@@ -77,8 +80,10 @@
     <update id="updateFinance" parameterType="FinanceDto">
         update finance
         set attendance =  #{attendance},
-            bonus = #{bonus},
-            performance_appraisal = #{performanceAppraisal},
+            bonus_card = #{bonusCard},
+            bonus_cash = #{bonusCash},
+            performance_appraisal_card = #{performanceAppraisalCard},
+            performance_appraisal_cash = #{performanceAppraisalCash},
             other_subsidy = #{otherSubsidy},
             exhibition_charge = #{exhibitionCharge},
             charge = #{charge},

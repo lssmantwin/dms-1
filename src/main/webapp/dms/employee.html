@@ -40,22 +40,22 @@
          showFilterRow="true">
         <div property="columns">
             <div type="indexcolumn"></div>
-            <div field="name" width="100" headerAlign="center" allowSort="true">姓名
+            <div field="name" width="60" headerAlign="center" allowSort="true">姓名
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
-                <input id="nameFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="100"
+                <input id="nameFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="60"
                        onvaluechanged="onFilterChanged"/>
                 <!--onenter="onKeyEnter"-->
             </div>
-            <div field="companyId" width="100" type="comboboxcolumn" headerAlign="center" allowSort="false">公司
+            <div field="companyId" width="60" type="comboboxcolumn" headerAlign="center" allowSort="false">公司
                 <input property="editor" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
                        url="../ws/employee/v1/companies"
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
                        required="true" allowInput="true" showNullItem="false"/>
             </div>
-            <div field="hiredate" width="100" headerAlign="center" dateFormat="yyyy-MM-dd" allowSort="true">入职日期
-                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+            <div field="hiredate" width="80" headerAlign="center" dateFormat="yyyy-MM-dd" allowSort="true">入职日期
+                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="80"/>
             </div>
-            <div field="position" width="100" type="comboboxcolumn" headerAlign="center" allowSort="false">职位
+            <div field="position" width="60" type="comboboxcolumn" headerAlign="center" allowSort="false">职位
                 <input property="editor" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
                        url="../ws/employee/v1/positions"
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
@@ -64,29 +64,29 @@
             <div field="baseWage" width="100" allowSort="true" headerAlign="center" vtype="float"> 基本工资
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="workingAgeSubsidy" width="100" headerAlign="center" allowSort="true" vtype="int">工龄
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            <div field="workingAgeSubsidy" width="40" headerAlign="center" allowSort="true" vtype="int">工龄
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="40"/>
             </div>
-            <div field="overtime" width="100" headerAlign="center" allowSort="false" vtype="float">加班
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            <div field="overtime" width="60" headerAlign="center" allowSort="false" vtype="float">加班
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60"/>
             </div>
-            <div field="mealsSubsidy" width="100" headerAlign="center" allowSort="false" vtype="float">饭贴
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            <div field="mealsSubsidy" width="60" headerAlign="center" allowSort="false" vtype="float">饭贴
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60"/>
             </div>
-            <div field="secrecySubsidy" width="100" headerAlign="center" allowSort="false" vtype="float">保密
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            <div field="secrecySubsidy" width="60" headerAlign="center" allowSort="false" vtype="float">保密
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60"/>
             </div>
-            <div field="communicationFee" width="100" headerAlign="center" allowSort="false" vtype="float">通讯费
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            <div field="communicationFee" width="60" headerAlign="center" allowSort="false" vtype="float">通讯费
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60"/>
             </div>
             <div field="jywCommissionRatio" width="100" headerAlign="center" allowSort="false" vtype="float">佳园屋提成比例
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="commencementRatio" width="100" headerAlign="center" allowSort="false" vtype="float">开工比例
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            <div field="commencementRatio" width="60" headerAlign="center" allowSort="false" vtype="float">开工比例
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60"/>
             </div>
-            <div field="completionRatio" width="100" headerAlign="center" allowSort="false" vtype="float">竣工比例
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            <div field="completionRatio" width="60" headerAlign="center" allowSort="false" vtype="float">竣工比例
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60"/>
             </div>
             <div field="renovateCommissionRatio" width="100" headerAlign="center" allowSort="false" vtype="float">翻新提成比例
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
@@ -97,23 +97,23 @@
             <div field="identityCardNumber" width="100" allowSort="false" headerAlign="center" vtype="float">身份证号码
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="transportationAllowance" width="100" allowSort="false" headerAlign="center" vtype="float">交通补贴
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            <div field="transportationAllowance" width="60" allowSort="false" headerAlign="center" vtype="float">交通补贴
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60"/>
             </div>
-            <div field="postAllowance" width="100" allowSort="false" headerAlign="center" vtype="float">岗位津贴
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            <div field="postAllowance" width="60" allowSort="false" headerAlign="center" vtype="float">岗位津贴
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60"/>
             </div>
-            <div field="leaveDate" width="100" headerAlign="center" dateFormat="yyyy-MM-dd" allowSort="true">离职日期
-                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+            <div field="leaveDate" width="60" headerAlign="center" dateFormat="yyyy-MM-dd" allowSort="true">离职日期
+                <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="60"/>
             </div>
-            <div field="storageCharge" width="100" allowSort="false" headerAlign="center" vtype="float">保管费
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            <div field="storageCharge" width="60" allowSort="false" headerAlign="center" vtype="float">保管费
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60"/>
             </div>
-            <div field="totalCharge" width="100" allowSort="false" headerAlign="center" vtype="float">总扣款
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            <div field="chargePerMonth" width="60" allowSort="false" headerAlign="center" vtype="float">月扣款
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60"/>
             </div>
-            <div field="chargePerMonth" width="100" allowSort="false" headerAlign="center" vtype="float">月扣款
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            <div field="charge" width="60" allowSort="false" headerAlign="center" vtype="float">扣款总额
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60"/>
             </div>
         </div>
     </div>

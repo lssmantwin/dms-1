@@ -160,8 +160,8 @@ public class EmployeeDto implements Serializable {
 		return renovateCommissionRatio;
 	}
 
-	public void setRenovateCommossionRatio(BigDecimal renovateCommossionRatio) {
-		this.renovateCommissionRatio = renovateCommossionRatio;
+	public void setRenovateCommossionRatio(BigDecimal renovateCommissionRatio) {
+		this.renovateCommissionRatio = renovateCommissionRatio;
 	}
 
 	public String getIdentityCardNumber() {

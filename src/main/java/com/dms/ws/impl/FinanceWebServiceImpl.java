@@ -1,8 +1,12 @@
 package com.dms.ws.impl;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
+import com.dms.utils.DateUtils;
+import org.joda.time.Instant;
+import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +62,7 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 		for (FinanceDto financeDto : request.getFinances()) {
 			financeDto.setMonth(request.getMonth());
 			financeDto.setGrossPay(calculateGrossPay(financeDto));
-			financeDto.setBeforeTaxSalary(financeDto.getGrossPay().subtract(financeDto.getMedicalInsurance()).subtract(financeDto.getHousingFund()));
+			financeDto.setBeforeTaxSalary(calculateBeforeTaxSalary(financeDto));
 			BigDecimal personalIncomeTax = PersonalIncomeTaxUtils.getPersonalIncomeTax(financeDto.getBeforeTaxSalary());
 			financeDto.setPersonalIncomeTax(personalIncomeTax);
 			financeDto.setAfterTaxSalary(financeDto.getBeforeTaxSalary().subtract(personalIncomeTax));
@@ -66,18 +70,24 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 				financeService.saveFinance(financeDto);
 				if (!financeDto.getAlreadyCharge()) {
 					EmployeeDto employeeDto = employeeService.getEmployee(financeDto.getEmployeeId());
+					if (employeeDto.getCharge() != null && employeeDto.getStorageCharge() != null
+							&&employeeDto.getStorageCharge().intValue()  > employeeDto.getCharge().intValue()) {
+						BigDecimal charge = employeeDto.getChargePerMonth()
+								.add(employeeDto.getCharge() == null ? BigDecimal.ZERO : employeeDto.getCharge());
 
-					BigDecimal charge = employeeDto.getChargePerMonth()
-							.add(employeeDto.getCharge() == null ? BigDecimal.ZERO : employeeDto.getChargePerMonth());
+						ChargeDetailDto chargeDetailDto = new ChargeDetailDto();
+						chargeDetailDto.setEmployeeId(Long.valueOf(employeeDto.getId()));
+						String year = financeDto.getMonth().substring(0,4);
+						String month = financeDto.getMonth().substring(4);
+						Date currentMonth = DateUtils.getFirstDayOfMonthDate(Integer.valueOf(year), Integer.valueOf(month));
+						chargeDetailDto.setChargeTime(LocalDateTime.fromDateFields(currentMonth));
+						chargeDetailDto.setCharge(employeeDto.getChargePerMonth());
+						chargeDetailDto.setChargeBalance(employeeDto.getStorageCharge().subtract(charge));
+						financeDto.setChargePerMonth(employeeDto.getChargePerMonth());
+						chargeService.audit(chargeDetailDto);
 
-					ChargeDetailDto chargeDetailDto = new ChargeDetailDto();
-					chargeDetailDto.setEmployeeId(Long.valueOf(employeeDto.getId()));
-					chargeDetailDto.setCharge(employeeDto.getChargePerMonth());
-					chargeDetailDto.setChargeBalance(employeeDto.getTotalCharge().subtract(charge));
-
-					chargeService.audit(chargeDetailDto);
-
-					employeeService.updateCharge(Long.valueOf(employeeDto.getId()), charge);
+						employeeService.updateCharge(Long.valueOf(employeeDto.getId()), charge);
+					}
 				}
 			} else {
 				financeService.updateFinance(financeDto);
@@ -99,14 +109,20 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 		if (financeDto.getSecrecySubsidy() != null) {
 			grossPay = grossPay.add(financeDto.getSecrecySubsidy());
 		}
-		if (financeDto.getBonus() != null) {
-			grossPay = grossPay.add(financeDto.getBonus());
+		if (financeDto.getBonusCard() != null) {
+			grossPay = grossPay.add(financeDto.getBonusCard());
+		}
+		if (financeDto.getBonusCash() != null) {
+			grossPay = grossPay.add(financeDto.getBonusCash());
 		}
 		if (financeDto.getWorkingAgeSubsidy() != null) {
 			grossPay = grossPay.add(financeDto.getWorkingAgeSubsidy());
 		}
-		if (financeDto.getPerformanceAppraisal() != null) {
-			grossPay = grossPay.add(financeDto.getPerformanceAppraisal());
+		if (financeDto.getPerformanceAppraisalCard() != null) {
+			grossPay = grossPay.add(financeDto.getPerformanceAppraisalCard());
+		}
+		if (financeDto.getPerformanceAppraisalCash() != null) {
+			grossPay = grossPay.add(financeDto.getPerformanceAppraisalCash());
 		}
 		if (financeDto.getCommunicationFee() != null) {
 			grossPay = grossPay.add(financeDto.getCommunicationFee());
@@ -130,6 +146,59 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 			grossPay.subtract(financeDto.getStorageCharge());
 		}
 		return grossPay;
+	}
+
+	private BigDecimal calculateBeforeTaxSalary(FinanceDto financeDto) {
+		BigDecimal beforeTaxSalary = BigDecimal.ZERO;
+		if (financeDto.getBaseWage() != null) {
+			beforeTaxSalary = beforeTaxSalary.add(financeDto.getBaseWage());
+		}
+		if (financeDto.getOvertime() != null) {
+			beforeTaxSalary = beforeTaxSalary.add(financeDto.getOvertime());
+		}
+		if (financeDto.getMealsSubsidy() != null) {
+			beforeTaxSalary = beforeTaxSalary.add(financeDto.getMealsSubsidy());
+		}
+		if (financeDto.getSecrecySubsidy() != null) {
+			beforeTaxSalary = beforeTaxSalary.add(financeDto.getSecrecySubsidy());
+		}
+		if (financeDto.getBonusCard() != null) {
+			beforeTaxSalary = beforeTaxSalary.add(financeDto.getBonusCard());
+		}
+		if (financeDto.getWorkingAgeSubsidy() != null) {
+			beforeTaxSalary = beforeTaxSalary.add(financeDto.getWorkingAgeSubsidy());
+		}
+		if (financeDto.getPerformanceAppraisalCard() != null) {
+			beforeTaxSalary = beforeTaxSalary.add(financeDto.getPerformanceAppraisalCard());
+		}
+		if (financeDto.getCommunicationFee() != null) {
+			beforeTaxSalary = beforeTaxSalary.add(financeDto.getCommunicationFee());
+		}
+		if (financeDto.getOtherSubsidy() != null) {
+			beforeTaxSalary = beforeTaxSalary.add(financeDto.getOtherSubsidy());
+		}
+		if (financeDto.getCharge() != null) {
+			beforeTaxSalary.subtract(financeDto.getCharge());
+		}
+		if (financeDto.getExhibitionCharge() != null) {
+			beforeTaxSalary.subtract(financeDto.getExhibitionCharge());
+		}
+		if (financeDto.getCasualLeave() != null) {
+			beforeTaxSalary.subtract(financeDto.getCasualLeave());
+		}
+		if (financeDto.getSickLeave() != null) {
+			beforeTaxSalary.subtract(financeDto.getSickLeave());
+		}
+		if (financeDto.getStorageCharge() != null) {
+			beforeTaxSalary.subtract(financeDto.getStorageCharge());
+		}
+		if (financeDto.getMedicalInsurance() != null) {
+			beforeTaxSalary.subtract(financeDto.getMedicalInsurance());
+		}
+		if (financeDto.getHousingFund() != null) {
+			beforeTaxSalary.subtract(financeDto.getHousingFund());
+		}
+		return beforeTaxSalary;
 	}
 
 	private FinanceFilterRequest generateFilterRequest(String employeeName, int pageIndex, int pageSize, String sortField, String sortOrder, String month) {

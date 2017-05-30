@@ -18,9 +18,11 @@ public class FinanceDto implements Serializable {
 	private BigDecimal secrecySubsidy;
 	private BigDecimal communicationFee;
 	private String attendance;
-	private BigDecimal bonus;
+	private BigDecimal bonusCard;
+	private BigDecimal bonusCash;
 	private BigDecimal workingAgeSubsidy;
-	private BigDecimal performanceAppraisal;
+	private BigDecimal performanceAppraisalCard;
+	private BigDecimal performanceAppraisalCash;
 	private BigDecimal otherSubsidy;
 	private BigDecimal exhibitionCharge;
 	private BigDecimal charge;
@@ -32,6 +34,7 @@ public class FinanceDto implements Serializable {
 	private BigDecimal medicalInsurance;
 	private BigDecimal housingFund;
 	private BigDecimal beforeTaxSalary;
+	private BigDecimal chargePerMonth;
 	private BigDecimal personalIncomeTax;
 	private BigDecimal afterTaxSalary;
 	private Boolean alreadyCharge = Boolean.FALSE;
@@ -116,28 +119,12 @@ public class FinanceDto implements Serializable {
 		this.attendance = attendance;
 	}
 
-	public BigDecimal getBonus() {
-		return bonus;
-	}
-
-	public void setBonus(BigDecimal bonus) {
-		this.bonus = bonus;
-	}
-
 	public BigDecimal getWorkingAgeSubsidy() {
 		return workingAgeSubsidy;
 	}
 
 	public void setWorkingAgeSubsidy(BigDecimal workingAgeSubsidy) {
 		this.workingAgeSubsidy = workingAgeSubsidy;
-	}
-
-	public BigDecimal getPerformanceAppraisal() {
-		return performanceAppraisal;
-	}
-
-	public void setPerformanceAppraisal(BigDecimal performanceAppraisal) {
-		this.performanceAppraisal = performanceAppraisal;
 	}
 
 	public BigDecimal getOtherSubsidy() {
@@ -250,5 +237,45 @@ public class FinanceDto implements Serializable {
 
 	public void setAlreadyCharge(Boolean alreadyCharge) {
 		this.alreadyCharge = alreadyCharge;
+	}
+
+	public BigDecimal getBonusCard() {
+		return bonusCard;
+	}
+
+	public void setBonusCard(BigDecimal bonusCard) {
+		this.bonusCard = bonusCard;
+	}
+
+	public BigDecimal getBonusCash() {
+		return bonusCash;
+	}
+
+	public void setBonusCash(BigDecimal bonusCash) {
+		this.bonusCash = bonusCash;
+	}
+
+	public BigDecimal getPerformanceAppraisalCard() {
+		return performanceAppraisalCard;
+	}
+
+	public void setPerformanceAppraisalCard(BigDecimal performanceAppraisalCard) {
+		this.performanceAppraisalCard = performanceAppraisalCard;
+	}
+
+	public BigDecimal getPerformanceAppraisalCash() {
+		return performanceAppraisalCash;
+	}
+
+	public void setPerformanceAppraisalCash(BigDecimal performanceAppraisalCash) {
+		this.performanceAppraisalCash = performanceAppraisalCash;
+	}
+
+	public BigDecimal getChargePerMonth() {
+		return chargePerMonth;
+	}
+
+	public void setChargePerMonth(BigDecimal chargePerMonth) {
+		this.chargePerMonth = chargePerMonth;
 	}
 }
