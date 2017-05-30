@@ -1,13 +1,23 @@
 package com.dms.ws.impl;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.util.IOUtils;
+import org.jboss.resteasy.spi.HttpRequest;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,4 +135,26 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 		return request;
 	}
 
+	@Override
+	public void upload(HttpServletRequest request) throws FileUploadException, IOException {
+		String savePath = request.getServletContext().getRealPath("/WEB-INF/upload");
+		File file = new File(savePath);
+		if (!file.exists() && !file.isDirectory()) {
+			file.mkdir();
+		}
+		DiskFileItemFactory factory = new DiskFileItemFactory();
+		ServletFileUpload upload = new ServletFileUpload(factory);
+		upload.setHeaderEncoding("UTF-8");
+		List<FileItem> list = upload.parseRequest(request);
+		for (FileItem item : list) {
+			if (!item.isFormField()) {
+				InputStream in = item.getInputStream();
+				FileOutputStream out = new FileOutputStream(savePath + "/tmp.xlsx");
+				IOUtils.copy(in, out);
+				IOUtils.closeQuietly(in);
+				IOUtils.closeQuietly(out);
+			}
+		}
+		// 继续后续处理， 解析xlsx
+	}
 }

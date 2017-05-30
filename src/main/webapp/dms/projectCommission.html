@@ -28,6 +28,10 @@
                 <a class="mini-button" iconCls="icon-save" plain="true" onclick="saveData()">保存</a>
                 <a class="mini-button" iconCls="icon-node" plain="true" onclick="calculateCommission()">计算提成</a>
                 <a class="mini-button" iconCls="icon-upload" plain="true" onclick="ExportExcel()">导出Excel</a>
+                <form id="upload" action="../ws/commission/v1/upload" method="post" enctype="multipart/form-data">
+                    <input class="mini-htmlfile" name="Fdata" limitType="*.xlsx"/>
+                    <input type="submit" value="上传"/>
+                </form>
             </td>
         </tr>
     </table>
