@@ -15,6 +15,7 @@
         <typeAlias type="com.dms.dto.FinanceDto" alias="FinanceDto"/>
         <typeAlias type="com.dms.dto.ProjectCommissionDto" alias="ProjectCommissionDto"/>
         <typeAlias type="com.dms.dto.ChargeDetailDto" alias="ChargeDetailDto"/>
+        <typeAlias type="com.dms.dto.DesignAssistantDto" alias="DesignAssistantDto"/>
     </typeAliases>
 
     <typeHandlers>

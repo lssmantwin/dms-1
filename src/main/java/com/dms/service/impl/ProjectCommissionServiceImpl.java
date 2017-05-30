@@ -3,6 +3,7 @@ package com.dms.service.impl;
 import com.dms.constant.DmsConstant;
 import com.dms.dao.EmployeeDao;
 import com.dms.dao.ProjectCommissionDao;
+import com.dms.dto.DesignAssistantDto;
 import com.dms.dto.EmployeeDto;
 import com.dms.dto.ProjectCommissionDto;
 import com.dms.enums.CommissionStateEnum;
@@ -168,4 +169,11 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 			projectCommissionDao.updateProjectCommission(projectCommissionDto);
 		}
 	}
+
+    @Override
+    public void updateDesignAssistants(List<DesignAssistantDto> designAssistantDtos) {
+        for (DesignAssistantDto designAssistantDto : designAssistantDtos) {
+            projectCommissionDao.updateDesignAssistant(designAssistantDto);
+        }
+    }
 }

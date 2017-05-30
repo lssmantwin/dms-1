@@ -373,5 +373,12 @@
         where ac_number = #{acNumber}
     </update>
 
+    <update id="updateDesignAssistant" parameterType="DesignAssistantDto">
+        update "project_commission"
+        set
+        designer_assistant = #{designAssistant}
+        where ac_number = #{acNumber}
+    </update>
+
 
 </mapper>

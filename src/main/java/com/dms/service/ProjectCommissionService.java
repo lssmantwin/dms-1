@@ -1,5 +1,6 @@
 package com.dms.service;
 
+import com.dms.dto.DesignAssistantDto;
 import com.dms.dto.ProjectCommissionDto;
 import com.dms.request.DataGridRequest;
 
@@ -31,7 +32,9 @@ public interface ProjectCommissionService {
 
 	void updateProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos);
 
-	void updateProjectCommission(ProjectCommissionDto projectCommissionDto);
+	void updateProjectCommission(ProjectCommissionDto projectCommission);
+
+	void updateDesignAssistants(List<DesignAssistantDto> designAssistantDtos);
 
 	void sychronzieProejcts();
 

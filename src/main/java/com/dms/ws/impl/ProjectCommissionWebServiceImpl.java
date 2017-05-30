@@ -1,5 +1,6 @@
 package com.dms.ws.impl;
 
+import com.dms.dto.DesignAssistantDto;
 import com.dms.dto.EnumDto;
 import com.dms.dto.ProjectCommissionDto;
 import com.dms.enums.CommissionStateEnum;
@@ -12,18 +13,30 @@ import com.dms.service.ProjectCommissionService;
 import com.dms.utils.FileFactory;
 import com.dms.ws.ProjectCommissionWebService;
 import com.google.common.collect.Lists;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.util.IOUtils;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.Base64;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -173,4 +186,53 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
         request.setSortOrder(sortOrder);
         return request;
     }
+
+	@Override
+	public void upload(HttpServletRequest request) throws FileUploadException, IOException {
+		String savePath = request.getServletContext().getRealPath("/WEB-INF/upload");
+		File file = new File(savePath);
+		if (!file.exists() && !file.isDirectory()) {
+			file.mkdir();
+		}
+		DiskFileItemFactory factory = new DiskFileItemFactory();
+		ServletFileUpload upload = new ServletFileUpload(factory);
+		upload.setHeaderEncoding("UTF-8");
+		List<FileItem> list = upload.parseRequest(request);
+		FileItem  item = list.get(0) ;
+		InputStream in = item.getInputStream();
+
+        List<DesignAssistantDto> designAssistantDtos = readXLSXFile(in);
+        projectCommissionService.updateDesignAssistants(designAssistantDtos);
+		IOUtils.closeQuietly(in);
+
+	}
+
+    private List<DesignAssistantDto> readXLSXFile(InputStream inputStream) throws IOException {
+        XSSFWorkbook wb = new XSSFWorkbook(inputStream);
+        XSSFSheet sheet = wb.getSheetAt(0);
+        XSSFRow row;
+
+        List<DesignAssistantDto> designAssistantDtos = new ArrayList<>();
+        Iterator rows = sheet.rowIterator();
+        if (rows.hasNext()) {
+            rows.next();
+        }
+        while (rows.hasNext()) {
+            row = (XSSFRow) rows.next();
+            DesignAssistantDto designAssistantDto = new DesignAssistantDto();
+            if (row.getCell(0) != null) {
+                String acNumber = String.valueOf((int)row.getCell(0).getNumericCellValue());
+                designAssistantDto.setAcNumber(acNumber);
+            }
+
+            if (row.getCell(1) != null) {
+                String designAssistant = row.getCell(1).getStringCellValue();
+                designAssistantDto.setDesignAssistant(designAssistant);
+            }
+
+            designAssistantDtos.add(designAssistantDto);
+        }
+        return designAssistantDtos;
+    }
+
 }

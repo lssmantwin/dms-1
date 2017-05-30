@@ -4,10 +4,16 @@ import java.util.Base64;
 import java.util.List;
 
 import javax.jws.WebParam;
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.fileupload.FileUploadException;
 import org.springframework.stereotype.Controller;
 
 import com.dms.dto.EnumDto;
@@ -66,4 +72,9 @@ public interface ProjectCommissionWebService {
 			@QueryParam("pageIndex") int pageIndex, @QueryParam("pageSize") int pageSize, @QueryParam("sortField") String sortField,
 			@QueryParam("sortOrder") String sortOrder);
 
+	@POST
+	@Path("/upload")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.MULTIPART_FORM_DATA)
+	void upload(@Context HttpServletRequest request) throws FileUploadException, IOException;
 }
