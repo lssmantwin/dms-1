@@ -1,0 +1,20 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dms.dao.UserDao">
+
+    <resultMap id="UserDtoMap" type="UserDto">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="username"/>
+    </resultMap>
+
+    <select id="getUser" parameterType="string" resultMap="UserDtoMap">
+       select * from "user" where username = #{username}
+    </select>
+
+    <insert id="saveUser" parameterType="UserDto">
+        insert into "user" (username, password) values (#{username}, #{password})
+    </insert>
+
+</mapper>
