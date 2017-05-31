@@ -3,6 +3,7 @@ package com.dms.dao;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.dms.request.DataGridRequest;
 import org.apache.ibatis.annotations.Param;
 
 import com.dms.domain.Attendance;
@@ -18,6 +19,10 @@ public interface EmployeeDao {
 	List<Month> getMonths();
 
 	List<Position> getPositions();
+
+    EmployeeDto getEmployee(String name);
+
+    List<EmployeeDto> getEmployees(DataGridRequest request);
 
 	int getEmployeeCount(BaseFilterRequest request);
 

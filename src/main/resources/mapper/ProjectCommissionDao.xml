@@ -22,8 +22,7 @@
         <result property="payContractRatio" column="pay_contract_ratio"
                 typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="payProjectRatio" column="pay_project_ratio" typeHandler="com.dms.handler.BigDecimalHandler"/>
-        <result property="contractState" column="contract_state"
-                typeHandler="com.dms.handler.ContractStateEnumHandler"/>
+        <result property="contractState" column="contract_state"/>
         <result property="commissionState" column="commission_state"
                 typeHandler="com.dms.handler.CommissionStateEnumHandler"/>
         <result property="contractDate" column="contract_date" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
@@ -57,21 +56,34 @@
     <select id="getProjectCommissionCount" parameterType="ProjectCommissionFilterRequest" resultType="int">
         select count(id) from "project_commission"
         <where>
+            1 = 1
             <if test="designer != null and designer != ''">
                 <bind name="pattern" value="'%' + designer + '%'"/>
-                designer like #{pattern}
+                and   designer like #{pattern}
             </if>
-            <if test="contractState != null">
-                and contract_state = #{contractState, typeHandler=com.dms.handler.ContractStateEnumHandler}
+            <if test="designerAssistant != null and designerAssistant != ''">
+                <bind name="designerAssistantpattern" value="'%' + designerAssistant + '%'"/>
+                and  designer_assistant like #{designerAssistantpattern}
             </if>
             <if test="commissionState != null">
                 and commission_state = #{commissionState, typeHandler=com.dms.handler.CommissionStateEnumHandler}
             </if>
+            <if test="contractId != null and contractId != ''">
+                and contract_id = #{contractId}
+            </if>
+            <if test="payContractRatio != null and payContractRatio != ''">
+                and pay_contract_ratio >= #{payContractRatio}
+            </if>
+            <if test="payProjectRatio != null and payProjectRatio != ''">
+                and pay_project_ratio >= #{payProjectRatio}
+            </if>
+
             <if test="contractDate != null and contractDate != ''">
                 and contract_date > #{contractDate}
             </if>
             <if test="firstCommissionDate != null and firstCommissionDate != ''">
-                and first_commission_date > #{firstCommissionDate}
+                and first_commission_date >= #{firstCommissionStartDate}
+                and first_commission_date &lt;= #{firstCommissionEndDate}
             </if>
             <if test="actualStartTime != null and actualStartTime != ''">
                 and actual_start_time > #{actualStartTime}
@@ -88,18 +100,45 @@
         </where>
     </select>
 
+    <select id="getProject" parameterType="String" resultType="ProjectCommissionDto">
+        select * from "project_commission"
+        <where>
+            <if test="acNumber != null and acNumber != ''">
+                and  ac_number = #{acNumber}
+            </if>
+        </where>
+    </select>
+
     <select id="getProjectCommissions" parameterType="ProjectCommissionFilterRequest" resultMap="ProjectCommissionMap">
         select * from
         (
         select *, row_number() over (order by id) rn from "project_commission"
         <where>
+            1 = 1
             <if test="designer != null and designer != ''">
                 <bind name="pattern" value="'%' + designer + '%'"/>
-                designer like #{pattern}
+                and designer like #{pattern}
             </if>
-            <if test="contractState != null">
-                and contract_state = #{contractState, typeHandler=com.dms.handler.ContractStateEnumHandler}
+            <if test="designerAssistant != null and designerAssistant != ''">
+                <bind name="designerAssistantpattern" value="'%' + designerAssistant + '%'"/>
+                and  designer_assistant like #{designerAssistantpattern}
             </if>
+            <if test="acNumber != null and acNumber != ''">
+                <bind name="acNumberPattern" value="'%' + acNumber + '%'"/>
+                and ac_number like #{acNumberPattern}
+            </if>
+
+            <if test="contractId != null and contractId != ''">
+                <bind name="contractIdPattern" value="'%' + contractId + '%'"/>
+                and contract_id like #{contractIdPattern}
+            </if>
+            <if test="payContractRatio != null and payContractRatio != ''">
+                and pay_contract_ratio >= #{payContractRatio}
+            </if>
+            <if test="payProjectRatio != null and payProjectRatio != ''">
+                and pay_project_ratio >= #{payProjectRatio}
+            </if>
+
             <if test="commissionState != null">
                 and commission_state = #{commissionState, typeHandler=com.dms.handler.CommissionStateEnumHandler}
             </if>
@@ -107,7 +146,8 @@
                 and contract_date > #{contractDate}
             </if>
             <if test="firstCommissionDate != null and firstCommissionDate != ''">
-                and first_commission_date > #{firstCommissionDate}
+                and first_commission_date >= #{firstCommissionStartDate}
+                and first_commission_date &lt; #{firstCommissionEndDate}
             </if>
             <if test="actualStartTime != null and actualStartTime != ''">
                 and actual_start_time > #{actualStartTime}
@@ -119,7 +159,8 @@
                 and balance_time > #{balanceTime}
             </if>
             <if test="balanceCommissionDate != null and balanceCommissionDate != ''">
-                and balance_commission_date > #{balanceCommissionDate}
+                and balance_commission_date >= #{balanceCommissionStartDate}
+                and balance_commission_date &lt; #{balanceCommissionEndDate}
             </if>
         </where>
         ) t
@@ -210,28 +251,28 @@
            (#{designer}, #{acNumber}, #{contractId}, #{contractTotal}, #{purchaseAgentFee},
             #{projectChangeTotal}, #{customerPay},
             #{payContractRatio}, #{payProjectRatio}, #{contractState, typeHandler=com.dms.handler.ContractStateEnumHandler},
-            ${contractDate}, #{actualStartTime}, #{actualEndTime},
+            #{contractDate}, #{actualStartTime}, #{actualEndTime},
             #{balanceTime},  #{createdTime})
     </insert>
 
 
     <select id="getProjects" parameterType="DataGridRequest" resultMap="ProjectCommissionMap">
-        SELECT ci.designer AS 设计师,
-        ci.ACNumber AS 受理编号,
-        ci.contract_id AS 工程编号,
-        ci.contract_total AS 合同价,
-        rp.代采金额,
-        bc.变更总价,
-        ISNULL(hr.已付, 0) AS 已付,
-        hr.已付 / ci.contract_total AS 合同收款比,
-        hr.已付 / (ci.contract_total + ISNULL(bc.变更总价, 0)) AS 总收款比,
-        CASE ci.state WHEN 9 THEN '归档' WHEN 8 THEN '结算' WHEN 7 THEN '竣工' WHEN 6 THEN '在建' END AS 状态,
-        derivedtbl_1.ACName AS 网点,
-        ci.contract_date AS 签约日期,
-        ci.actual_start_time AS 实际开工,
-        ci.actual_end_time AS 实际竣工,
-        ci.balance_time AS 结算日期,
-        View_Max_Flow_Form.CustName as 客户名字
+        SELECT ci.designer AS designer,
+        ci.ACNumber AS acNumber,
+        ci.contract_id AS contractId,
+        ci.contract_total AS contractTotal,
+        rp.代采金额 as purchaseAgentFee,
+        bc.变更总价 as projectChangeTotal,
+        ISNULL(hr.已付, 0) AS customerPay,
+        hr.已付 / ci.contract_total AS payContractRatio,
+        hr.已付 / (ci.contract_total + ISNULL(bc.变更总价, 0)) AS payProjectRatio,
+        CASE ci.state WHEN 9 THEN '归档' WHEN 8 THEN '结算' WHEN 7 THEN '竣工' WHEN 6 THEN '在建' END AS contractState,
+        derivedtbl_1.ACName AS branch,
+        ci.contract_date AS contractDate,
+        ci.actual_start_time AS actualStartTime,
+        ci.actual_end_time AS actualEndTime,
+        ci.balance_time AS balanceTime,
+        View_Max_Flow_Form.CustName as customerName
         FROM   Contract_Info AS ci
         INNER JOIN   View_Max_Flow_Form ON ci.ACNumber = View_Max_Flow_Form.ACNumber LEFT OUTER JOIN
         (SELECT     ID, ACType, ACName, ACCont, ACNumb, ACOrder, ACLogic, ACText
@@ -250,7 +291,7 @@
         FROM          ERP_Budget_Change
         WHERE      (审核日期 >= '2009-12-31')
         GROUP BY 受理编号) AS bc ON ci.ACNumber = bc.受理编号
-        WHERE     ((ci.actual_start_time BETWEEN #{current_month_start} AND #{current_month_end}) or (ci.end_balance BETWEEN #{current_month_start} AND #{current_month_end})
+        WHERE     ((ci.actual_start_time BETWEEN #{currentDayStart} AND #{currentDayEnd}) or (ci.end_balance BETWEEN #{currentDayStart} AND #{currentDayEnd})
           AND  (ci.contract_id NOT LIKE 'W%')
           AND ci.ACNumber in ( SELECT ac_number from project_commission where comission_state != '已提')
         ORDER BY ci.state,设计师
@@ -266,13 +307,14 @@
         customer_pay = #{customerPay},
         pay_contract_ratio = #{payContractRatio},
         pay_project_ratio = #{payProjectRatio},
-        contract_state = #{contractState, typeHandler=com.dms.handler.ContractStateEnumHandler},
+        contract_state = #{contractState},
         actual_start_time = #{actualStartTime},
         actual_end_time = #{actualEndTime},
         balance_time = #{balanceTime},
         first_commission = #{firstCommission},
         first_commission_date = #{firstCommissionDate},
         balance_commission = #{balanceCommission},
+        purchasing_cost = #{purchasingCost},
         commission_base = #{commissionBase},
         balance_commission_date = #{balanceCommissionDate},
         commission_state = #{commissionState, typeHandler=com.dms.handler.CommissionStateEnumHandler},
@@ -328,6 +370,13 @@
         balance_commission_date = #{balanceCommissionDate},
         design_commission = #{designCommission},
         updated_date =  #{updatedDate}
+        where ac_number = #{acNumber}
+    </update>
+
+    <update id="updateDesignAssistant" parameterType="DesignAssistantDto">
+        update "project_commission"
+        set
+        designer_assistant = #{designAssistant}
         where ac_number = #{acNumber}
     </update>
 

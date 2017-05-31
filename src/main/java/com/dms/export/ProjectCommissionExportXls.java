@@ -1,11 +1,8 @@
 package com.dms.export;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-
+import com.dms.constant.DmsConstant;
+import com.dms.dto.ProjectCommissionDto;
+import com.dms.enums.CommissionStateEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -13,10 +10,11 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import com.dms.constant.DmsConstant;
-import com.dms.dto.ProjectCommissionDto;
-import com.dms.enums.CommissionStateEnum;
-import com.dms.enums.ContractStateEnum;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 public class ProjectCommissionExportXls implements StreamSource {
 
@@ -90,10 +88,7 @@ public class ProjectCommissionExportXls implements StreamSource {
 			cell10.setCellValue(dto.getPayProjectRatio() == null ? StringUtils.EMPTY : dto.getPayProjectRatio().toString());
 
 			Cell cell11 = row.createCell(cellNumber++);
-			ContractStateEnum contractState = dto.getContractState();
-			if (contractState != null) {
-				cell11.setCellValue(contractState.getText());
-			}
+			String contractState = dto.getContractState();
 
 			Cell cell12 = row.createCell(cellNumber++);
 			CommissionStateEnum commissionState = dto.getCommissionState();

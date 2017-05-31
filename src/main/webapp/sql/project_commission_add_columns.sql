@@ -9,3 +9,5 @@ ALTER TABLE project_commission ADD commission_state int not null DEFAULT 0;
 alter table project_commission add created_time datetime;
 alter table project_commission add updated_time datetime;
 alter table project_commission add designer_assistant_commission_date datetime;
+alter table project_commission add designer_assistant_commission  decimal(14,4);
+
