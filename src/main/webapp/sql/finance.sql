@@ -12,6 +12,7 @@ create table finance (
   exhibition_charge decimal(10,2),
   charge decimal(10,2),
   charge_comments varchar(1000),
+  charge_per_month decimal(10,2),
   casual_leave decimal(10,2),
   sick_leave decimal(10,2),
   storage_charge decimal(10,2),

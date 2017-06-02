@@ -3,11 +3,10 @@ package com.dms.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import com.dms.serializable.*;
 import org.joda.time.LocalDateTime;
 
 import com.dms.enums.CommissionStateEnum;
-import com.dms.enums.ContractStateEnum;
-import com.dms.serializable.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -26,9 +25,7 @@ public class ProjectCommissionDto implements Serializable {
 	private BigDecimal customerPay;
 	private BigDecimal payContractRatio;
 	private BigDecimal payProjectRatio;
-	@JsonSerialize(using = ContractStateJacksonSerializable.class)
-	@JsonDeserialize(using = ContractStateJacksonDeSerializable.class)
-	private ContractStateEnum contractState;
+	private String contractState;
 	@JsonSerialize(using = CommissionStateJacksonSerializable.class)
 	@JsonDeserialize(using = CommissionStateJacksonDeSerializable.class)
 	private CommissionStateEnum commissionState;
@@ -40,7 +37,7 @@ public class ProjectCommissionDto implements Serializable {
 	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
 	private LocalDateTime contractDate;
-	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
+	@JsonSerialize(using = ShortLocalDateTimeJacksonSerializable.class)
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
 	private LocalDateTime firstCommissionDate;
 	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
@@ -58,7 +55,7 @@ public class ProjectCommissionDto implements Serializable {
 	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
 	private LocalDateTime updatedTime;
-	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
+	@JsonSerialize(using = ShortLocalDateTimeJacksonSerializable.class)
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
 	private LocalDateTime balanceCommissionDate;
 	private BigDecimal designerAssistantCommission;
@@ -177,11 +174,11 @@ public class ProjectCommissionDto implements Serializable {
 		this.payProjectRatio = payProjectRatio;
 	}
 
-	public ContractStateEnum getContractState() {
+	public String getContractState() {
 		return contractState;
 	}
 
-	public void setContractState(ContractStateEnum contractState) {
+	public void setContractState(String contractState) {
 		this.contractState = contractState;
 	}
 

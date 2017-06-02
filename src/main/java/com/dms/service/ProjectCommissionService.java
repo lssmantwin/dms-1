@@ -1,5 +1,6 @@
 package com.dms.service;
 
+import com.dms.dto.DesignAssistantDto;
 import com.dms.dto.ProjectCommissionDto;
 import com.dms.request.DataGridRequest;
 
@@ -17,11 +18,13 @@ public interface ProjectCommissionService {
 
 	int getProjectCommissionCount(ProjectCommissionFilterRequest request);
 
-	ProjectCommissionDto getProjectCommission(String acNumber);
+	ProjectCommissionDto getProject(String acNumber);
 
-	int getProjects(Date startDate, Date endDate);
+	List<ProjectCommissionDto> getProjects(Date startDate, Date endDate);
 
-	void calculateCommission(List<ProjectCommissionDto> projectCommissionDtos);
+	void calculateFirstCommission(List<ProjectCommissionDto> projectCommissionDtos);
+
+	void calculateBalanceCommission(List<ProjectCommissionDto> projectCommissionDtos);
 
 	void saveProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos) throws IllegalAccessException;
 
@@ -29,7 +32,12 @@ public interface ProjectCommissionService {
 
 	void updateProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos);
 
-	void updateProjectCommission(ProjectCommissionDto projectCommissionDto);
+	void updateProjectCommission(ProjectCommissionDto projectCommission);
+
+	void updateDesignAssistants(List<DesignAssistantDto> designAssistantDtos);
+
+	void sychronzieProejcts();
+
 
 
 }

@@ -27,10 +27,10 @@ public class EmployeeDto implements Serializable {
 	private BigDecimal secrecySubsidy;
 	private BigDecimal communicationFee;
 	private String bankCardNumber;
-	private int jywCommissionRatio;
-	private int commencementRatio;
-	private int completionRatio;
-	private int renovateCommissionRatio;
+	private BigDecimal jywCommissionRatio;
+	private BigDecimal commencementRatio;
+	private BigDecimal completionRatio;
+	private BigDecimal renovateCommissionRatio;
 	private String identityCardNumber;
 	private BigDecimal transportationAllowance;
 	private BigDecimal postAllowance;
@@ -131,35 +131,36 @@ public class EmployeeDto implements Serializable {
 		this.communicationFee = communicationFee;
 	}
 
-	public int getJywCommissionRatio() {
+	public BigDecimal getJywCommissionRatio() {
 		return jywCommissionRatio;
 	}
 
-	public void setJywCommissionRatio(int jywCommissionRatio) {
+	public void setJywCommissionRatio(BigDecimal jywCommissionRatio) {
 		this.jywCommissionRatio = jywCommissionRatio;
 	}
 
-	public int getCommencementRatio() {
+	public BigDecimal getCommencementRatio() {
 		return commencementRatio;
 	}
 
-	public void setCommencementRatio(int commencementRatio) {
+	public void setCommencementRatio(BigDecimal commencementRatio) {
 		this.commencementRatio = commencementRatio;
 	}
 
-	public int getCompletionRatio() {
+	public BigDecimal getCompletionRatio() {
 		return completionRatio;
 	}
 
-	public void setCompletionRatio(int completionRatio) {
+	public void setCompletionRatio(BigDecimal completionRatio) {
 		this.completionRatio = completionRatio;
 	}
 
-	public int getRenovateCommissionRatio() {
+
+	public BigDecimal getRenovateCommossionRatio() {
 		return renovateCommissionRatio;
 	}
 
-	public void setRenovateCommissionRatio(int renovateCommissionRatio) {
+	public void setRenovateCommossionRatio(BigDecimal renovateCommissionRatio) {
 		this.renovateCommissionRatio = renovateCommissionRatio;
 	}
 

@@ -26,7 +26,7 @@
 
     <insert id="audit" parameterType="ChargeDetailDto">
         insert into charge_detail (charge_time, employee_id, charge, charge_balance) values
-        (GETDATE(), #{employeeId}, #{charge}, #{chargeBalance})
+        (#{chargeTime}, #{employeeId}, #{charge}, #{chargeBalance})
     </insert>
 
 </mapper>

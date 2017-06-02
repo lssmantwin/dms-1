@@ -34,6 +34,7 @@ public class FinanceDto implements Serializable {
 	private BigDecimal medicalInsurance;
 	private BigDecimal housingFund;
 	private BigDecimal beforeTaxSalary;
+	private BigDecimal chargePerMonth;
 	private BigDecimal personalIncomeTax;
 	private BigDecimal afterTaxSalary;
 	private BigDecimal salaryCash;
@@ -279,5 +280,13 @@ public class FinanceDto implements Serializable {
 
 	public void setSalaryCash(BigDecimal salaryCash) {
 		this.salaryCash = salaryCash;
+	}
+
+	public BigDecimal getChargePerMonth() {
+		return chargePerMonth;
+	}
+
+	public void setChargePerMonth(BigDecimal chargePerMonth) {
+		this.chargePerMonth = chargePerMonth;
 	}
 }

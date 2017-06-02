@@ -1,8 +1,12 @@
 package com.dms.ws.impl;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
+import com.dms.utils.DateUtils;
+import org.joda.time.Instant;
+import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,18 +70,24 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 				financeService.saveFinance(financeDto);
 				if (!financeDto.getAlreadyCharge()) {
 					EmployeeDto employeeDto = employeeService.getEmployee(financeDto.getEmployeeId());
+					if (employeeDto.getCharge() != null && employeeDto.getStorageCharge() != null
+							&&employeeDto.getStorageCharge().intValue()  > employeeDto.getCharge().intValue()) {
+						BigDecimal charge = employeeDto.getChargePerMonth()
+								.add(employeeDto.getCharge() == null ? BigDecimal.ZERO : employeeDto.getCharge());
 
-					BigDecimal charge = employeeDto.getChargePerMonth()
-							.add(employeeDto.getCharge() == null ? BigDecimal.ZERO : employeeDto.getChargePerMonth());
+						ChargeDetailDto chargeDetailDto = new ChargeDetailDto();
+						chargeDetailDto.setEmployeeId(Long.valueOf(employeeDto.getId()));
+						String year = financeDto.getMonth().substring(0,4);
+						String month = financeDto.getMonth().substring(4);
+						Date currentMonth = DateUtils.getFirstDayOfMonthDate(Integer.valueOf(year), Integer.valueOf(month));
+						chargeDetailDto.setChargeTime(LocalDateTime.fromDateFields(currentMonth));
+						chargeDetailDto.setCharge(employeeDto.getChargePerMonth());
+						chargeDetailDto.setChargeBalance(employeeDto.getStorageCharge().subtract(charge));
+						financeDto.setChargePerMonth(employeeDto.getChargePerMonth());
+						chargeService.audit(chargeDetailDto);
 
-					ChargeDetailDto chargeDetailDto = new ChargeDetailDto();
-					chargeDetailDto.setEmployeeId(Long.valueOf(employeeDto.getId()));
-					chargeDetailDto.setCharge(employeeDto.getChargePerMonth());
-					chargeDetailDto.setChargeBalance(employeeDto.getTotalCharge().subtract(charge));
-
-					chargeService.audit(chargeDetailDto);
-
-					employeeService.updateCharge(Long.valueOf(employeeDto.getId()), charge);
+						employeeService.updateCharge(Long.valueOf(employeeDto.getId()), charge);
+					}
 				}
 			} else {
 				financeService.updateFinance(financeDto);
