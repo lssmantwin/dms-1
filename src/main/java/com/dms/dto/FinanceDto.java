@@ -36,6 +36,7 @@ public class FinanceDto implements Serializable {
 	private BigDecimal beforeTaxSalary;
 	private BigDecimal personalIncomeTax;
 	private BigDecimal afterTaxSalary;
+	private BigDecimal salaryCash;
 	private Boolean alreadyCharge = Boolean.FALSE;
 
 	public Long getId() {
@@ -268,5 +269,15 @@ public class FinanceDto implements Serializable {
 
 	public void setPerformanceAppraisalCash(BigDecimal performanceAppraisalCash) {
 		this.performanceAppraisalCash = performanceAppraisalCash;
+	}
+
+	public BigDecimal getSalaryCash() {
+		BigDecimal bonus = bonusCash == null ? BigDecimal.ZERO : bonusCash;
+		BigDecimal performanceAppraisal = performanceAppraisalCash == null ? BigDecimal.ZERO : performanceAppraisalCash;
+		return bonus.add(performanceAppraisal);
+	}
+
+	public void setSalaryCash(BigDecimal salaryCash) {
+		this.salaryCash = salaryCash;
 	}
 }
