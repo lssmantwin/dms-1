@@ -11,6 +11,7 @@ public class FinanceDto implements Serializable {
 	private Long id;
 	private Long employeeId;
 	private String employeeName;
+	private String identityCardNumber;
 	private String month;
 	private BigDecimal baseWage;
 	private BigDecimal overtime;
@@ -54,6 +55,14 @@ public class FinanceDto implements Serializable {
 
 	public void setEmployeeId(Long employeeId) {
 		this.employeeId = employeeId;
+	}
+
+	public String getIdentityCardNumber() {
+		return identityCardNumber;
+	}
+
+	public void setIdentityCardNumber(String identityCardNumber) {
+		this.identityCardNumber = identityCardNumber;
 	}
 
 	public String getMonth() {

@@ -28,15 +28,13 @@ public interface ProjectCommissionWebService {
 
 	@GET
 	@Path("/export")
-	Response export(@QueryParam("designer") String designer,
-					@QueryParam("designerAssistant") String designerAssistant,
-					@QueryParam("contractState") String contractState, @QueryParam("commissionState") String commissionState,
-					@QueryParam("acNumber") String acNumber,
-					@QueryParam("contractId") String contractId, @QueryParam("payContractRatio") String payContractRatio,
-					@QueryParam("payProjectRatio") String payProjectRatio, @QueryParam("actualStartTime") String actualStartTime,
-					@QueryParam("actualEndTime") String actualEndTime,
-					@QueryParam("contractDate") String contractDate, @QueryParam("firstCommissionDate") String firstCommissionDate,
-					@QueryParam("balanceTime") String balanceTime, @QueryParam("balanceCommissionDate") String balanceCommissionDate);
+	Response export(@QueryParam("designer") String designer, @QueryParam("designerAssistant") String designerAssistant,
+			@QueryParam("contractState") String contractState, @QueryParam("commissionState") String commissionState, @QueryParam("acNumber") String acNumber,
+			@QueryParam("contractId") String contractId, @QueryParam("payContractRatio") String payContractRatio,
+			@QueryParam("payProjectRatio") String payProjectRatio, @QueryParam("actualStartTime") String actualStartTime,
+			@QueryParam("actualEndTime") String actualEndTime, @QueryParam("contractDate") String contractDate,
+			@QueryParam("firstCommissionDate") String firstCommissionDate, @QueryParam("balanceTime") String balanceTime,
+			@QueryParam("balanceCommissionDate") String balanceCommissionDate);
 
 	@GET
 	@Path("/states")
@@ -61,12 +59,10 @@ public interface ProjectCommissionWebService {
 	@GET
 	@Path("/projectCommissions")
 	DataGridResponse<List<ProjectCommissionDto>> getProjectCommissions(@QueryParam("designer") String designer,
-			@QueryParam("designerAssistant") String designerAssistant,
-			@QueryParam("contractState") String contractState, @QueryParam("commissionState") String commissionState,
-			@QueryParam("acNumber") String acNumber,
-			@QueryParam("contractId") String contractId, @QueryParam("payContractRatio") String payContractRatio,
-			 @QueryParam("payProjectRatio") String payProjectRatio, @QueryParam("actualStartTime") String actualStartTime,
-			@QueryParam("actualEndTime") String actualEndTime,
+			@QueryParam("designerAssistant") String designerAssistant, @QueryParam("contractState") String contractState,
+			@QueryParam("commissionState") String commissionState, @QueryParam("acNumber") String acNumber, @QueryParam("contractId") String contractId,
+			@QueryParam("payContractRatio") String payContractRatio, @QueryParam("payProjectRatio") String payProjectRatio,
+			@QueryParam("actualStartTime") String actualStartTime, @QueryParam("actualEndTime") String actualEndTime,
 			@QueryParam("contractDate") String contractDate, @QueryParam("firstCommissionDate") String firstCommissionDate,
 			@QueryParam("balanceTime") String balanceTime, @QueryParam("balanceCommissionDate") String balanceCommissionDate,
 			@QueryParam("pageIndex") int pageIndex, @QueryParam("pageSize") int pageSize, @QueryParam("sortField") String sortField,

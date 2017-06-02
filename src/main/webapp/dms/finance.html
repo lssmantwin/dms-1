@@ -29,6 +29,7 @@
                        required="true" allowInput="true" showNullItem="false" onvaluechanged="onMonthChange"/>
                 <span class="separator"></span>
                 <a class="mini-button" iconCls="icon-save" plain="true" onclick="saveData()">保存</a>
+                <a class="mini-button" iconCls="icon-upload" plain="true" onclick="ExportExcel()">导出Excel</a>
             </td>
         </tr>
     </table>
@@ -104,6 +105,12 @@
     </div>
 
 </div>
+
+<!--导出Excel相关HTML-->
+<form id="excelForm" action="../ws/finance/v1/export" method="get">
+    <input type="hidden" name="employeeName" id="employeeName"/>
+    <input type="hidden" name="month" id="month"/>
+</form>
 
 <script type="text/javascript">
 
@@ -215,6 +222,16 @@
 
             e.cellHtml = "实发工资（现金）: " + total;
         }
+    }
+
+    function ExportExcel() {
+        var employeeName = mini.get("nameFilter").getValue();
+        var month = mini.get('combo1').getValue();
+        document.getElementById("employeeName").value = employeeName;
+        document.getElementById("month").value = month;
+
+        var excelForm = document.getElementById("excelForm");
+        excelForm.submit();
     }
 
 </script>

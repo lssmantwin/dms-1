@@ -32,6 +32,7 @@
         <result property="personalIncomeTax" column="personal_income_tax"/>
         <result property="afterTaxSalary" column="after_tax_salary"/>
         <result property="alreadyCharge" column="already_charge" typeHandler="com.dms.handler.BooleanHandler"/>
+        <result property="identityCardNumber" column="identity_card_number"/>
     </resultMap>
 
     <select id="getFinances" parameterType="FinanceFilterRequest" resultMap="FinanceMap">
@@ -43,10 +44,11 @@
         t.other_subsidy, t.exhibition_charge, t.charge,
         t.charge_comments, t.casual_leave, t.sick_leave,
         t.storage_charge, t.gross_pay, t.medical_insurance,
-        t.housing_fund, t.before_tax_salary, t.personal_income_tax, t.after_tax_salary, t.already_charge
+        t.housing_fund, t.before_tax_salary, t.personal_income_tax, t.after_tax_salary, t.already_charge,
+        t.identity_card_number
         from (
         select e.id as eid, e.name, e.base_wage, e.overtime, e.meals_subsidy, e.secrecy_subsidy,
-        e.communication_fee, e.working_age_subsidy, f.id as fid, f.month, f.attendance,
+        e.communication_fee, e.working_age_subsidy, e.identity_card_number, f.id as fid, f.month, f.attendance,
         f.bonus_card, f.bonus_cash, f.performance_appraisal_card, f.performance_appraisal_cash,
         f.other_subsidy, f.exhibition_charge, f.charge,
         f.charge_comments, f.casual_leave, f.sick_leave,
