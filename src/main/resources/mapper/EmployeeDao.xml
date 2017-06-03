@@ -28,6 +28,7 @@
         <result property="chargePerMonth" column="charge_per_month"/>
         <result property="charge" column="charge"/>
         <result property="companyId" column="company_id"/>
+        <result property="department" column="department"/>
     </resultMap>
 
     <select id="getAttendance" resultType="Attendance">
@@ -98,13 +99,13 @@
         meals_subsidy, secrecy_subsidy, communication_fee,
         jyw_commission_ratio, commencement_ratio, completion_ratio,
         renovate_commission_ratio, identity_card_number, transportation_allowance, post_allowance, leave_date,
-        storage_charge, total_charge, charge_per_month, charge, company_id)
+        storage_charge, total_charge, charge_per_month, charge, company_id, department)
         values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.name}, #{item.position}, #{item.hiredate}, #{item.baseWage}, #{item.bankCardNumber},
             #{item.workingAgeSubsidy}, #{item.overtime},
             #{item.mealsSubsidy}, #{item.secrecySubsidy}, #{item.communicationFee},
-            ${item.jywCommissionRatio}, #{item.commencementRatio}, #{item.completionRatio},
+            #{item.jywCommissionRatio}, #{item.commencementRatio}, #{item.completionRatio},
             #{item.renovateCommissionRatio},
             #{item.identityCardNumber},
             #{item.transportationAllowance},
@@ -114,7 +115,8 @@
             #{item.totalCharge},
             #{item.chargePerMonth},
             #{item.charge},
-            #{item.companyId}
+            #{item.companyId},
+            #{item.department}
             )
         </foreach>
     </insert>
@@ -132,7 +134,7 @@
             meals_subsidy = #{item.mealsSubsidy},
             secrecy_subsidy = #{item.secrecySubsidy},
             communication_fee = #{item.communicationFee},
-            jyw_commission_ratio = ${item.jywCommissionRatio},
+            jyw_commission_ratio = #{item.jywCommissionRatio},
             commencement_ratio = #{item.commencementRatio},
             completion_ratio = #{item.completionRatio},
             renovate_commission_ratio = #{item.renovateCommissionRatio},
@@ -144,7 +146,8 @@
             total_charge = #{item.totalCharge},
             charge_per_month = #{item.chargePerMonth},
             charge = #{item.charge},
-            company_id = #{item.companyId}
+            company_id = #{item.companyId},
+            department = #{item.department}
             where id = #{item.id}
         </foreach>
     </update>

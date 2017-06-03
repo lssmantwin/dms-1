@@ -40,7 +40,7 @@
          showFilterRow="true">
         <div property="columns">
             <div type="indexcolumn"></div>
-            <div field="name" width="60" headerAlign="center" allowSort="true">姓名
+            <div field="name" width="60" headerAlign="center" allowSort="false">姓名
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
                 <input id="nameFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="60"
                        onvaluechanged="onFilterChanged"/>
@@ -52,7 +52,10 @@
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
                        required="true" allowInput="true" showNullItem="false"/>
             </div>
-            <div field="hiredate" width="80" headerAlign="center" dateFormat="yyyy-MM-dd" allowSort="true">入职日期
+            <div field="department" width="120" type="mini-textbox" headerAlign="center" allowSort="false">部门
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            </div>
+            <div field="hiredate" width="80" headerAlign="center" dateFormat="yyyy-MM-dd" allowSort="false">入职日期
                 <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="80"/>
             </div>
             <div field="position" width="60" type="comboboxcolumn" headerAlign="center" allowSort="false">职位
@@ -61,10 +64,10 @@
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
                        required="true" allowInput="true" showNullItem="false"/>
             </div>
-            <div field="baseWage" width="100" allowSort="true" headerAlign="center" vtype="float"> 基本工资
+            <div field="baseWage" width="100" allowSort="false" headerAlign="center" vtype="float"> 基本工资
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="workingAgeSubsidy" width="40" headerAlign="center" allowSort="true" vtype="int">工龄
+            <div field="workingAgeSubsidy" width="40" headerAlign="center" allowSort="false" vtype="int">工龄
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="40"/>
             </div>
             <div field="overtime" width="60" headerAlign="center" allowSort="false" vtype="float">加班
@@ -103,7 +106,7 @@
             <div field="postAllowance" width="60" allowSort="false" headerAlign="center" vtype="float">岗位津贴
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60"/>
             </div>
-            <div field="leaveDate" width="60" headerAlign="center" dateFormat="yyyy-MM-dd" allowSort="true">离职日期
+            <div field="leaveDate" width="60" headerAlign="center" dateFormat="yyyy-MM-dd" allowSort="false">离职日期
                 <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="60"/>
             </div>
             <div field="storageCharge" width="60" allowSort="false" headerAlign="center" vtype="float">保管费

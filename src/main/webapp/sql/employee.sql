@@ -22,6 +22,7 @@
   total_charge decimal(10,2),
   charge_per_month decimal(10,2),
   charge decimal(10,2),
-  company_id int not null
+  company_id int not null,
+  department varchar(3000)
  )
 

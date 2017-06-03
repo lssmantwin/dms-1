@@ -222,7 +222,7 @@
             (#{item.designer}, #{item.acNumber}, #{item.contractId}, #{item.contractTotal}, #{item.purchaseAgentFee},
             #{item.projectChangeTotal}, #{item.customerPay},
             #{item.payContractRatio}, #{item.payProjectRatio}, #{item.contractState, typeHandler=com.dms.handler.ContractStateEnumHandler},
-            ${item.contractDate}, #{item.actualStartTime}, #{item.actualEndTime},
+            #{item.contractDate}, #{item.actualStartTime}, #{item.actualEndTime},
             #{item.balanceTime}, #{item.customerName}, #{item.createdTime})
         </foreach>
     </insert>
