@@ -8,6 +8,7 @@
         <result property="designer" column="designer"/>
         <result property="acNumber" column="ac_number"/>
         <result property="contractId" column="contract_id"/>
+        <result property="employeeId" column="employee_id"/>
         <result property="customerName" column="customer_name"/>
         <result property="contractTotal" column="contract_total" typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="purchaseAgentFee" column="purchase_agent_fee"
@@ -95,7 +96,13 @@
                 and balance_time > #{balanceTime}
             </if>
             <if test="balanceCommissionDate != null and balanceCommissionDate != ''">
-                and balance_commission_date > #{balanceCommissionDate}
+                and balance_commission_date >= #{balanceCommissionStartDate}
+                and balance_commission_date &lt; #{balanceCommissionEndDate}
+            </if>
+
+            <if test="designerAssistantCommissionDate != null and designerAssistantCommissionDate != ''">
+                and designer_assistant_commission_date >= #{designerAssistantCommissionStartDate}
+                and designer_assistant_commission_date &lt; #{designerAssistantCommissionEndDate}
             </if>
         </where>
     </select>
@@ -138,6 +145,9 @@
             <if test="payProjectRatio != null and payProjectRatio != ''">
                 and pay_project_ratio >= #{payProjectRatio}
             </if>
+            <if test="branch != null and branch != ''">
+                and branch = #{branch}
+            </if>
 
             <if test="commissionState != null">
                 and commission_state = #{commissionState, typeHandler=com.dms.handler.CommissionStateEnumHandler}
@@ -161,6 +171,11 @@
             <if test="balanceCommissionDate != null and balanceCommissionDate != ''">
                 and balance_commission_date >= #{balanceCommissionStartDate}
                 and balance_commission_date &lt; #{balanceCommissionEndDate}
+            </if>
+
+            <if test="designerAssistantCommissionDate != null and designerAssistantCommissionDate != ''">
+                and designer_assistant_commission_date >= #{designerAssistantCommissionStartDate}
+                and designer_assistant_commission_date &lt; #{designerAssistantCommissionEndDate}
             </if>
         </where>
         ) t
@@ -246,13 +261,18 @@
         ,actual_end_time
         ,balance_time
         ,customer_name
+        ,employee_id
+        ,design_commission_rate
+        ,first_commission_rate
+        ,designer_assistant_commission_rate
         ,created_time)
         values
            (#{designer}, #{acNumber}, #{contractId}, #{contractTotal}, #{purchaseAgentFee},
             #{projectChangeTotal}, #{customerPay},
             #{payContractRatio}, #{payProjectRatio}, #{contractState, typeHandler=com.dms.handler.ContractStateEnumHandler},
-            #{contractDate}, #{actualStartTime}, #{actualEndTime},
-            #{balanceTime},  #{createdTime})
+            #{branch}, #{contractDate}, #{actualStartTime}, #{actualEndTime},
+            #{balanceTime}, #{customerName}, #{employeeId}, #{designCommissionRate},  #{firstCommissionRate},
+            #{designerAssistantCommissionRate},  #{createdTime})
     </insert>
 
 
@@ -375,10 +395,8 @@
 
     <update id="updateDesignAssistant" parameterType="DesignAssistantDto">
         update "project_commission"
-        set
-        designer_assistant = #{designAssistant}
-        where ac_number = #{acNumber}
+           set purchasing_cost = #{purchasingCost},
+               designer_assistant = #{designAssistant}
+         where ac_number = #{acNumber}
     </update>
-
-
 </mapper>

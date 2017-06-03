@@ -17,6 +17,8 @@ public interface ChargeWebService {
 
 	@GET
 	@Path("/charges")
-	List<ChargeDetailDto> getChargeDetails(@QueryParam("employeeName") String employeeName);
+	List<ChargeDetailDto> getChargeDetails(@QueryParam("employeeName") String employeeName,
+										   @QueryParam("chargeTime") String chargeTime,
+										   @QueryParam("chargeBalance") String chargeBalance);
 
 }

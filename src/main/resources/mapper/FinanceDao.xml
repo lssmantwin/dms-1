@@ -100,4 +100,34 @@
          where id = #{id}
     </update>
 
+    <select id="getFinance" parameterType="FinanceDto">
+        select f.id
+          from finance f
+        <where>
+            <if test="employeeId != null and employeeId != ''">
+                f.employee_id = #{employeeId}
+            </if>
+
+            <if test="month != null and month != ''">
+                f.month like #{month}
+            </if>
+        </where>
+
+    </select>
+
+    <update id="updateFinanceCommission" parameterType="FinanceDto">
+        update finance
+           set bonus_card = bonus_card + #{bonusCard}
+        <where>
+             1 = 1
+            <if test="employeeId != null and employeeId != ''">
+               and employee_id = #{employeeId}
+            </if>
+
+            <if test="month != null and month != ''">
+               and  month like #{month}
+            </if>
+        </where>
+    </update>
+
 </mapper>

@@ -12,4 +12,8 @@ public interface FinanceService {
 	void saveFinance(FinanceDto financeDto);
 
 	void updateFinance(FinanceDto financeDto);
+
+	void updateCommission(FinanceDto financeDto);
+
+	void updateCommissions(List<FinanceDto> financeDtos);
 }

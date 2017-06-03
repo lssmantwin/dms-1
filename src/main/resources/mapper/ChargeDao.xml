@@ -12,13 +12,23 @@
         <result property="chargeBalance" column="charge_balance"/>
     </resultMap>
 
-    <select id="getChargeDetails" parameterType="BaseFilterRequest" resultMap="ChargeDetailMap">
+    <select id="getChargeDetails" parameterType="ChargeFilterRequest" resultMap="ChargeDetailMap">
         select cd.id, cd.charge_time, cd.employee_id, e.name as employee_name, cd.charge, cd.charge_balance
         from charge_detail cd join employee e on cd.employee_id = e.id
         <where>
+             1 = 1
             <if test="employeeName != null and employeeName != ''">
                 <bind name="pattern" value="'%' + employeeName + '%'"/>
-                e.name like #{pattern}
+                and e.name like #{pattern}
+            </if>
+
+            <if test="chargeTime != null and chargeTime != ''">
+                and cd.charge_time  >= #{chargeStartTime}
+                and cd.charge_time  &lt; #{chargeEndTime}
+
+            </if>
+            <if test="chargeBalance != null and chargeBalance != ''">
+                and cd.charge_balance = #{chargeBalance}
             </if>
         </where>
         order by cd.charge_time, cd.employee_id

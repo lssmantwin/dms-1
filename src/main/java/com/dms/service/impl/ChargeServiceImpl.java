@@ -1,6 +1,7 @@
 package com.dms.service.impl;
 
 import com.dms.request.BaseFilterRequest;
+import com.dms.request.ChargeFilterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class ChargeServiceImpl implements ChargeService {
 	}
 
 	@Override
-	public List<ChargeDetailDto> getChargeDetails(BaseFilterRequest request) {
+	public List<ChargeDetailDto> getChargeDetails(ChargeFilterRequest request) {
 		return chargeDao.getChargeDetails(request);
 	}
 

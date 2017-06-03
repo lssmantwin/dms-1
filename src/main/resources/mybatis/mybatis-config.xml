@@ -8,6 +8,7 @@
         <typeAlias type="com.dms.request.ProjectCommissionFilterRequest" alias="ProjectCommissionFilterRequest"/>
         <typeAlias type="com.dms.request.FinanceFilterRequest" alias="FinanceFilterRequest"/>
         <typeAlias type="com.dms.request.BaseFilterRequest" alias="BaseFilterRequest"/>
+        <typeAlias type="com.dms.request.ChargeFilterRequest" alias="ChargeFilterRequest"/>
         <typeAlias type="com.dms.domain.Position" alias="Position"/>
         <typeAlias type="com.dms.domain.Month" alias="Month"/>
         <typeAlias type="com.dms.domain.Attendance" alias="Attendance"/>

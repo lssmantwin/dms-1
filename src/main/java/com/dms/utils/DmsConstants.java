@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 public interface DmsConstants {
     String JYW_PROJECT= "CG";
     String FX_PROJECT= "FG";
-    String COMMISION_STATE_FIRST = "首提";
-    String COMMISION_STATE_FINISH = "已提";
+    String SUBURBS_SONGJIANG = "松江";
+    String SUBURBS_QINGPU = "青浦";
     BigDecimal MIN_CONTRACT_COMMISSION = new BigDecimal(10000);
     BigDecimal MIN_COMMISSION = new BigDecimal(250);
 

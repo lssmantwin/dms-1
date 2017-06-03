@@ -12,4 +12,12 @@ public interface FinanceDao {
 	void saveFinance(FinanceDto financeDto);
 
 	void updateFinance(FinanceDto financeDto);
+
+	void updateCommission(FinanceDto financeDto);
+
+	void updateCommissions(List<FinanceDto> financeDtos);
+
+	void updateFinanceCommission(FinanceDto financeDto);
+
+
 }

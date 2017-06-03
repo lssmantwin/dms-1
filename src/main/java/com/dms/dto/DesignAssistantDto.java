@@ -14,6 +14,10 @@ public class DesignAssistantDto implements Serializable {
 
 	private String acNumber;
 
+	private String designAssistant;
+
+	private double purchaseCost;
+
 	public String getAcNumber() {
 		return acNumber;
 	}
@@ -30,5 +34,11 @@ public class DesignAssistantDto implements Serializable {
 		this.designAssistant = designAssistant;
 	}
 
-	private String designAssistant;
+	public double getPurchaseCost() {
+		return purchaseCost;
+	}
+
+	public void setPurchaseCost(double purchaseCost) {
+		this.purchaseCost = purchaseCost;
+	}
 }
