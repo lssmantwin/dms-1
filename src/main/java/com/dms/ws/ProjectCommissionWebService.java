@@ -39,6 +39,7 @@ public interface ProjectCommissionWebService {
 					@QueryParam("balanceTime") String balanceTime, @QueryParam("balanceCommissionDate") String balanceCommissionDate,
 					@QueryParam("designerAssistantCommissionDate") String designerAssistantCommissionDate);
 
+
 	@GET
 	@Path("/states")
 	List<EnumDto> getStates(@QueryParam("type") String type);

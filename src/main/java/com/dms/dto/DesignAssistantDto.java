@@ -13,10 +13,9 @@ import java.math.BigDecimal;
 public class DesignAssistantDto implements Serializable {
 
 	private String acNumber;
-
 	private String designAssistant;
-
 	private double purchaseCost;
+	private Long designAssistantId;
 
 	public String getAcNumber() {
 		return acNumber;
@@ -40,5 +39,13 @@ public class DesignAssistantDto implements Serializable {
 
 	public void setPurchaseCost(double purchaseCost) {
 		this.purchaseCost = purchaseCost;
+	}
+
+	public Long getDesignAssistantId() {
+		return designAssistantId;
+	}
+
+	public void setDesignAssistantId(Long designAssistantId) {
+		this.designAssistantId = designAssistantId;
 	}
 }

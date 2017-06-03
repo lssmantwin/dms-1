@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Controller
@@ -24,4 +25,8 @@ public interface FinanceWebService {
 	@POST
 	@Path("/finances")
 	void saveFinances(FinanceRequest request);
+
+	@GET
+	@Path("/export")
+	Response export(@QueryParam("employeeName") String employeeName, @QueryParam("month") String month);
 }

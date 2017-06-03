@@ -29,6 +29,7 @@
                        required="true" allowInput="true" showNullItem="false" onvaluechanged="onMonthChange"/>
                 <span class="separator"></span>
                 <a class="mini-button" iconCls="icon-save" plain="true" onclick="saveData()">保存</a>
+                <a class="mini-button" iconCls="icon-upload" plain="true" onclick="ExportExcel()">导出Excel</a>
             </td>
         </tr>
     </table>
@@ -41,7 +42,7 @@
          url="../ws/finance/v1/finances"
          ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
          idField="id" sizeList="[5,10,20,50]" pageSize="10" allowCellEdit="true" allowCellSelect="true"
-         multiSelect="true" showFilterRow="true">
+         multiSelect="true" showFilterRow="true" showSummaryRow="true" ondrawsummarycell="onDrawSummaryCell">
         <div property="columns">
             <div type="indexcolumn"></div>
             <div field="employeeName" width="100" headerAlign="center" allowSort="true">姓名
@@ -84,7 +85,7 @@
             </div>
             <div field="chargePerMonth" width="100" headerAlign="center" allowSort="true" vtype="float">保管
             </div>
-            <div field="grossPay" width="100" headerAlign="center" allowSort="true">应发工资
+            <div field="grossPay" width="100" headerAlign="center" allowSort="true">应发工资（卡）
             </div>
             <div field="medicalInsurance" width="100" headerAlign="center" allowSort="true" vtype="float">代扣社保
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
@@ -96,12 +97,20 @@
             </div>
             <div field="personalIncomeTax" width="100" headerAlign="center" allowSort="true">个人所得税
             </div>
-            <div field="afterTaxSalary" width="100" headerAlign="center" allowSort="true">应发工资
+            <div field="afterTaxSalary" width="100" headerAlign="center" allowSort="true">实发工资（卡）
+            </div>
+            <div field="salaryCash" width="100" headerAlign="center" allowSort="true">实发工资（现金）
             </div>
         </div>
     </div>
 
 </div>
+
+<!--导出Excel相关HTML-->
+<form id="excelForm" action="../ws/finance/v1/export" method="get">
+    <input type="hidden" name="employeeName" id="employeeName"/>
+    <input type="hidden" name="month" id="month"/>
+</form>
 
 <script type="text/javascript">
 
@@ -150,7 +159,7 @@
         var month = mini.get('combo1').getValue();
         var data = {'finances': finances, 'month': month};
         var json = mini.encode(data);
-        alert(json);
+
         grid.loading("保存中，请稍后......");
         $.ajax({
             url: '../ws/finance/v1/finances',
@@ -173,6 +182,56 @@
     function onFilterChanged() {
         var employeeName = mini.get("nameFilter").getValue();
         grid.load({employeeName: employeeName});
+    }
+
+    function onDrawSummaryCell(e) {
+        var rows = e.data;
+
+        if (e.field == "grossPay") {
+            var total = 0;
+            for (var i = 0, l = rows.length; i < l; i++) {
+                var row = rows[i];
+                var t = row.grossPay;
+                if (isNaN(t)) continue;
+                total += t;
+            }
+
+            e.cellHtml = "应发工资（卡）: " + total;
+        }
+
+        if (e.field == "afterTaxSalary") {
+            var total = 0;
+            for (var i = 0, l = rows.length; i < l; i++) {
+                var row = rows[i];
+                var t = row.afterTaxSalary;
+                if (isNaN(t)) continue;
+                total += t;
+            }
+
+            e.cellHtml = "实发工资（卡）: " + total;
+        }
+
+        if (e.field == "salaryCash") {
+            var total = 0;
+            for (var i = 0, l = rows.length; i < l; i++) {
+                var row = rows[i];
+                var t = row.salaryCash;
+                if (isNaN(t)) continue;
+                total += t;
+            }
+
+            e.cellHtml = "实发工资（现金）: " + total;
+        }
+    }
+
+    function ExportExcel() {
+        var employeeName = mini.get("nameFilter").getValue();
+        var month = mini.get('combo1').getValue();
+        document.getElementById("employeeName").value = employeeName;
+        document.getElementById("month").value = month;
+
+        var excelForm = document.getElementById("excelForm");
+        excelForm.submit();
     }
 
 </script>

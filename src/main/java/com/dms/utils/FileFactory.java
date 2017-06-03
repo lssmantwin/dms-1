@@ -40,8 +40,4 @@ public final class FileFactory {
 		return r.build();
 	}
 
-	private String getMIMEType(String filename) {
-		return FilenameUtils.getExtension(filename);
-	}
-
 }

@@ -1,10 +1,17 @@
 package com.dms.ws.impl;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import com.dms.dto.ProjectCommissionDto;
+import com.dms.export.FinanceExportXls;
+import com.dms.export.ProjectCommissionExportXls;
+import com.dms.request.ProjectCommissionFilterRequest;
 import com.dms.utils.DateUtils;
+import com.dms.utils.FileFactory;
 import org.joda.time.Instant;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
@@ -23,6 +30,8 @@ import com.dms.service.EmployeeService;
 import com.dms.service.FinanceService;
 import com.dms.utils.PersonalIncomeTaxUtils;
 import com.dms.ws.FinanceWebService;
+
+import javax.ws.rs.core.Response;
 
 @Service("financeWebService")
 public class FinanceWebServiceImpl implements FinanceWebService {
@@ -71,13 +80,12 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 				if (!financeDto.getAlreadyCharge()) {
 					EmployeeDto employeeDto = employeeService.getEmployee(financeDto.getEmployeeId());
 					if (employeeDto.getCharge() != null && employeeDto.getStorageCharge() != null
-							&&employeeDto.getStorageCharge().intValue()  > employeeDto.getCharge().intValue()) {
-						BigDecimal charge = employeeDto.getChargePerMonth()
-								.add(employeeDto.getCharge() == null ? BigDecimal.ZERO : employeeDto.getCharge());
+							&& employeeDto.getStorageCharge().intValue() > employeeDto.getCharge().intValue()) {
+						BigDecimal charge = employeeDto.getChargePerMonth().add(employeeDto.getCharge() == null ? BigDecimal.ZERO : employeeDto.getCharge());
 
 						ChargeDetailDto chargeDetailDto = new ChargeDetailDto();
 						chargeDetailDto.setEmployeeId(Long.valueOf(employeeDto.getId()));
-						String year = financeDto.getMonth().substring(0,4);
+						String year = financeDto.getMonth().substring(0, 4);
 						String month = financeDto.getMonth().substring(4);
 						Date currentMonth = DateUtils.getFirstDayOfMonthDate(Integer.valueOf(year), Integer.valueOf(month));
 						chargeDetailDto.setChargeTime(LocalDateTime.fromDateFields(currentMonth));
@@ -210,5 +218,22 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 		request.setSortOrder(sortOrder);
 		request.setMonth(month);
 		return request;
+	}
+
+	@Override
+	public Response export(String employeeName, String month) {
+
+		LOGGER.info("export finance");
+
+		FinanceFilterRequest request = generateFilterRequest(employeeName, 0, 0, null, null, month);
+		List<FinanceDto> finances = financeService.getFinances(request);
+		InputStream in = null;
+		try {
+			in = new FinanceExportXls(finances).getStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return FileFactory.getResponse(in, LocalDateTime.now().toString("yyyyMMddHHmmSS"));
 	}
 }

@@ -11,6 +11,7 @@ public class FinanceDto implements Serializable {
 	private Long id;
 	private Long employeeId;
 	private String employeeName;
+	private String identityCardNumber;
 	private String month;
 	private BigDecimal baseWage;
 	private BigDecimal overtime;
@@ -37,6 +38,7 @@ public class FinanceDto implements Serializable {
 	private BigDecimal chargePerMonth;
 	private BigDecimal personalIncomeTax;
 	private BigDecimal afterTaxSalary;
+	private BigDecimal salaryCash;
 	private Boolean alreadyCharge = Boolean.FALSE;
 
 	public Long getId() {
@@ -53,6 +55,14 @@ public class FinanceDto implements Serializable {
 
 	public void setEmployeeId(Long employeeId) {
 		this.employeeId = employeeId;
+	}
+
+	public String getIdentityCardNumber() {
+		return identityCardNumber;
+	}
+
+	public void setIdentityCardNumber(String identityCardNumber) {
+		this.identityCardNumber = identityCardNumber;
 	}
 
 	public String getMonth() {
@@ -269,6 +279,16 @@ public class FinanceDto implements Serializable {
 
 	public void setPerformanceAppraisalCash(BigDecimal performanceAppraisalCash) {
 		this.performanceAppraisalCash = performanceAppraisalCash;
+	}
+
+	public BigDecimal getSalaryCash() {
+		BigDecimal bonus = bonusCash == null ? BigDecimal.ZERO : bonusCash;
+		BigDecimal performanceAppraisal = performanceAppraisalCash == null ? BigDecimal.ZERO : performanceAppraisalCash;
+		return bonus.add(performanceAppraisal);
+	}
+
+	public void setSalaryCash(BigDecimal salaryCash) {
+		this.salaryCash = salaryCash;
 	}
 
 	public BigDecimal getChargePerMonth() {

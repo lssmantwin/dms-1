@@ -86,6 +86,13 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
                     commission.setUpdatedTime(LocalDateTime.now());
                 }
                 updateCommission(commission.getEmployeeId(), commission.getFirstCommission(), commission.getFirstCommissionDate());
+                //设计助理提成
+                if (!StringUtils.isEmpty(commission.getDesignerAssistant())) {
+                    EmployeeDto employee = employeeDao.getEmployee(commission.getDesignerAssistant().trim());
+                    if (!StringUtils.isEmpty(employee.getId())) {
+                        updateCommission(Long.valueOf(employee.getId()), commission.getDesignerAssistantCommission(), commission.getBalanceCommissionDate());
+                    }
+                }
                 projectCommissionDao.updateProjectCommission(commission);
             }
         }
@@ -96,7 +103,11 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
         FinanceDto financeDto = new FinanceDto();
         financeDto.setEmployeeId(Long.valueOf(employeeId));
         financeDto.setBonusCard(commission);
-        String month = String.valueOf(commissionDate.getYear()).concat(String.valueOf(commissionDate.getMonthOfYear()));
+        String monthOfYear = String.valueOf(commissionDate.getMonthOfYear());
+        if (!StringUtils.isEmpty(monthOfYear) && monthOfYear.length() == 1) {
+            monthOfYear = "0".concat(monthOfYear);
+        }
+        String month = String.valueOf(commissionDate.getYear()).concat(monthOfYear);
         financeDto.setMonth(month);
         financeDao.updateFinanceCommission(financeDto);
     }
@@ -117,7 +128,16 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
                 commission.setBalanceCommissionDate(LocalDateTime.now());
                 commission.setCommissionState(commissionState);
                 commission.setUpdatedTime(LocalDateTime.now());
+                //设计师提成
                 updateCommission(commission.getEmployeeId(), commission.getBalanceCommission(), commission.getBalanceCommissionDate());
+                //设计助理提成
+                if (!StringUtils.isEmpty(commission.getDesignerAssistant())
+                        && (commission.getDesignerAssistantCommission() != null && BigDecimal.ZERO != commission.getDesignerAssistantCommission())) {
+                    EmployeeDto employee = employeeDao.getEmployee(commission.getDesignerAssistant().trim());
+                    if (!StringUtils.isEmpty(employee.getId())) {
+                        updateCommission(Long.valueOf(employee.getId()), commission.getDesignerAssistantCommission(), commission.getBalanceCommissionDate());
+                    }
+                }
                 projectCommissionDao.updateProjectCommission(commission);
             }
         }
@@ -201,6 +221,10 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
     @Override
     public void updateDesignAssistants(List<DesignAssistantDto> designAssistantDtos) {
         for (DesignAssistantDto designAssistantDto : designAssistantDtos) {
+            EmployeeDto employee = employeeDao.getEmployee(designAssistantDto.getDesignAssistant());
+            if (!StringUtils.isEmpty(employee.getId())) {
+                designAssistantDto.setDesignAssistantId(Long.valueOf(employee.getId()));
+            }
             projectCommissionDao.updateDesignAssistant(designAssistantDto);
         }
     }
