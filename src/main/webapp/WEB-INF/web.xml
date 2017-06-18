@@ -120,6 +120,6 @@
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>dms/index.html</welcome-file>
+        <welcome-file>dms/login.html</welcome-file>
     </welcome-file-list>
 </web-app>

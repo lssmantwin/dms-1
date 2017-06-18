@@ -3,8 +3,9 @@ package com.dms.ws;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-import com.dms.dto.UserDto;
 import org.springframework.stereotype.Controller;
+
+import com.dms.dto.UserDto;
 
 @Controller
 @Consumes(MediaType.APPLICATION_JSON)
@@ -12,8 +13,16 @@ import org.springframework.stereotype.Controller;
 @Path("/user/v1")
 public interface UserWebService {
 
-	@POST
+	@GET
 	@Path("/check")
-	boolean check(UserDto userDto);
+	boolean check(@QueryParam("username") String username);
+
+	@POST
+	@Path("/login")
+	boolean login(UserDto userDto);
+
+	@POST
+	@Path("/register")
+	boolean register(UserDto userDto);
 
 }

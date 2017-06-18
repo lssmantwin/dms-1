@@ -9,12 +9,20 @@
         <result property="password" column="username"/>
     </resultMap>
 
-    <select id="getUser" parameterType="string" resultMap="UserDtoMap">
+    <select id="checkUsername" parameterType="string" resultMap="UserDtoMap">
        select * from "user" where username = #{username}
     </select>
 
-    <insert id="saveUser" parameterType="UserDto">
-        insert into "user" (username, password) values (#{username}, #{password})
+    <insert id="register" parameterType="UserDto">
+        insert into "user" (username, password, created_on, last_login_on) values (#{username}, #{password}, getdate(), getdate())
     </insert>
+
+    <select id="login" resultType="int">
+        update "user"
+        set last_login_on = getdate(),
+        login_count = login_count + 1
+        where username = #{username} and password = #{password}
+        select @@rowcount
+    </select>
 
 </mapper>

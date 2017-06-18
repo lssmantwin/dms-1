@@ -1,10 +1,11 @@
 package com.dms.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.dms.dao.UserDao;
 import com.dms.dto.UserDto;
 import com.dms.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -13,12 +14,17 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 
 	@Override
-	public UserDto getUser(String username) {
-		return userDao.getUser(username);
+	public UserDto checkUsername(String username) {
+		return userDao.checkUsername(username);
 	}
 
 	@Override
-	public void saveUser(UserDto userDto) {
-		userDao.saveUser(userDto);
+	public void register(UserDto userDto) {
+		userDao.register(userDto);
+	}
+
+	@Override
+	public int login(String username, String password) {
+		return userDao.login(username, password);
 	}
 }

@@ -4,8 +4,10 @@ import com.dms.dto.UserDto;
 
 public interface UserService {
 
-	UserDto getUser(String username);
+	UserDto checkUsername(String username);
 
-	void saveUser(UserDto userDto);
+	void register(UserDto userDto);
+
+	int login(String username, String password);
 
 }
