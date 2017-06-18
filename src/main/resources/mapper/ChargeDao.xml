@@ -14,7 +14,7 @@
 
     <select id="getChargeDetails" parameterType="ChargeFilterRequest" resultMap="ChargeDetailMap">
         select cd.id, cd.charge_time, cd.employee_id, e.name as employee_name, cd.charge, cd.charge_balance
-        from charge_detail cd join employee e on cd.employee_id = e.id
+        from salary_charge_detail cd join salary_employee e on cd.employee_id = e.id
         <where>
              1 = 1
             <if test="employeeName != null and employeeName != ''">
@@ -35,7 +35,7 @@
     </select>
 
     <insert id="audit" parameterType="ChargeDetailDto">
-        insert into charge_detail (charge_time, employee_id, charge, charge_balance) values
+        insert into salary_charge_detail (charge_time, employee_id, charge, charge_balance) values
         (#{chargeTime}, #{employeeId}, #{charge}, #{chargeBalance})
     </insert>
 

@@ -13,8 +13,8 @@ public interface DmsConstants {
     BigDecimal MIN_CONTRACT_COMMISSION = new BigDecimal(10000);
     BigDecimal MIN_COMMISSION = new BigDecimal(250);
 
-    BigDecimal DESIGN_ASSISTANT_COMMISSION_RATE = new BigDecimal(0.005);
     BigDecimal DESIGN_ASSISTANT_SUBURBS_COMMISSION_RATE = new BigDecimal(0.006);
+    BigDecimal DESIGN_ASSISTANT_COMMISSION_RATE = new BigDecimal(0.005);
     BigDecimal DESIGN_COMMISSION_SUB_RATE = new BigDecimal(0.0001);
 
 }

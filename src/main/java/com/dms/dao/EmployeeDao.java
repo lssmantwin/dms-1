@@ -20,7 +20,7 @@ public interface EmployeeDao {
 
 	List<Position> getPositions();
 
-    EmployeeDto getEmployee(String name);
+    EmployeeDto getEmployeeByName(String name);
 
     List<EmployeeDto> getEmployees(DataGridRequest request);
 

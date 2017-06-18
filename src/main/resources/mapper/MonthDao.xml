@@ -4,7 +4,7 @@
 <mapper namespace="com.dms.dao.JobDao">
 
     <insert id="addCurrentMonth" parameterType="Month">
-       insert into "month" (value, text) values (#{value}, #{text})
+       insert into "salary_month" (value, text) values (#{value}, #{text})
     </insert>
 
 </mapper>

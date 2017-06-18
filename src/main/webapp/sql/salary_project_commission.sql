@@ -1,4 +1,4 @@
-CREATE TABLE project_commission (
+CREATE TABLE salary_project_commission (
 
   id                                 INT PRIMARY KEY IDENTITY (1, 1),
   designer                           NVARCHAR(50),

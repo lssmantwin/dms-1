@@ -55,7 +55,7 @@
 
 
     <select id="getProjectCommissionCount" parameterType="ProjectCommissionFilterRequest" resultType="int">
-        select count(id) from "project_commission"
+        select count(id) from "salary_project_commission"
         <where>
             1 = 1
             <if test="designer != null and designer != ''">
@@ -108,18 +108,16 @@
     </select>
 
     <select id="getProject" parameterType="String" resultType="ProjectCommissionDto">
-        select * from "project_commission"
+        select * from "salary_project_commission"
         <where>
-            <if test="acNumber != null and acNumber != ''">
-                and  ac_number = #{acNumber}
-            </if>
+            ac_number = #{0}
         </where>
     </select>
 
     <select id="getProjectCommissions" parameterType="ProjectCommissionFilterRequest" resultMap="ProjectCommissionMap">
         select * from
         (
-        select *, row_number() over (order by id) rn from "project_commission"
+        select *, row_number() over (order by id) rn from "salary_project_commission"
         <where>
             1 = 1
             <if test="designer != null and designer != ''">
@@ -203,17 +201,15 @@
     </select>
 
     <select id="getProjectCommission" parameterType="java.lang.String" resultType="int">
-        select 1 from "project_commission"
+        select 1 from "salary_project_commission"
         <where>
-            <if test="acNumber != null">
-                ac_number = #{acNumber}
-            </if>
+            ac_number = #{0}
         </where>
     </select>
 
 
     <insert id="saveProjects" parameterType="ProjectCommissionDto">
-        INSERT INTO dms.dbo.Project_Commission
+        INSERT INTO dms.dbo.salary_project_commission
         (
         designer
         ,ac_number
@@ -236,14 +232,14 @@
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.designer}, #{item.acNumber}, #{item.contractId}, #{item.contractTotal}, #{item.purchaseAgentFee},
             #{item.projectChangeTotal}, #{item.customerPay},
-            #{item.payContractRatio}, #{item.payProjectRatio}, #{item.contractState, typeHandler=com.dms.handler.ContractStateEnumHandler},
-            ${item.contractDate}, #{item.actualStartTime}, #{item.actualEndTime},
+            #{item.payContractRatio}, #{item.payProjectRatio}, #{item.contractState},
+            #{item.contractDate}, #{item.actualStartTime}, #{item.actualEndTime},
             #{item.balanceTime}, #{item.customerName}, #{item.createdTime})
         </foreach>
     </insert>
 
     <insert id="saveProjectCommission" useGeneratedKeys="true" keyProperty="id" parameterType="ProjectCommissionDto">
-        insert into "Project_Commission"
+        insert into "salary_project_commission"
         (
         designer
         ,ac_number
@@ -267,16 +263,16 @@
         ,designer_assistant_commission_rate
         ,created_time)
         values
-           (#{designer}, #{acNumber}, #{contractId}, #{contractTotal}, #{purchaseAgentFee},
-            #{projectChangeTotal}, #{customerPay},
-            #{payContractRatio}, #{payProjectRatio}, #{contractState, typeHandler=com.dms.handler.ContractStateEnumHandler},
-            #{branch}, #{contractDate}, #{actualStartTime}, #{actualEndTime},
-            #{balanceTime}, #{customerName}, #{employeeId}, #{designCommissionRate},  #{firstCommissionRate},
-            #{designerAssistantCommissionRate},  #{createdTime})
+        (#{designer}, #{acNumber}, #{contractId}, #{contractTotal}, #{purchaseAgentFee},
+        #{projectChangeTotal}, #{customerPay},
+        #{payContractRatio}, #{payProjectRatio}, #{contractState},
+        #{branch}, #{contractDate}, #{actualStartTime}, #{actualEndTime},
+        #{balanceTime}, #{customerName}, #{employeeId}, #{designCommissionRate},  #{firstCommissionRate},
+        #{designerAssistantCommissionRate},  #{createdTime})
     </insert>
 
 
-    <select id="getProjects" parameterType="DataGridRequest" resultMap="ProjectCommissionMap">
+    <select id="getProjects" resultMap="ProjectCommissionMap">
         SELECT ci.designer AS designer,
         ci.ACNumber AS acNumber,
         ci.contract_id AS contractId,
@@ -311,15 +307,15 @@
         FROM          ERP_Budget_Change
         WHERE      (审核日期 >= '2009-12-31')
         GROUP BY 受理编号) AS bc ON ci.ACNumber = bc.受理编号
-        WHERE     ((ci.actual_start_time BETWEEN #{currentDayStart} AND #{currentDayEnd}) or (ci.end_balance BETWEEN #{currentDayStart} AND #{currentDayEnd})
-          AND  (ci.contract_id NOT LIKE 'W%')
-          AND ci.ACNumber in ( SELECT ac_number from project_commission where comission_state != '已提')
-        ORDER BY ci.state,设计师
+        WHERE     ((ci.actual_start_time BETWEEN #{0} AND #{1}) or (ci.end_balance BETWEEN #{0} AND #{1}))
+        AND  (ci.contract_id NOT LIKE 'W%') AND  ci.contract_total  > 0
+        AND ci.ACNumber not in ( SELECT ac_number from salary_project_commission where commission_state = 2)
+        ORDER BY ci.state,designer
 
     </select>
 
     <update id="updateProjectCommission" parameterType="ProjectCommissionDto">
-        update "project_commission"
+        update "salary_project_commission"
         set
         contract_total = #{contractTotal},
         purchase_agent_fee = #{purchaseAgentFee},
@@ -349,7 +345,7 @@
 
     <update id="updateProjectCommissions" parameterType="list">
         <foreach collection="list" item="item" index="index" open="" close="" separator=";">
-            update "project_commission"
+            update "salary_project_commission"
             set
             contract_total = #{item.contractTotal},
             purchasing_cost = #{item.purchasingCost},
@@ -377,7 +373,7 @@
     </update>
 
     <update id="updateProject" parameterType="ProjectCommissionDto">
-        update "project_commission"
+        update "salary_project_commission"
         set
         purchasing_cost = #{purchasingCost},
         commission_base = #{commissionBase},
@@ -394,9 +390,9 @@
     </update>
 
     <update id="updateDesignAssistant" parameterType="DesignAssistantDto">
-        update "project_commission"
-           set purchasing_cost = #{purchasingCost},
-               designer_assistant = #{designAssistant}
-         where ac_number = #{acNumber}
+        update "salary_project_commission"
+        set purchasing_cost = #{purchasingCost},
+        designer_assistant = #{designAssistant}
+        where ac_number = #{acNumber}
     </update>
 </mapper>

@@ -10,11 +10,11 @@
     </resultMap>
 
     <select id="getUser" parameterType="string" resultMap="UserDtoMap">
-       select * from "user" where username = #{username}
+       select * from "salary_user" where username = #{username}
     </select>
 
     <insert id="saveUser" parameterType="UserDto">
-        insert into "user" (username, password) values (#{username}, #{password})
+        insert into "salary_user" (username, password) values (#{username}, #{password})
     </insert>
 
 </mapper>

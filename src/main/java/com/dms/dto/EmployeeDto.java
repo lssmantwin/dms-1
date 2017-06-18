@@ -42,6 +42,7 @@ public class EmployeeDto implements Serializable {
 	private BigDecimal chargePerMonth;
 	private BigDecimal charge;
 	private int companyId;
+	private String department;
 
 	public String getId() {
 		return id;
@@ -155,7 +156,6 @@ public class EmployeeDto implements Serializable {
 		this.completionRatio = completionRatio;
 	}
 
-
 	public BigDecimal getRenovateCommossionRatio() {
 		return renovateCommissionRatio;
 	}
@@ -236,4 +236,11 @@ public class EmployeeDto implements Serializable {
 		this.companyId = companyId;
 	}
 
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
 }

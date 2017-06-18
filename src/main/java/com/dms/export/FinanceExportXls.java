@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import com.dms.dto.FinanceDto;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -15,8 +14,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import com.dms.constant.DmsConstant;
-import com.dms.dto.ProjectCommissionDto;
-import com.dms.enums.CommissionStateEnum;
+import com.dms.dto.FinanceDto;
 
 public class FinanceExportXls implements StreamSource {
 
@@ -73,6 +71,9 @@ public class FinanceExportXls implements StreamSource {
 
 			Cell cell5 = row.createCell(cellNumber++);
 			cell5.setCellValue(dto.getAfterTaxSalary() == null ? StringUtils.EMPTY : dto.getAfterTaxSalary().toString());
+
+			Cell cell6 = row.createCell(cellNumber++);
+			cell6.setCellValue(dto.getBankCardNumber());
 
 		}
 	}

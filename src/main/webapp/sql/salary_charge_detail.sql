@@ -1,4 +1,4 @@
- create table charge_detail (
+ create table salary_charge_detail (
  	id bigint primary key identity(1,1),
  	charge_time datetime,
  	employee_id bigint,

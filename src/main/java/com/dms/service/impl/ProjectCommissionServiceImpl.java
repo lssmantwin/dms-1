@@ -9,10 +9,13 @@ import com.dms.dto.FinanceDto;
 import com.dms.dto.ProjectCommissionDto;
 import com.dms.enums.CommissionStateEnum;
 import com.dms.request.ProjectCommissionFilterRequest;
+import com.dms.serializable.CommissionStateJacksonDeSerializable;
 import com.dms.service.ProjectCommissionService;
 import com.dms.utils.DateUtils;
 import com.dms.utils.DmsConstants;
 import org.joda.time.LocalDateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -32,6 +35,8 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 
     @Autowired
     private EmployeeDao employeeDao;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectCommissionServiceImpl.class);
 
     public ProjectCommissionServiceImpl(ProjectCommissionDao projectCommissionDao) {
         this.projectCommissionDao = projectCommissionDao;
@@ -88,7 +93,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
                 updateCommission(commission.getEmployeeId(), commission.getFirstCommission(), commission.getFirstCommissionDate());
                 //设计助理提成
                 if (!StringUtils.isEmpty(commission.getDesignerAssistant())) {
-                    EmployeeDto employee = employeeDao.getEmployee(commission.getDesignerAssistant().trim());
+                    EmployeeDto employee = employeeDao.getEmployeeByName(commission.getDesignerAssistant().trim());
                     if (!StringUtils.isEmpty(employee.getId())) {
                         updateCommission(Long.valueOf(employee.getId()), commission.getDesignerAssistantCommission(), commission.getBalanceCommissionDate());
                     }
@@ -133,7 +138,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
                 //设计助理提成
                 if (!StringUtils.isEmpty(commission.getDesignerAssistant())
                         && (commission.getDesignerAssistantCommission() != null && BigDecimal.ZERO != commission.getDesignerAssistantCommission())) {
-                    EmployeeDto employee = employeeDao.getEmployee(commission.getDesignerAssistant().trim());
+                    EmployeeDto employee = employeeDao.getEmployeeByName(commission.getDesignerAssistant().trim());
                     if (!StringUtils.isEmpty(employee.getId())) {
                         updateCommission(Long.valueOf(employee.getId()), commission.getDesignerAssistantCommission(), commission.getBalanceCommissionDate());
                     }
@@ -165,40 +170,52 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 
     @Override
     public void sychronzieProejcts() {
+        LOGGER.info("======= sychronzieProejcts Start");
         List<ProjectCommissionDto> projects = getProjects(DateUtils.getCurrentDayStart(), DateUtils.getCurrentDayEnd());
         for (ProjectCommissionDto project : projects) {
-            ProjectCommissionDto projectCommissionDto = projectCommissionDao.getProject(project.getAcNumber());
-            if (projectCommissionDto == null) {
-                projectCommissionDto.setCreatedTime(LocalDateTime.now());
+            ProjectCommissionDto extProjectCommissionDto = projectCommissionDao.getProject(project.getAcNumber());
+            if (extProjectCommissionDto == null) {
+                 project.setCreatedTime(LocalDateTime.now());
                 if (project.getDesigner() != null) {
                     //取得设计师的提成系数
-                    EmployeeDto employee = employeeDao.getEmployee(project.getDesigner());
-                    //翻新
-                    if (project.getContractId().startsWith(DmsConstants.FX_PROJECT)) {
-                        project.setDesignCommissionRate(employee.getRenovateCommossionRatio());
-                        project.setFirstCommissionRate(employee.getCommencementRatio());
-                        //佳园屋
-                    } else if (project.getContractId().startsWith(DmsConstants.JYW_PROJECT)) {
+                    EmployeeDto employee = employeeDao.getEmployeeByName(project.getDesigner());
+                    if (employee != null) {
+                        //翻新
+                        if (project.getContractId().startsWith(DmsConstants.FX_PROJECT)) {
+                            project.setDesignCommissionRate(employee.getRenovateCommossionRatio());
+                            project.setFirstCommissionRate(employee.getCommencementRatio());
+                            //佳园屋
+                        } else if (project.getContractId().startsWith(DmsConstants.JYW_PROJECT)) {
+                            project.setDesignCommissionRate(employee.getJywCommissionRatio());
+                            project.setFirstCommissionRate(employee.getCommencementRatio());
+                        }
                         project.setDesignCommissionRate(employee.getJywCommissionRatio());
-                        project.setFirstCommissionRate(employee.getCommencementRatio());
+                        project.setEmployeeId(Long.valueOf(employee.getId()));
                     }
-                    project.setDesignCommissionRate(employee.getJywCommissionRatio());
-                    project.setEmployeeId(Long.valueOf(employee.getId()));
                     //郊区设计师助理
                     if (!StringUtils.isEmpty(project.getBranch())
                             && (project.getBranch().indexOf(DmsConstants.SUBURBS_QINGPU) > 0
                             || (project.getBranch().indexOf(DmsConstants.SUBURBS_SONGJIANG) > 0))) {
-                        projectCommissionDto.setDesignerAssistantCommissionRate(DmsConstants.DESIGN_ASSISTANT_SUBURBS_COMMISSION_RATE);
+                        project.setDesignerAssistantCommissionRate(DmsConstants.DESIGN_ASSISTANT_SUBURBS_COMMISSION_RATE);
                     } else {
-                        projectCommissionDto.setDesignerAssistantCommissionRate(DmsConstants.DESIGN_ASSISTANT_COMMISSION_RATE);
+                        project.setDesignerAssistantCommissionRate(DmsConstants.DESIGN_ASSISTANT_COMMISSION_RATE.setScale(4, BigDecimal.ROUND_HALF_UP));
                     }
                 }
-                projectCommissionDao.saveProjectCommission(projectCommissionDto);
+                projectCommissionDao.saveProjectCommission(project);
             } else {
-                projectCommissionDto.setUpdatedTime(LocalDateTime.now());
-                projectCommissionDao.updateProjectCommission(projectCommissionDto);
+                extProjectCommissionDto.setUpdatedTime(LocalDateTime.now());
+                extProjectCommissionDto.setPurchaseAgentFee(project.getPurchaseAgentFee());
+                extProjectCommissionDto.setActualStartTime(project.getActualStartTime());
+                extProjectCommissionDto.setActualEndTime(project.getActualEndTime());
+                extProjectCommissionDto.setCustomerPay(project.getCustomerPay());
+                extProjectCommissionDto.setBalanceTime(project.getBalanceTime());
+                extProjectCommissionDto.setPayContractRatio(project.getPayContractRatio());
+                extProjectCommissionDto.setPayProjectRatio(project.getPayProjectRatio());
+                extProjectCommissionDto.setProjectChangeTotal(project.getProjectChangeTotal());
+                projectCommissionDao.updateProjectCommission(extProjectCommissionDto);
             }
         }
+        LOGGER.info("======= sychronzieProejcts End");
     }
 
     @Override
@@ -221,7 +238,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
     @Override
     public void updateDesignAssistants(List<DesignAssistantDto> designAssistantDtos) {
         for (DesignAssistantDto designAssistantDto : designAssistantDtos) {
-            EmployeeDto employee = employeeDao.getEmployee(designAssistantDto.getDesignAssistant());
+            EmployeeDto employee = employeeDao.getEmployeeByName(designAssistantDto.getDesignAssistant());
             if (!StringUtils.isEmpty(employee.getId())) {
                 designAssistantDto.setDesignAssistantId(Long.valueOf(employee.getId()));
             }

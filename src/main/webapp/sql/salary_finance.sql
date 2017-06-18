@@ -1,4 +1,4 @@
-create table finance (
+create table salary_finance (
   id bigint primary key identity(1,1),
   employee_id bigint not null,
   created_on datetime not null,

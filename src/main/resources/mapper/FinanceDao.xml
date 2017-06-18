@@ -33,6 +33,7 @@
         <result property="afterTaxSalary" column="after_tax_salary"/>
         <result property="alreadyCharge" column="already_charge" typeHandler="com.dms.handler.BooleanHandler"/>
         <result property="identityCardNumber" column="identity_card_number"/>
+        <result property="bankCardNumber" column="bank_card_number"/>
     </resultMap>
 
     <select id="getFinances" parameterType="FinanceFilterRequest" resultMap="FinanceMap">
@@ -45,16 +46,17 @@
         t.charge_comments, t.casual_leave, t.sick_leave,
         t.storage_charge, t.gross_pay, t.medical_insurance,
         t.housing_fund, t.before_tax_salary, t.personal_income_tax, t.after_tax_salary, t.already_charge,
-        t.identity_card_number
+        t.identity_card_number, t.bank_card_number
         from (
         select e.id as eid, e.name, e.base_wage, e.overtime, e.meals_subsidy, e.secrecy_subsidy,
-        e.communication_fee, e.working_age_subsidy, e.identity_card_number, f.id as fid, f.month, f.attendance,
+        e.communication_fee, e.working_age_subsidy, e.identity_card_number, e.bank_card_number,
+        f.id as fid, f.month, f.attendance,
         f.bonus_card, f.bonus_cash, f.performance_appraisal_card, f.performance_appraisal_cash,
         f.other_subsidy, f.exhibition_charge, f.charge,
         f.charge_comments, f.casual_leave, f.sick_leave,
         f.storage_charge, f.gross_pay, f.medical_insurance,
         f.housing_fund, f.before_tax_salary, f.personal_income_tax, f.after_tax_salary, f.already_charge,
-        row_number() over (order by e.id) as rn from employee e left join finance f on e.id = f.employee_id and
+        row_number() over (order by e.id) as rn from salary_employee e left join salary_finance f on e.id = f.employee_id and
         f."month" = #{month}
         <where>
             <if test="employeeName != null and employeeName != ''">
@@ -71,7 +73,7 @@
     </select>
 
     <insert id="saveFinance" parameterType="FinanceDto">
-        insert into "finance" (created_on, employee_id, month, attendance, bonus_card, bonus_cash, performance_appraisal_card, performance_appraisal_cash,
+        insert into "salary_finance" (created_on, employee_id, month, attendance, bonus_card, bonus_cash, performance_appraisal_card, performance_appraisal_cash,
          other_subsidy, exhibition_charge, charge, charge_comments, casual_leave, sick_leave, storage_charge,
          gross_pay, medical_insurance, housing_fund, before_tax_salary, personal_income_tax, after_tax_salary, already_charge)
         values (current_timestamp, #{employeeId}, #{month}, #{attendance}, #{bonusCard}, #{bonusCash}, #{performanceAppraisalCard}, #{performanceAppraisalCash},
@@ -80,7 +82,7 @@
     </insert>
 
     <update id="updateFinance" parameterType="FinanceDto">
-        update finance
+        update salary_finance
         set attendance =  #{attendance},
             bonus_card = #{bonusCard},
             bonus_cash = #{bonusCash},
@@ -104,7 +106,7 @@
 
     <select id="getFinance" parameterType="FinanceDto">
         select f.id
-          from finance f
+          from salary_finance f
         <where>
             <if test="employeeId != null and employeeId != ''">
                 f.employee_id = #{employeeId}
@@ -118,7 +120,7 @@
     </select>
 
     <update id="updateFinanceCommission" parameterType="FinanceDto">
-        update finance
+        update salary_finance
            set bonus_card = bonus_card + #{bonusCard}
         <where>
              1 = 1

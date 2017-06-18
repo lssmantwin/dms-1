@@ -28,22 +28,23 @@
         <result property="chargePerMonth" column="charge_per_month"/>
         <result property="charge" column="charge"/>
         <result property="companyId" column="company_id"/>
+        <result property="department" column="department"/>
     </resultMap>
 
     <select id="getAttendance" resultType="Attendance">
-        select * from attendance order by "value"
+        select * from salary_attendance order by "value"
     </select>
 
     <select id="getMonths" resultType="Month">
-        select * from "month" order by text desc
+        select * from "salary_month" order by text desc
     </select>
 
     <select id="getPositions" resultType="Position">
-        select * from "position" order by "value"
+        select * from "salary_position" order by "value"
     </select>
 
     <select id="getEmployeeCount" parameterType="BaseFilterRequest" resultType="int">
-        select count(id) from "employee"
+        select count(id) from "salary_employee"
         <where>
             <if test="employeeName != null and employeeName != ''">
                 <bind name="pattern" value="'%' + employeeName + '%'"/>
@@ -55,7 +56,7 @@
     <select id="getEmployees" parameterType="BaseFilterRequest" resultMap="EmployeeMap">
         select * from
         (
-        select *, row_number() over (order by id) rn from "employee"
+        select *, row_number() over (order by id) rn from "salary_employee"
         <where>
             <if test="employeeName != null and employeeName != ''">
                 <bind name="pattern" value="'%' + employeeName + '%'"/>
@@ -93,18 +94,18 @@
     </select>
 
     <insert id="saveEmployees" parameterType="list">
-        insert into "employee" (name, "position", hiredate, base_wage, bank_card_number,
+        insert into "salary_employee" (name, "position", hiredate, base_wage, bank_card_number,
         working_age_subsidy, overtime,
         meals_subsidy, secrecy_subsidy, communication_fee,
         jyw_commission_ratio, commencement_ratio, completion_ratio,
         renovate_commission_ratio, identity_card_number, transportation_allowance, post_allowance, leave_date,
-        storage_charge, total_charge, charge_per_month, charge, company_id)
+        storage_charge, total_charge, charge_per_month, charge, company_id, department)
         values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.name}, #{item.position}, #{item.hiredate}, #{item.baseWage}, #{item.bankCardNumber},
             #{item.workingAgeSubsidy}, #{item.overtime},
             #{item.mealsSubsidy}, #{item.secrecySubsidy}, #{item.communicationFee},
-            ${item.jywCommissionRatio}, #{item.commencementRatio}, #{item.completionRatio},
+            #{item.jywCommissionRatio}, #{item.commencementRatio}, #{item.completionRatio},
             #{item.renovateCommissionRatio},
             #{item.identityCardNumber},
             #{item.transportationAllowance},
@@ -114,14 +115,15 @@
             #{item.totalCharge},
             #{item.chargePerMonth},
             #{item.charge},
-            #{item.companyId}
+            #{item.companyId},
+            #{item.department}
             )
         </foreach>
     </insert>
 
     <update id="updateEmployees" parameterType="list">
         <foreach collection="list" item="item" index="index" open="" close="" separator=";">
-            update "employee"
+            update "salary_employee"
             set name = #{item.name},
             position = #{item.position},
             hiredate = #{item.hiredate},
@@ -132,7 +134,7 @@
             meals_subsidy = #{item.mealsSubsidy},
             secrecy_subsidy = #{item.secrecySubsidy},
             communication_fee = #{item.communicationFee},
-            jyw_commission_ratio = ${item.jywCommissionRatio},
+            jyw_commission_ratio = #{item.jywCommissionRatio},
             commencement_ratio = #{item.commencementRatio},
             completion_ratio = #{item.completionRatio},
             renovate_commission_ratio = #{item.renovateCommissionRatio},
@@ -144,18 +146,23 @@
             total_charge = #{item.totalCharge},
             charge_per_month = #{item.chargePerMonth},
             charge = #{item.charge},
-            company_id = #{item.companyId}
+            company_id = #{item.companyId},
+            department = #{item.department}
             where id = #{item.id}
         </foreach>
     </update>
 
 
-    <select id="getEmployee" parameterType="long" resultMap="EmployeeMap">
-        select * from employee where id = #{employeeId}
+    <select id="getEmployeeById" parameterType="long" resultMap="EmployeeMap">
+        select * from salary_employee where id = #{0}
+    </select>
+
+    <select id="getEmployeeByName" parameterType="String" resultMap="EmployeeMap">
+        select * from salary_employee where name = #{0}
     </select>
 
     <update id="updateCharge">
-        update employee set charge = #{charge} where id = #{id}
+        update salary_employee set charge = #{charge} where id = #{id}
     </update>
 
 </mapper>

@@ -23,7 +23,7 @@
 
         <!-- 设置日志格式并配置日志压缩格式(service.log.年份.gz) -->
         <RollingRandomAccessFile name="service_appender"
-                                 immediateFlush="false"
+                                 immediateFlush="true"
                                  fileName="${LOG_HOME}/${LOG_NAME}.log"
                                  filePattern="${LOG_HOME}/${LOG_NAME}.log.%d{yyyy-MM-dd}.log.gz">
             <!--
@@ -47,27 +47,15 @@
         </RollingRandomAccessFile>
 
 
-        <!-- DEBUG日志格式 -->
-        <RollingRandomAccessFile name="service_debug_appender"
-                                 immediateFlush="false"
-                                 fileName="${LOG_HOME}/${LOG_NAME}.debug.log"
-                                 filePattern="${LOG_HOME}/${LOG_NAME}.debug.log.%d{yyyy-MM-dd}.debug.gz">
-            <PatternLayout>
-                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %class{36} %L %M -- %msg%xEx%n</pattern>
-            </PatternLayout>
-            <Policies>
-                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-            </Policies>
-        </RollingRandomAccessFile>
     </Appenders>
 
     <Loggers>
         <!-- 配置日志的根节点 -->
         <root level="trace">
             <appender-ref ref="Console"/>
-            <!--
+
             <appender-ref ref="service_appender" />
-            -->
+
         </root>
 
         <!-- 第三方日志系统 -->
@@ -90,10 +78,6 @@
             <appender-ref ref="service_appender"/>
         </logger>
 
-        <!-- 日志实例(debug) -->
-        <logger name="service_log" level="debug" includeLocation="true" additivity="true">
-            <appender-ref ref="service_debug_appender"/>
-        </logger>
 
     </Loggers>
 
