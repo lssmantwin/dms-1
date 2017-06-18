@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.dms.dao.EmployeeDao;
 import com.dms.domain.Attendance;
 import com.dms.domain.Month;
-import com.dms.domain.Position;
 import com.dms.dto.EmployeeDto;
 import com.dms.request.BaseFilterRequest;
 import com.dms.service.EmployeeService;
@@ -28,11 +27,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public List<Month> getMonths() {
 		return employeeDao.getMonths();
-	}
-
-	@Override
-	public List<Position> getPositions() {
-		return employeeDao.getPositions();
 	}
 
 	@Override

@@ -5,13 +5,13 @@ import java.util.List;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
+import org.springframework.stereotype.Controller;
+
 import com.dms.domain.Attendance;
 import com.dms.domain.Month;
-import com.dms.domain.Position;
 import com.dms.dto.EmployeeDto;
 import com.dms.dto.EnumDto;
 import com.dms.response.DataGridResponse;
-import org.springframework.stereotype.Controller;
 
 @Controller
 @Consumes(MediaType.APPLICATION_JSON)
@@ -30,10 +30,6 @@ public interface EmployeeWebService {
 	@GET
 	@Path("/months")
 	List<Month> getMonths();
-
-	@GET
-	@Path("/positions")
-	List<Position> getPositions();
 
 	@POST
 	@Path("/employees")

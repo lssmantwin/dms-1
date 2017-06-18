@@ -39,10 +39,6 @@
         select * from "month" order by text desc
     </select>
 
-    <select id="getPositions" resultType="Position">
-        select * from "position" order by "value"
-    </select>
-
     <select id="getEmployeeCount" parameterType="BaseFilterRequest" resultType="int">
         select count(id) from "employee"
         <where>

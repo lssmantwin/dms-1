@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.dms.domain.Attendance;
 import com.dms.domain.Month;
-import com.dms.domain.Position;
 import com.dms.dto.EmployeeDto;
 import com.dms.request.BaseFilterRequest;
 
@@ -14,8 +13,6 @@ public interface EmployeeService {
 	List<Attendance> getAttendance();
 
 	List<Month> getMonths();
-
-	List<Position> getPositions();
 
 	int getEmployeeCount(BaseFilterRequest request);
 

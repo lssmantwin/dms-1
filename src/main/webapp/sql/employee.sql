@@ -1,7 +1,7 @@
  create table employee (
  	id bigint primary key identity(1,1),
   name varchar(32) not null,
- 	position varchar(100) not null,
+ 	position varchar(1000),
  	hiredate datetime not null,
  	base_wage decimal(10,2) not null,
  	working_age_subsidy decimal(10,2),
@@ -23,6 +23,6 @@
   charge_per_month decimal(10,2),
   charge decimal(10,2),
   company_id int not null,
-  department varchar(3000)
+  department varchar(1000)
  )
 

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.dms.domain.Attendance;
 import com.dms.domain.Month;
-import com.dms.domain.Position;
 import com.dms.dto.EmployeeDto;
 import com.dms.dto.EnumDto;
 import com.dms.enums.CompanyEnum;
@@ -46,15 +45,6 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 	}
 
 	@Override
-	public List<Position> getPositions() {
-
-		LOGGER.info("get positions");
-
-		return employeeService.getPositions();
-
-	}
-
-	@Override
 	public void saveEmployees(List<EmployeeDto> employeeDtos) {
 
 		LOGGER.info("save employees, {}", employeeDtos);
@@ -72,6 +62,7 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 		if (CollectionUtils.isNotEmpty(addEmployees)) {
 			employeeService.saveEmployees(addEmployees);
 		}
+
 		if (CollectionUtils.isNotEmpty(updateEmployees)) {
 			employeeService.updateEmployees(updateEmployees);
 		}
