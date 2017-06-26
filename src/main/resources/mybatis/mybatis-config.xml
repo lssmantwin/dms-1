@@ -4,7 +4,7 @@
 <configuration>
     <!-- 命名空间 -->
     <typeAliases>
-        <typeAlias type="com.dms.request.DataGridRequest" alias="DataGridRequest"/>
+        <typeAlias type="com.dms.request.DmsRequest" alias="DataGridRequest"/>
         <typeAlias type="com.dms.request.ProjectCommissionFilterRequest" alias="ProjectCommissionFilterRequest"/>
         <typeAlias type="com.dms.request.FinanceFilterRequest" alias="FinanceFilterRequest"/>
         <typeAlias type="com.dms.request.BaseFilterRequest" alias="BaseFilterRequest"/>

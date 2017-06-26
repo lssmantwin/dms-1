@@ -3,6 +3,7 @@ package com.dms.ws;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
+import com.dms.response.DmsResponse;
 import org.springframework.stereotype.Controller;
 
 import com.dms.dto.UserDto;
@@ -19,10 +20,18 @@ public interface UserWebService {
 
 	@POST
 	@Path("/login")
-	boolean login(UserDto userDto);
+	DmsResponse login(UserDto userDto);
 
 	@POST
 	@Path("/register")
-	boolean register(UserDto userDto);
+	DmsResponse register(UserDto userDto);
+
+	@GET
+	@Path("/user")
+	DmsResponse getCurrentUser(@CookieParam("Token") String token);
+
+	@GET
+	@Path("/logout")
+	DmsResponse logout(@CookieParam("Token") String token);
 
 }

@@ -22,7 +22,6 @@
     <context:property-placeholder location="classpath*:database/application.properties"/>
     -->
 
-
     <!-- 配置使Spring采用CGLIB代理 -->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 

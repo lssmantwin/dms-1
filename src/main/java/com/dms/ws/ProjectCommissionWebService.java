@@ -1,11 +1,8 @@
 package com.dms.ws;
 
-import java.util.Base64;
 import java.util.List;
 
-import javax.jws.WebParam;
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -18,7 +15,7 @@ import org.springframework.stereotype.Controller;
 
 import com.dms.dto.EnumDto;
 import com.dms.dto.ProjectCommissionDto;
-import com.dms.response.DataGridResponse;
+import com.dms.response.DmsResponse;
 
 @Controller
 @Consumes(MediaType.APPLICATION_JSON)
@@ -38,39 +35,38 @@ public interface ProjectCommissionWebService {
 
 	@GET
 	@Path("/states")
-	List<EnumDto> getStates(@QueryParam("type") String type);
+	DmsResponse getStates(@QueryParam("type") String type);
 
 	@POST
 	@Path("/projectCommissions")
-	void saveProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos);
+	DmsResponse saveProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos);
 
 	@POST
 	@Path("/calculateFirstCommission")
-	void calculateFirstCommissions(List<ProjectCommissionDto> projectCommissionDtos);
+	DmsResponse calculateFirstCommissions(List<ProjectCommissionDto> projectCommissionDtos);
 
 	@POST
 	@Path("/calculateBalanceCommission")
-	void calculateBalanceCommissions(List<ProjectCommissionDto> projectCommissionDtos);
+	DmsResponse calculateBalanceCommissions(List<ProjectCommissionDto> projectCommissionDtos);
 
 	@POST
 	@Path("/importDesignAssistant")
-	void updateDesignAssistant(@QueryParam("designAssistant") String designAssistant);
+	DmsResponse updateDesignAssistant(@QueryParam("designAssistant") String designAssistant);
 
 	@GET
 	@Path("/projectCommissions")
-	DataGridResponse<List<ProjectCommissionDto>> getProjectCommissions(@QueryParam("designer") String designer,
-			@QueryParam("designerAssistant") String designerAssistant, @QueryParam("contractState") String contractState,
-			@QueryParam("commissionState") String commissionState, @QueryParam("acNumber") String acNumber, @QueryParam("contractId") String contractId,
-			@QueryParam("payContractRatio") String payContractRatio, @QueryParam("payProjectRatio") String payProjectRatio,
-			@QueryParam("actualStartTime") String actualStartTime, @QueryParam("actualEndTime") String actualEndTime,
-			@QueryParam("contractDate") String contractDate, @QueryParam("firstCommissionDate") String firstCommissionDate,
-			@QueryParam("balanceTime") String balanceTime, @QueryParam("balanceCommissionDate") String balanceCommissionDate,
-			@QueryParam("pageIndex") int pageIndex, @QueryParam("pageSize") int pageSize, @QueryParam("sortField") String sortField,
-			@QueryParam("sortOrder") String sortOrder);
+	DmsResponse getProjectCommissions(@QueryParam("designer") String designer, @QueryParam("designerAssistant") String designerAssistant,
+			@QueryParam("contractState") String contractState, @QueryParam("commissionState") String commissionState, @QueryParam("acNumber") String acNumber,
+			@QueryParam("contractId") String contractId, @QueryParam("payContractRatio") String payContractRatio,
+			@QueryParam("payProjectRatio") String payProjectRatio, @QueryParam("actualStartTime") String actualStartTime,
+			@QueryParam("actualEndTime") String actualEndTime, @QueryParam("contractDate") String contractDate,
+			@QueryParam("firstCommissionDate") String firstCommissionDate, @QueryParam("balanceTime") String balanceTime,
+			@QueryParam("balanceCommissionDate") String balanceCommissionDate, @QueryParam("pageIndex") int pageIndex, @QueryParam("pageSize") int pageSize,
+			@QueryParam("sortField") String sortField, @QueryParam("sortOrder") String sortOrder);
 
 	@POST
 	@Path("/upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.MULTIPART_FORM_DATA)
-	void upload(@Context HttpServletRequest request) throws FileUploadException, IOException;
+	DmsResponse upload(@Context HttpServletRequest request) throws FileUploadException, IOException;
 }

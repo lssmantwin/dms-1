@@ -2,7 +2,10 @@ package com.dms.ws.impl;
 
 import java.util.List;
 
+import com.dms.aspect.CheckAuthority;
+import com.dms.enums.ResponseEnum;
 import com.dms.request.BaseFilterRequest;
+import com.dms.response.DmsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +20,14 @@ public class ChargeWebServiceImpl implements ChargeWebService {
 	private ChargeService chargeService;
 
 	@Override
-	public List<ChargeDetailDto> getChargeDetails(String employeeName) {
+	@CheckAuthority
+	public DmsResponse getChargeDetails(String employeeName) {
+		DmsResponse response = new DmsResponse();
 		BaseFilterRequest request = new BaseFilterRequest();
 		request.setEmployeeName(employeeName);
-		return chargeService.getChargeDetails(request);
+		List<ChargeDetailDto> detailDtos = chargeService.getChargeDetails(request);
+		response.setCode(ResponseEnum.SUCCESS);
+		response.setData(detailDtos);
+		return response;
 	}
 }

@@ -3,6 +3,8 @@ package com.dms.ws.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.dms.aspect.CheckAuthority;
+import com.dms.enums.ResponseEnum;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -16,7 +18,7 @@ import com.dms.dto.EmployeeDto;
 import com.dms.dto.EnumDto;
 import com.dms.enums.CompanyEnum;
 import com.dms.request.BaseFilterRequest;
-import com.dms.response.DataGridResponse;
+import com.dms.response.DmsResponse;
 import com.dms.service.EmployeeService;
 import com.dms.ws.EmployeeWebService;
 import com.google.common.collect.Lists;
@@ -30,22 +32,38 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 	private EmployeeService employeeService;
 
 	@Override
-	public List<Attendance> getAttendance() {
-		return employeeService.getAttendance();
+	@CheckAuthority
+	public DmsResponse<List<Attendance>> getAttendance() {
+		DmsResponse<List<Attendance>> response = new DmsResponse<>();
+		response.setData(employeeService.getAttendance());
+		response.setTotal(100);
+		return response;
 	}
 
 	@Override
-	public List<EnumDto> getCompanies() {
-		return Lists.newArrayList(CompanyEnum.values()).stream().map(e -> new EnumDto(e.getDbConstant(), e.getText())).collect(Collectors.toList());
+	@CheckAuthority
+	public DmsResponse<List<EnumDto>> getCompanies() {
+		List<EnumDto> companies = Lists.newArrayList(CompanyEnum.values()).stream().map(e -> new EnumDto(e.getDbConstant(), e.getText()))
+				.collect(Collectors.toList());
+		DmsResponse<List<EnumDto>> response = new DmsResponse<>();
+		response.setCode(ResponseEnum.SUCCESS);
+		response.setData(companies);
+		return response;
 	}
 
 	@Override
-	public List<Month> getMonths() {
-		return employeeService.getMonths();
+	@CheckAuthority
+	public DmsResponse<List<Month>> getMonths() {
+		List<Month> months = employeeService.getMonths();
+		DmsResponse<List<Month>> response = new DmsResponse<>();
+		response.setCode(ResponseEnum.SUCCESS);
+		response.setData(months);
+		return response;
 	}
 
 	@Override
-	public void saveEmployees(List<EmployeeDto> employeeDtos) {
+	@CheckAuthority
+	public DmsResponse saveEmployees(List<EmployeeDto> employeeDtos) {
 
 		LOGGER.info("save employees, {}", employeeDtos);
 
@@ -66,10 +84,15 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 		if (CollectionUtils.isNotEmpty(updateEmployees)) {
 			employeeService.updateEmployees(updateEmployees);
 		}
+
+		DmsResponse response = new DmsResponse();
+		response.setCode(ResponseEnum.SUCCESS);
+		return response;
 	}
 
 	@Override
-	public DataGridResponse<List<EmployeeDto>> getEmployees(String employeeName, int pageIndex, int pageSize, String sortField, String sortOrder) {
+	@CheckAuthority
+	public DmsResponse<List<EmployeeDto>> getEmployees(String employeeName, int pageIndex, int pageSize, String sortField, String sortOrder) {
 
 		LOGGER.info("get employees, employeeName {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}", employeeName, pageIndex, pageSize, sortField,
 				sortOrder);
@@ -79,10 +102,10 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 		int count = employeeService.getEmployeeCount(request);
 		List<EmployeeDto> employees = employeeService.getEmployees(request);
 
-		DataGridResponse<List<EmployeeDto>> response = new DataGridResponse<>();
+		DmsResponse<List<EmployeeDto>> response = new DmsResponse<>();
+		response.setCode(ResponseEnum.SUCCESS);
 		response.setTotal(count);
 		response.setData(employees);
-		response.setRows(employees);
 
 		return response;
 	}

@@ -5,14 +5,14 @@ import java.util.List;
 
 import com.dms.dto.DesignAssistantDto;
 import com.dms.dto.ProjectCommissionDto;
-import com.dms.request.DataGridRequest;
+import com.dms.request.DmsRequest;
 import com.dms.request.ProjectCommissionFilterRequest;
 
 public interface ProjectCommissionDao {
 
-	List<ProjectCommissionDto> getProjectCommissions(DataGridRequest request);
+	List<ProjectCommissionDto> getProjectCommissions(DmsRequest request);
 
-	int getProjectCommissionCount(DataGridRequest request);
+	int getProjectCommissionCount(DmsRequest request);
 
 	ProjectCommissionDto getProjectCommission(String acNumber);
 

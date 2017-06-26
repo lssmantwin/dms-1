@@ -15,6 +15,11 @@
         <param-name>resteasy.servlet.mapping.prefix</param-name>
         <param-value>/ws</param-value>
     </context-param>
+    <context-param>
+        <param-name>resteasy.providers</param-name>
+        <param-value>com.dms.interceptor.UserInterceptor,com.dms.provider.ExceptionHandler</param-value>
+    </context-param>
+
 
     <!-- 编码过滤器 -->
     <filter>

@@ -2,11 +2,21 @@ package com.dms.response;
 
 import java.io.Serializable;
 
-public class DataGridResponse<T> implements Serializable {
+import com.dms.enums.ResponseEnum;
 
+public class DmsResponse<T> implements Serializable {
+
+	private ResponseEnum code;
 	private int total;
-	private T data; // for miniui
-	private T rows; // for easyui
+	private T data;
+
+	public ResponseEnum getCode() {
+		return code;
+	}
+
+	public void setCode(ResponseEnum code) {
+		this.code = code;
+	}
 
 	public int getTotal() {
 		return total;
@@ -24,11 +34,4 @@ public class DataGridResponse<T> implements Serializable {
 		this.data = data;
 	}
 
-	public T getRows() {
-		return rows;
-	}
-
-	public void setRows(T rows) {
-		this.rows = rows;
-	}
 }

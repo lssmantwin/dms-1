@@ -2,7 +2,7 @@ package com.dms.request;
 
 import java.io.Serializable;
 
-public class DataGridRequest implements Serializable {
+public class DmsRequest implements Serializable {
 
 	private int start;
 	private int end;

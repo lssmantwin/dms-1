@@ -6,13 +6,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import com.dms.dto.ProjectCommissionDto;
+import com.dms.aspect.CheckAuthority;
+import com.dms.enums.ResponseEnum;
 import com.dms.export.FinanceExportXls;
-import com.dms.export.ProjectCommissionExportXls;
-import com.dms.request.ProjectCommissionFilterRequest;
 import com.dms.utils.DateUtils;
 import com.dms.utils.FileFactory;
-import org.joda.time.Instant;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +22,7 @@ import com.dms.dto.EmployeeDto;
 import com.dms.dto.FinanceDto;
 import com.dms.request.FinanceFilterRequest;
 import com.dms.request.FinanceRequest;
-import com.dms.response.DataGridResponse;
+import com.dms.response.DmsResponse;
 import com.dms.service.ChargeService;
 import com.dms.service.EmployeeService;
 import com.dms.service.FinanceService;
@@ -46,24 +44,22 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 	private ChargeService chargeService;
 
 	@Override
-	public DataGridResponse<List<FinanceDto>> getFinances(String employeeName, int pageIndex, int pageSize, String sortField, String sortOrder, String month) {
-
+	@CheckAuthority
+	public DmsResponse<List<FinanceDto>> getFinances(String employeeName, int pageIndex, int pageSize, String sortField, String sortOrder, String month) {
 		LOGGER.info("get finances, employeeName {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}", employeeName, pageIndex, pageSize, sortField,
 				sortOrder);
-
 		FinanceFilterRequest request = generateFilterRequest(employeeName, pageIndex, pageSize, sortField, sortOrder, month);
-
 		int count = employeeService.getEmployeeCount(request);
 		List<FinanceDto> finances = financeService.getFinances(request);
-
-		DataGridResponse<List<FinanceDto>> response = new DataGridResponse<>();
+		DmsResponse<List<FinanceDto>> response = new DmsResponse<>();
+		response.setCode(ResponseEnum.SUCCESS);
 		response.setTotal(count);
 		response.setData(finances);
-
 		return response;
 	}
 
 	@Override
+	@CheckAuthority
 	public void saveFinances(FinanceRequest request) {
 
 		LOGGER.info("save finances, {}", request);

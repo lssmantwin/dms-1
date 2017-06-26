@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
+import com.dms.response.DmsResponse;
 import org.springframework.stereotype.Controller;
 
 import com.dms.dto.ChargeDetailDto;
@@ -17,6 +18,6 @@ public interface ChargeWebService {
 
 	@GET
 	@Path("/charges")
-	List<ChargeDetailDto> getChargeDetails(@QueryParam("employeeName") String employeeName);
+	DmsResponse getChargeDetails(@QueryParam("employeeName") String employeeName);
 
 }

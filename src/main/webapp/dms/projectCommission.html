@@ -356,6 +356,17 @@
         }
     }
 
+    $(document).ajaxComplete(function (event, jqXHR, options) {
+        var str = jqXHR.responseText;
+        var json = JSON.parse(str);
+        var code = json.code;
+        if (code != 1000) {
+            setTimeout(function () {
+                top.location.href = "../dms/login.html";
+            }, 1500);
+        }
+    })
+
 </script>
 </body>
 </html>

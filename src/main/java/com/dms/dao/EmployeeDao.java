@@ -9,7 +9,7 @@ import com.dms.domain.Attendance;
 import com.dms.domain.Month;
 import com.dms.dto.EmployeeDto;
 import com.dms.request.BaseFilterRequest;
-import com.dms.request.DataGridRequest;
+import com.dms.request.DmsRequest;
 
 public interface EmployeeDao {
 
@@ -19,7 +19,7 @@ public interface EmployeeDao {
 
 	EmployeeDto getEmployee(String name);
 
-	List<EmployeeDto> getEmployees(DataGridRequest request);
+	List<EmployeeDto> getEmployees(DmsRequest request);
 
 	int getEmployeeCount(BaseFilterRequest request);
 
