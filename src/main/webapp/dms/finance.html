@@ -118,14 +118,12 @@
     mini.parse();
     var grid = mini.get("datagrid1");
     var now = now();
-    // alert(now)
     grid.load({month: now});
 
     mini.get('combo1').setValue(now);
 
     function onMonthChange() {
         var value = mini.get('combo1').getValue();
-        // alert(value);
         grid.load({month: value});
     }
 
@@ -238,7 +236,7 @@
         if (code != 1000) {
             setTimeout(function () {
                 top.location.href = "../dms/login.html";
-            }, 1500);
+            }, 1000);
         }
     })
 
