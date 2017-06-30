@@ -33,16 +33,16 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 
 	@Override
 	@CheckAuthority
-	public DmsResponse<List<Attendance>> getAttendance() {
+	public DmsResponse getAttendance() {
 		DmsResponse<List<Attendance>> response = new DmsResponse<>();
+		response.setCode(ResponseEnum.SUCCESS);
 		response.setData(employeeService.getAttendance());
-		response.setTotal(100);
 		return response;
 	}
 
 	@Override
 	@CheckAuthority
-	public DmsResponse<List<EnumDto>> getCompanies() {
+	public DmsResponse getCompanies() {
 		List<EnumDto> companies = Lists.newArrayList(CompanyEnum.values()).stream().map(e -> new EnumDto(e.getDbConstant(), e.getText()))
 				.collect(Collectors.toList());
 		DmsResponse<List<EnumDto>> response = new DmsResponse<>();
@@ -53,7 +53,7 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 
 	@Override
 	@CheckAuthority
-	public DmsResponse<List<Month>> getMonths() {
+	public DmsResponse getMonths() {
 		List<Month> months = employeeService.getMonths();
 		DmsResponse<List<Month>> response = new DmsResponse<>();
 		response.setCode(ResponseEnum.SUCCESS);

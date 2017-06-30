@@ -45,7 +45,7 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 
 	@Override
 	@CheckAuthority
-	public DmsResponse<List<FinanceDto>> getFinances(String employeeName, int pageIndex, int pageSize, String sortField, String sortOrder, String month) {
+	public DmsResponse getFinances(String employeeName, int pageIndex, int pageSize, String sortField, String sortOrder, String month) {
 		LOGGER.info("get finances, employeeName {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}", employeeName, pageIndex, pageSize, sortField,
 				sortOrder);
 		FinanceFilterRequest request = generateFilterRequest(employeeName, pageIndex, pageSize, sortField, sortOrder, month);
@@ -60,7 +60,7 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 
 	@Override
 	@CheckAuthority
-	public void saveFinances(FinanceRequest request) {
+	public DmsResponse saveFinances(FinanceRequest request) {
 
 		LOGGER.info("save finances, {}", request);
 
@@ -97,6 +97,9 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 				financeService.updateFinance(financeDto);
 			}
 		}
+		DmsResponse<List<FinanceDto>> response = new DmsResponse<>();
+		response.setCode(ResponseEnum.SUCCESS);
+		return response;
 	}
 
 	private BigDecimal calculateGrossPay(FinanceDto financeDto) {

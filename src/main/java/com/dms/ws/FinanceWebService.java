@@ -1,14 +1,13 @@
 package com.dms.ws;
 
-import com.dms.dto.FinanceDto;
-import com.dms.request.FinanceRequest;
-import com.dms.response.DmsResponse;
-import org.springframework.stereotype.Controller;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
+
+import org.springframework.stereotype.Controller;
+
+import com.dms.request.FinanceRequest;
+import com.dms.response.DmsResponse;
 
 @Controller
 @Consumes(MediaType.APPLICATION_JSON)
@@ -23,7 +22,7 @@ public interface FinanceWebService {
 
 	@POST
 	@Path("/finances")
-	void saveFinances(FinanceRequest request);
+	DmsResponse saveFinances(FinanceRequest request);
 
 	@GET
 	@Path("/export")
