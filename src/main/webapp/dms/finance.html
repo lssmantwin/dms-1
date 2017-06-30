@@ -178,7 +178,8 @@
 
     function onFilterChanged() {
         var employeeName = mini.get("nameFilter").getValue();
-        grid.load({employeeName: employeeName});
+        var month = mini.get('combo1').getValue();
+        grid.load({employeeName: employeeName, month: month});
     }
 
     function onDrawSummaryCell(e) {

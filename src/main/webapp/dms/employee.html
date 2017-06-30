@@ -58,11 +58,8 @@
             <div field="hiredate" width="80" headerAlign="center" dateFormat="yyyy-MM-dd" allowSort="false">入职日期
                 <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="80"/>
             </div>
-            <div field="position" width="60" type="comboboxcolumn" headerAlign="center" allowSort="false">职位
-                <input property="editor" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
-                       url="../ws/employee/v1/positions"
-                       ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
-                       required="true" allowInput="true" showNullItem="false"/>
+            <div field="position" width="60" type="mini-textbox" headerAlign="center" allowSort="false">职位
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
             <div field="baseWage" width="100" allowSort="false" headerAlign="center" vtype="float"> 基本工资
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
@@ -188,4 +185,4 @@
 
 </body>
 </html>                   
->>>>>>> upstream/master
+

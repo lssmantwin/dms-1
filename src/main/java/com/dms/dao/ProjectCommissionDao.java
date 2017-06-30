@@ -32,5 +32,7 @@ public interface ProjectCommissionDao {
 
 	void updateProjectCommission(ProjectCommissionDto projectCommission);
 
+	void updateProject(ProjectCommissionDto projectCommission);
+
 	void updateDesignAssistant(DesignAssistantDto designAssistantDto);
 }

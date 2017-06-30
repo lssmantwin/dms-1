@@ -9,6 +9,8 @@ public interface FinanceDao {
 
 	List<FinanceDto> getFinances(FinanceFilterRequest request);
 
+	List<FinanceDto> getFinance(FinanceDto financeDto);
+
 	void saveFinance(FinanceDto financeDto);
 
 	void updateFinance(FinanceDto financeDto);

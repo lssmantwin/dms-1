@@ -4,7 +4,7 @@ CREATE TABLE salary_project_commission (
   designer                           NVARCHAR(50),
   ac_number                          VARCHAR(6),
   contract_id                        VARCHAR(20),
-  customer_name                      VARCHAR(20),
+  customer_name                      VARCHAR(100),
   contract_total                     DECIMAL(10, 2),
   purchase_agent_fee                 DECIMAL(10, 2),
   project_change_total               DECIMAL(10, 2),
@@ -23,8 +23,8 @@ CREATE TABLE salary_project_commission (
   first_commission_date              DATETIME,
   balance_commission                 DECIMAL(10, 2),
   balance_commission_date            DATETIME,
-  design_commission_rate             DECIMAL(4, 2),
-  designer_assistant_commission_rate DECIMAL(4, 2),
+  design_commission_rate             DECIMAL(10, 4),
+  designer_assistant_commission_rate DECIMAL(10, 4),
   commission_base                    DECIMAL(10, 2),
   designer_assistant_commission      DECIMAL(10, 2)
 

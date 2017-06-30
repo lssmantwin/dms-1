@@ -95,7 +95,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
                 if (!StringUtils.isEmpty(commission.getDesignerAssistant())) {
                     EmployeeDto employee = employeeDao.getEmployeeByName(commission.getDesignerAssistant().trim());
                     if (!StringUtils.isEmpty(employee.getId())) {
-                        updateCommission(Long.valueOf(employee.getId()), commission.getDesignerAssistantCommission(), commission.getBalanceCommissionDate());
+                        updateCommission(Long.valueOf(employee.getId()), commission.getDesignerAssistantCommission(), commission.getFirstCommissionDate());
                     }
                 }
                 projectCommissionDao.updateProjectCommission(commission);
@@ -105,16 +105,27 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
     }
 
     private void updateCommission(Long employeeId, BigDecimal commission, LocalDateTime commissionDate) {
+
+
         FinanceDto financeDto = new FinanceDto();
         financeDto.setEmployeeId(Long.valueOf(employeeId));
-        financeDto.setBonusCard(commission);
         String monthOfYear = String.valueOf(commissionDate.getMonthOfYear());
         if (!StringUtils.isEmpty(monthOfYear) && monthOfYear.length() == 1) {
             monthOfYear = "0".concat(monthOfYear);
         }
         String month = String.valueOf(commissionDate.getYear()).concat(monthOfYear);
         financeDto.setMonth(month);
-        financeDao.updateFinanceCommission(financeDto);
+
+        List<FinanceDto> existFinanceDtos =  financeDao.getFinance(financeDto);
+
+        if (existFinanceDtos != null && existFinanceDtos.size() > 0) {
+            FinanceDto  existFinanceDto =  existFinanceDtos.get(0);
+            existFinanceDto.setBonusCard(commission);
+            financeDao.updateCommission(existFinanceDto);
+        } else {
+            financeDto.setBonusCard(commission);
+            financeDao.saveFinance(financeDto);
+        }
     }
 
     @Override
@@ -182,7 +193,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
                     if (employee != null) {
                         //翻新
                         if (project.getContractId().startsWith(DmsConstants.FX_PROJECT)) {
-                            project.setDesignCommissionRate(employee.getRenovateCommossionRatio());
+                            project.setDesignCommissionRate(employee.getRenovateCommissionRatio());
                             project.setFirstCommissionRate(employee.getCommencementRatio());
                             //佳园屋
                         } else if (project.getContractId().startsWith(DmsConstants.JYW_PROJECT)) {
@@ -212,7 +223,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
                 extProjectCommissionDto.setPayContractRatio(project.getPayContractRatio());
                 extProjectCommissionDto.setPayProjectRatio(project.getPayProjectRatio());
                 extProjectCommissionDto.setProjectChangeTotal(project.getProjectChangeTotal());
-                projectCommissionDao.updateProjectCommission(extProjectCommissionDto);
+                projectCommissionDao.updateProject(extProjectCommissionDto);
             }
         }
         LOGGER.info("======= sychronzieProejcts End");

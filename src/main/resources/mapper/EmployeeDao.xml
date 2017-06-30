@@ -153,7 +153,7 @@
     </update>
 
 
-    <select id="getEmployeeById" parameterType="long" resultMap="EmployeeMap">
+    <select id="getEmployee" parameterType="long" resultMap="EmployeeMap">
         select * from salary_employee where id = #{0}
     </select>
 

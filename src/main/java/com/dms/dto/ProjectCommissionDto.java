@@ -77,10 +77,13 @@ public class ProjectCommissionDto implements Serializable {
 	}
 
 	public BigDecimal getCommissionBase() {
-		if (getPurchasingCost() == null) {
-			setPurchasingCost(BigDecimal.ZERO);
+		if (commissionBase == null || commissionBase == BigDecimal.ZERO) {
+			if (getPurchasingCost() == null) {
+				setPurchasingCost(BigDecimal.ZERO);
+			}
+			this.commissionBase = (getContractTotal().subtract(getPurchasingCost()));
 		}
-		this.commissionBase = (getContractTotal().subtract(getPurchasingCost()));
+
 		return commissionBase;
 	}
 

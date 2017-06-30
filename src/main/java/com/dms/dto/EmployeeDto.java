@@ -156,11 +156,11 @@ public class EmployeeDto implements Serializable {
 		this.completionRatio = completionRatio;
 	}
 
-	public BigDecimal getRenovateCommossionRatio() {
+	public BigDecimal getRenovateCommissionRatio() {
 		return renovateCommissionRatio;
 	}
 
-	public void setRenovateCommossionRatio(BigDecimal renovateCommissionRatio) {
+	public void setRenovateCommissionRatio(BigDecimal renovateCommissionRatio) {
 		this.renovateCommissionRatio = renovateCommissionRatio;
 	}
 

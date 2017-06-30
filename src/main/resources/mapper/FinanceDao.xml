@@ -72,7 +72,7 @@
         </where>
     </select>
 
-    <insert id="saveFinance" parameterType="FinanceDto">
+    <insert id="saveFinance" parameterType="FinanceDto" >
         insert into "salary_finance" (created_on, employee_id, month, attendance, bonus_card, bonus_cash, performance_appraisal_card, performance_appraisal_cash,
          other_subsidy, exhibition_charge, charge, charge_comments, casual_leave, sick_leave, storage_charge,
          gross_pay, medical_insurance, housing_fund, before_tax_salary, personal_income_tax, after_tax_salary, already_charge)
@@ -104,22 +104,22 @@
          where id = #{id}
     </update>
 
-    <select id="getFinance" parameterType="FinanceDto">
-        select f.id
-          from salary_finance f
+    <select id="getFinance" parameterType="FinanceDto" resultMap="FinanceMap">
+        select *   from salary_finance
         <where>
+             1 = 1
             <if test="employeeId != null and employeeId != ''">
-                f.employee_id = #{employeeId}
+                and employee_id = #{employeeId}
             </if>
 
             <if test="month != null and month != ''">
-                f.month like #{month}
+                and month = #{month}
             </if>
         </where>
 
     </select>
 
-    <update id="updateFinanceCommission" parameterType="FinanceDto">
+    <update id="updateCommission" parameterType="FinanceDto">
         update salary_finance
            set bonus_card = bonus_card + #{bonusCard}
         <where>

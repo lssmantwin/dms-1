@@ -70,13 +70,11 @@
                 and commission_state = #{commissionState, typeHandler=com.dms.handler.CommissionStateEnumHandler}
             </if>
             <if test="contractId != null and contractId != ''">
-                and contract_id = #{contractId}
+                <bind name="contractIdPattern" value="'%' + contractId + '%'"/>
+                and contract_id like #{contractIdPattern}
             </if>
-            <if test="payContractRatio != null and payContractRatio != ''">
-                and pay_contract_ratio >= #{payContractRatio}
-            </if>
-            <if test="payProjectRatio != null and payProjectRatio != ''">
-                and pay_project_ratio >= #{payProjectRatio}
+            <if test="payContractRatio != null and payContractRatio != '' and payProjectRatio != null and payProjectRatio != ''">
+                and (pay_contract_ratio >= #{payContractRatio} or  pay_project_ratio >= #{payProjectRatio})
             </if>
 
             <if test="contractDate != null and contractDate != ''">
@@ -137,11 +135,8 @@
                 <bind name="contractIdPattern" value="'%' + contractId + '%'"/>
                 and contract_id like #{contractIdPattern}
             </if>
-            <if test="payContractRatio != null and payContractRatio != ''">
-                and pay_contract_ratio >= #{payContractRatio}
-            </if>
-            <if test="payProjectRatio != null and payProjectRatio != ''">
-                and pay_project_ratio >= #{payProjectRatio}
+            <if test="payContractRatio != null and payContractRatio != '' and payProjectRatio != null and payProjectRatio != ''">
+                and (pay_contract_ratio >= #{payContractRatio} or  pay_project_ratio >= #{payProjectRatio})
             </if>
             <if test="branch != null and branch != ''">
                 and branch = #{branch}
@@ -317,16 +312,6 @@
     <update id="updateProjectCommission" parameterType="ProjectCommissionDto">
         update "salary_project_commission"
         set
-        contract_total = #{contractTotal},
-        purchase_agent_fee = #{purchaseAgentFee},
-        project_change_total = #{projectChangeTotal},
-        customer_pay = #{customerPay},
-        pay_contract_ratio = #{payContractRatio},
-        pay_project_ratio = #{payProjectRatio},
-        contract_state = #{contractState},
-        actual_start_time = #{actualStartTime},
-        actual_end_time = #{actualEndTime},
-        balance_time = #{balanceTime},
         first_commission = #{firstCommission},
         first_commission_date = #{firstCommissionDate},
         balance_commission = #{balanceCommission},
@@ -365,7 +350,7 @@
             commission_state = #{item.commissionState, typeHandler=com.dms.handler.CommissionStateEnumHandler},
             designer_assistant = #{item.designerAssistant},
             design_commission_rate = #{item.designCommissionRate},
-            designer_assistant_commission = #{designerAssistantCommission},
+            designer_assistant_commission = #{item.designerAssistantCommission},
             designer_assistant_commission_date = #{item.designerAssistantCommissionDate},
             designer_assistant_commission_rate = #{item.designerAssistantCommissionRate}
             where ac_number = #{item.acNumber}
@@ -375,17 +360,17 @@
     <update id="updateProject" parameterType="ProjectCommissionDto">
         update "salary_project_commission"
         set
-        purchasing_cost = #{purchasingCost},
-        commission_base = #{commissionBase},
-        design_commission_rate = #{designCommissionRate},
-        first_commission_rate = #{firstCommissionRate},
-        first_commission = #{firstCommission},
-        first_commission_date = #{firstCommissionDate},
-        balance_commission_rate = #{balanceCommissionRate},
-        balance_commission = #{balanceCommission},
-        balance_commission_date = #{balanceCommissionDate},
-        design_commission = #{designCommission},
-        updated_date =  #{updatedDate}
+        contract_total = #{contractTotal},
+        purchase_agent_fee = #{purchaseAgentFee},
+        project_change_total = #{projectChangeTotal},
+        customer_pay = #{customerPay},
+        pay_contract_ratio = #{payContractRatio},
+        pay_project_ratio = #{payProjectRatio},
+        contract_state = #{contractState},
+        actual_start_time = #{actualStartTime},
+        actual_end_time = #{actualEndTime},
+        balance_time = #{balanceTime},
+        updated_time =  #{updatedTime}
         where ac_number = #{acNumber}
     </update>
 

@@ -97,7 +97,7 @@
                     <div field="contractTotal" width="100" numberFormat="¥#,0.00" headerAlign="center"
                          allowSort="false">合同价
                     </div>
-                    <div field="purchaseAgentContractFee" width="80" numberFormat="¥#,0.00" headerAlign="center"
+                    <div field="purchaseAgentFee" width="80" numberFormat="¥#,0.00" headerAlign="center"
                          allowSort="false">代采金额
                         <input property="editor" vtype="float" class="mini-textbox" style="width:100%;" minWidth="80"/>
                     </div>
@@ -105,9 +105,6 @@
                         <input property="editor" vtype="float" class="mini-textbox" style="width:100%;" minWidth="80"/></div>
                     <div field="commissionBase" width="80" headerAlign="center" numberFormat="¥#,0.00" allowSort="false">折算后合同价
 
-                    </div>
-                    <div field="commissionBase" width="80" headerAlign="center" numberFormat="¥#,0.00"
-                         allowSort="false">折算后合同价
                     </div>
                     <div field="designCommissionRate" width="60" numberFormat="00.00%" headerAlign="center"
                          allowSort="false">
@@ -230,19 +227,19 @@
 
      function saveData() {
 
-        grid.validate();
-        if (grid.isValid() == false) {
-            alert("请校验输入单元格内容");
-            var error = grid.getCellErrors()[0];
-            grid.beginEditCell(error.record, error.column);
-            return;
-        }
+        <!--grid.validate();-->
+        <!--if (grid.isValid() == false) {-->
+            <!--alert("请校验输入单元格内容");-->
+            <!--var error = grid.getCellErrors()[0];-->
+            <!--grid.beginEditCell(error.record, error.column);-->
+            <!--return;-->
+        <!--}-->
 
         var data = grid.getChanges();
         var json = mini.encode(data);
         grid.loading("保存中，请稍后......");
         $.ajax({
-            url: 'http://localhost:8081/ws/commission/v1/projectCommissions',
+            url: '../ws/commission/v1/projectCommissions',
             data: json,
             type: 'post',
             dataType: 'json',
@@ -268,10 +265,10 @@
             contentType: 'application/json;charset=utf-8',
             success: function (text) {
                 grid.reload();
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                alert(jqXHR.responseText);
             }
+            <!--error: function (jqXHR, textStatus, errorThrown) {-->
+                <!--alert(jqXHR.responseText);-->
+            <!--}-->
         });
     }
 
@@ -297,6 +294,7 @@
      function onFilterChanged() {
         var branch = mini.get("branchFilter").getValue();
         var designer = mini.get("designerFilter").getValue();
+        var contractId = mini.get("contractFilter").getValue();
         var commissionState = mini.get("commissionStateFilter").getValue();
         var acNumber = mini.get("acNumberFilter").getValue();
         var payContractRatio = mini.get("payContractFilter").getValue();
@@ -310,6 +308,7 @@
             designer: designer,
             designerAssistant: designerAssistant,
             commissionState: commissionState,
+            contractId:contractId,
             acNumber: acNumber,
             payContractRatio: payContractRatio,
             payProjectRatio: payProjectRatio,
