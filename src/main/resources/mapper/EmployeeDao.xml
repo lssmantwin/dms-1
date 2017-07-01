@@ -32,15 +32,15 @@
     </resultMap>
 
     <select id="getAttendance" resultType="Attendance">
-        select * from attendance order by "value"
+        select * from salary_attendance order by "value"
     </select>
 
     <select id="getMonths" resultType="Month">
-        select * from "month" order by text desc
+        select * from "salary_month" order by text desc
     </select>
 
     <select id="getEmployeeCount" parameterType="BaseFilterRequest" resultType="int">
-        select count(id) from "employee"
+        select count(id) from "salary_employee"
         <where>
             <if test="employeeName != null and employeeName != ''">
                 <bind name="pattern" value="'%' + employeeName + '%'"/>
@@ -52,7 +52,7 @@
     <select id="getEmployees" parameterType="BaseFilterRequest" resultMap="EmployeeMap">
         select * from
         (
-        select *, row_number() over (order by id) rn from "employee"
+        select *, row_number() over (order by id) rn from "salary_employee"
         <where>
             <if test="employeeName != null and employeeName != ''">
                 <bind name="pattern" value="'%' + employeeName + '%'"/>
@@ -90,7 +90,7 @@
     </select>
 
     <insert id="saveEmployees" parameterType="list">
-        insert into "employee" (name, "position", hiredate, base_wage, bank_card_number,
+        insert into "salary_employee" (name, "position", hiredate, base_wage, bank_card_number,
         working_age_subsidy, overtime,
         meals_subsidy, secrecy_subsidy, communication_fee,
         jyw_commission_ratio, commencement_ratio, completion_ratio,
@@ -119,7 +119,7 @@
 
     <update id="updateEmployees" parameterType="list">
         <foreach collection="list" item="item" index="index" open="" close="" separator=";">
-            update "employee"
+            update "salary_employee"
             set name = #{item.name},
             position = #{item.position},
             hiredate = #{item.hiredate},
@@ -150,11 +150,15 @@
 
 
     <select id="getEmployee" parameterType="long" resultMap="EmployeeMap">
-        select * from employee where id = #{employeeId}
+        select * from salary_employee where id = #{0}
+    </select>
+
+    <select id="getEmployeeByName" parameterType="String" resultMap="EmployeeMap">
+        select * from salary_employee where name = #{0}
     </select>
 
     <update id="updateCharge">
-        update employee set charge = #{charge} where id = #{id}
+        update salary_employee set charge = #{charge} where id = #{id}
     </update>
 
 </mapper>

@@ -53,6 +53,9 @@
                 <input property="editor" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
                        url="../ws/employee/v1/attendance" required="true" allowInput="true"/>
             </div>
+            <div field="contractWages" width="100" headerAlign="center" allowSort="true" vtype="fl>合同工资
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
+            </div>
             <div field="bonusCard" width="100" headerAlign="center" allowSort="true" vtype="float">提成（卡）
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
@@ -74,6 +77,9 @@
             <div field="chargeComments" width="100" headerAlign="center" allowSort="true">扣款说明
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
+            <div field="otherCharge" width="100" headerAlign="center" allowSort="true" vtype="float">其他扣款
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            </div>
             <div field="exhibitionCharge" width="100" headerAlign="center" allowSort="true" vtype="float">会展扣款
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
@@ -83,7 +89,7 @@
             <div field="sickLeave" width="100" headerAlign="center" allowSort="true" vtype="float">病假
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
-            <div field="charge" width="100" headerAlign="center" allowSort="true" vtype="float">保管
+            <div field="storageCharge" width="100" headerAlign="center" allowSort="true" vtype="float">保管
             </div>
             <div field="grossPay" width="100" headerAlign="center" allowSort="true">应发工资（卡）
             </div>
@@ -176,7 +182,8 @@
 
     function onFilterChanged() {
         var employeeName = mini.get("nameFilter").getValue();
-        grid.load({employeeName: employeeName});
+        var month = mini.get('combo1').getValue();
+        grid.load({employeeName: employeeName, month: month});
     }
 
     function onDrawSummaryCell(e) {

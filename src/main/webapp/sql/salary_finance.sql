@@ -1,8 +1,8 @@
-create table finance (
+create table salary_finance (
   id bigint primary key identity(1,1),
-  employee_id bigint not null,
+  employee_id bigint  null,
   created_on datetime not null,
-  month varchar(6) not null,
+  month varchar(6)  null,
   attendance varchar(32),
   bonus_card decimal(10,2),
   bonus_cash decimal(10,2),
@@ -22,5 +22,5 @@ create table finance (
   before_tax_salary decimal(10,2),
   personal_income_tax decimal(10,2),
   after_tax_salary decimal(10,2),
-  already_charge bit not null default 0
+  already_charge bit default 0
 )

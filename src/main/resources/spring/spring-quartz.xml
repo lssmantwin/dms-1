@@ -24,15 +24,15 @@
     <bean id="synchronizeProjectsTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="synchronizeProjectsTask"/>
         <!-- every month 1th 00:05 execute -->
-        <property name="cronExpression" value="0 5 0 1 * ?"/>
+        <property name="cronExpression" value="0 0/5 * * * ?"/>
     </bean>
     <bean lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
-                <ref bean="monthGenerateTrigger"/>
-                <ref bean="synchronizeProjectsTrigger"/>
+                <!-- e  <ref bean="monthGenerateTrigger"/>  -->
+                  <ref bean="synchronizeProjectsTrigger"/>
 
-            </list>
-        </property>
-    </bean>
-</beans>
+              </list>
+          </property>
+      </bean>
+  </beans>

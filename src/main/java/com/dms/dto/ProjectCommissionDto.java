@@ -38,7 +38,7 @@ public class ProjectCommissionDto implements Serializable {
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
 	private LocalDateTime contractDate;
 	@JsonSerialize(using = ShortLocalDateTimeJacksonSerializable.class)
-	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
+	@JsonDeserialize(using = ShortDateTimeJacksonDeSerializable.class)
 	private LocalDateTime firstCommissionDate;
 	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
@@ -56,15 +56,17 @@ public class ProjectCommissionDto implements Serializable {
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
 	private LocalDateTime updatedTime;
 	@JsonSerialize(using = ShortLocalDateTimeJacksonSerializable.class)
-	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
+	@JsonDeserialize(using = ShortDateTimeJacksonDeSerializable.class)
 	private LocalDateTime balanceCommissionDate;
 	private BigDecimal designerAssistantCommission;
 	private BigDecimal designerAssistantCommissionRate;
-	@JsonSerialize(using = LocalDateTimeJacksonSerializable.class)
-	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
+	@JsonSerialize(using = ShortLocalDateTimeJacksonSerializable.class)
+	@JsonDeserialize(using = ShortDateTimeJacksonDeSerializable.class)
 	private LocalDateTime designerAssistantCommissionDate;
 	private BigDecimal purchasingCost;
 	private BigDecimal commissionBase;
+	private Long employeeId;
+	private String branch;
 
 	public BigDecimal getPurchasingCost() {
 		return purchasingCost;
@@ -75,6 +77,13 @@ public class ProjectCommissionDto implements Serializable {
 	}
 
 	public BigDecimal getCommissionBase() {
+		if (commissionBase == null || commissionBase == BigDecimal.ZERO) {
+			if (getPurchasingCost() == null) {
+				setPurchasingCost(BigDecimal.ZERO);
+			}
+			this.commissionBase = (getContractTotal().subtract(getPurchasingCost()));
+		}
+
 		return commissionBase;
 	}
 
@@ -320,6 +329,22 @@ public class ProjectCommissionDto implements Serializable {
 
 	public void setDesignerAssistantCommissionDate(LocalDateTime designerAssistantCommissionDate) {
 		this.designerAssistantCommissionDate = designerAssistantCommissionDate;
+	}
+
+	public Long getEmployeeId() {
+		return employeeId;
+	}
+
+	public void setEmployeeId(Long employeeId) {
+		this.employeeId = employeeId;
+	}
+
+	public String getBranch() {
+		return branch;
+	}
+
+	public void setBranch(String branch) {
+		this.branch = branch;
 	}
 
 	@Override

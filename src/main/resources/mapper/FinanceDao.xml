@@ -22,6 +22,7 @@
         <result property="exhibitionCharge" column="exhibition_charge"/>
         <result property="charge" column="charge"/>
         <result property="chargeComments" column="charge_comments"/>
+        <result property="otherCharge" column="other_charge"/>
         <result property="casualLeave" column="casual_leave"/>
         <result property="sickLeave" column="sick_leave"/>
         <result property="storageCharge" column="storage_charge"/>
@@ -34,6 +35,10 @@
         <result property="alreadyCharge" column="already_charge" typeHandler="com.dms.handler.BooleanHandler"/>
         <result property="identityCardNumber" column="identity_card_number"/>
         <result property="bankCardNumber" column="bank_card_number"/>
+        <result property="chargePerMonth" column="charge_per_month"/>
+        <result property="postAllowance" column="post_allowance"/>
+        <result property="salaryCash" column="salary_cash"/>
+        <result property="contractWages" column="contract_wages"/>
     </resultMap>
 
     <select id="getFinances" parameterType="FinanceFilterRequest" resultMap="FinanceMap">
@@ -43,20 +48,26 @@
         t.attendance, t.bonus_card, t.bonus_cash, t.working_age_subsidy, t.performance_appraisal_card,
         t.performance_appraisal_cash,
         t.other_subsidy, t.exhibition_charge, t.charge,
-        t.charge_comments, t.casual_leave, t.sick_leave,
+        t.charge_comments,t.other_charge,
+        t.casual_leave, t.sick_leave,
         t.storage_charge, t.gross_pay, t.medical_insurance,
         t.housing_fund, t.before_tax_salary, t.personal_income_tax, t.after_tax_salary, t.already_charge,
-        t.identity_card_number, t.bank_card_number
+        t.identity_card_number, t.bank_card_number, t.charge_per_month, t.post_allowance, t.salary_cash,
+        t.contract_wages
         from (
         select e.id as eid, e.name, e.base_wage, e.overtime, e.meals_subsidy, e.secrecy_subsidy,
-        e.communication_fee, e.working_age_subsidy, e.identity_card_number, e.bank_card_number,
+        e.communication_fee, e.working_age_subsidy, e.identity_card_number, e.bank_card_number, e.charge_per_month,
+        e.post_allowance,
         f.id as fid, f.month, f.attendance,
         f.bonus_card, f.bonus_cash, f.performance_appraisal_card, f.performance_appraisal_cash,
         f.other_subsidy, f.exhibition_charge, f.charge,
-        f.charge_comments, f.casual_leave, f.sick_leave,
+        f.charge_comments,f.other_charge,
+        f.casual_leave, f.sick_leave,
         f.storage_charge, f.gross_pay, f.medical_insurance,
         f.housing_fund, f.before_tax_salary, f.personal_income_tax, f.after_tax_salary, f.already_charge,
-        row_number() over (order by e.id) as rn from employee e left join finance f on e.id = f.employee_id and
+        f.salary_cash,f.contract_wages,
+        row_number() over (order by e.id) as rn from salary_employee e left join salary_finance f on e.id =
+        f.employee_id and
         f."month" = #{month}
         <where>
             <if test="employeeName != null and employeeName != ''">
@@ -73,35 +84,74 @@
     </select>
 
     <insert id="saveFinance" parameterType="FinanceDto">
-        insert into "finance" (created_on, employee_id, month, attendance, bonus_card, bonus_cash, performance_appraisal_card, performance_appraisal_cash,
-         other_subsidy, exhibition_charge, charge, charge_comments, casual_leave, sick_leave, storage_charge,
-         gross_pay, medical_insurance, housing_fund, before_tax_salary, personal_income_tax, after_tax_salary, already_charge)
-        values (current_timestamp, #{employeeId}, #{month}, #{attendance}, #{bonusCard}, #{bonusCash}, #{performanceAppraisalCard}, #{performanceAppraisalCash},
-         #{otherSubsidy}, #{exhibitionCharge}, #{charge}, #{chargeComments}, #{casualLeave}, #{sickLeave}, #{storageCharge},
-         #{grossPay}, #{medicalInsurance}, #{housingFund}, #{beforeTaxSalary}, #{personalIncomeTax}, #{afterTaxSalary}, 1)
+        insert into "salary_finance" (created_on, employee_id, month, attendance, bonus_card, bonus_cash,
+        performance_appraisal_card, performance_appraisal_cash,
+        other_subsidy, exhibition_charge, charge, charge_comments, other_charge, casual_leave, sick_leave,
+        storage_charge,
+        gross_pay, medical_insurance, housing_fund, before_tax_salary, personal_income_tax, after_tax_salary,
+        already_charge, salary_cash, contract_wages)
+        values (current_timestamp, #{employeeId}, #{month}, #{attendance}, #{bonusCard}, #{bonusCash},
+        #{performanceAppraisalCard}, #{performanceAppraisalCash},
+        #{otherSubsidy}, #{exhibitionCharge}, #{charge}, #{chargeComments}, #{otherCharge}, #{casualLeave},
+        #{sickLeave}, #{storageCharge},
+        #{grossPay}, #{medicalInsurance}, #{housingFund}, #{beforeTaxSalary}, #{personalIncomeTax}, #{afterTaxSalary},
+        1, #{salaryCash}, #{contractWages})
     </insert>
 
     <update id="updateFinance" parameterType="FinanceDto">
-        update finance
-        set attendance =  #{attendance},
-            bonus_card = #{bonusCard},
-            bonus_cash = #{bonusCash},
-            performance_appraisal_card = #{performanceAppraisalCard},
-            performance_appraisal_cash = #{performanceAppraisalCash},
-            other_subsidy = #{otherSubsidy},
-            exhibition_charge = #{exhibitionCharge},
-            charge = #{charge},
-            charge_comments = #{chargeComments},
-            casual_leave = #{casualLeave},
-            sick_leave = #{sickLeave},
-            storage_charge = #{storageCharge},
-            gross_pay = #{grossPay},
-            medical_insurance = #{medicalInsurance},
-            housing_fund = #{housingFund},
-            before_tax_salary = #{beforeTaxSalary},
-            personal_income_tax = #{personalIncomeTax},
-            after_tax_salary = #{afterTaxSalary}
-         where id = #{id}
+        update salary_finance
+        set attendance = #{attendance},
+        bonus_card = #{bonusCard},
+        bonus_cash = #{bonusCash},
+        performance_appraisal_card = #{performanceAppraisalCard},
+        performance_appraisal_cash = #{performanceAppraisalCash},
+        other_subsidy = #{otherSubsidy},
+        exhibition_charge = #{exhibitionCharge},
+        charge = #{charge},
+        charge_comments = #{chargeComments},
+        other_charge = #{otherCharge},
+        casual_leave = #{casualLeave},
+        sick_leave = #{sickLeave},
+        storage_charge = #{storageCharge},
+        gross_pay = #{grossPay},
+        medical_insurance = #{medicalInsurance},
+        housing_fund = #{housingFund},
+        before_tax_salary = #{beforeTaxSalary},
+        personal_income_tax = #{personalIncomeTax},
+        after_tax_salary = #{afterTaxSalary},
+        salary_cash = #{salaryCash},
+        contract_wages = #{contractWages}
+        where id = #{id}
+    </update>
+
+    <select id="getFinance" parameterType="FinanceDto" resultMap="FinanceMap">
+        select * from salary_finance
+        <where>
+            1 = 1
+            <if test="employeeId != null and employeeId != ''">
+                and employee_id = #{employeeId}
+            </if>
+
+            <if test="month != null and month != ''">
+                and month = #{month}
+            </if>
+        </where>
+
+    </select>
+
+    <update id="updateCommission" parameterType="FinanceDto">
+        update salary_finance
+        set bonus_card = bonus_card + #{bonusCard}
+        <where>
+            1 = 1
+            <if test="employeeId != null and employeeId != ''">
+                and employee_id = #{employeeId}
+            </if>
+
+            <if test="month != null and month != ''">
+                and month like #{month}
+            </if>
+        </where>
     </update>
 
 </mapper>

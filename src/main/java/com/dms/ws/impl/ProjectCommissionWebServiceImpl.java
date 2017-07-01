@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 
-import com.dms.aspect.CheckAuthority;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -28,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dms.aspect.CheckAuthority;
 import com.dms.dto.DesignAssistantDto;
 import com.dms.dto.EnumDto;
 import com.dms.dto.ProjectCommissionDto;
@@ -53,22 +53,29 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 
 	@Override
 	public Response export(String designer, String designerAssistant, String contractState, String commissionState, //
-			String acNumber, String contractId, //
+			String acNumber, String branch, String contractId, //
 			String payContractRatio, String payProjectRatio, //
 			String actualStartTime, String actualEndTime, String contractDate, //
-			String firstCommissionDate, String balanceTime, String balanceCommissionDate) {
+			String firstCommissionDate, String balanceTime, String balanceCommissionDate, //
+			String designerAssistantCommissionDate) {
 
 		LOGGER.info("export project commission");
+
 		ProjectCommissionFilterRequest request = generateProjectCommissionFilterRequest(designer, designerAssistant, contractState, //
-				acNumber, commissionState, contractId, payContractRatio, payProjectRatio, actualStartTime, //
-				actualEndTime, contractDate, firstCommissionDate, balanceTime, balanceCommissionDate, 0, 0, null, null);
+				commissionState, acNumber, branch, contractId, payContractRatio, payProjectRatio, actualStartTime, //
+				actualEndTime, contractDate, firstCommissionDate, balanceTime, balanceCommissionDate, //
+				designerAssistantCommissionDate, 0, 0, null, null);
+
 		List<ProjectCommissionDto> projectCommissions = projectCommissionService.getProjectCommissions(request);
+
 		InputStream in = null;
+
 		try {
 			in = new ProjectCommissionExportXls(projectCommissions).getStream();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 		return FileFactory.getResponse(in, LocalDateTime.now().toString("yyyyMMddHHmmSS"));
 	}
 
@@ -76,24 +83,26 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 	@CheckAuthority
 	public DmsResponse getStates(String type) {
 		DmsResponse response = new DmsResponse();
-		response.setCode(ResponseEnum.SUCCESS);
-		List<EnumDto> enumDtos = Lists.newArrayList();
+		List<EnumDto> result = Lists.newArrayList();
 		if (EnumType.CONTRACT.toString().equals(type)) {
-			enumDtos = Lists.newArrayList(ContractStateEnum.values()).stream().map(m -> new EnumDto(m.getDbConstant(), m.getText()))
-					.collect(Collectors.toList());
+			result = Lists.newArrayList(ContractStateEnum.values()).stream().map(m -> new EnumDto(m.getDbConstant(), m.getText())).collect(Collectors.toList());
 		} else if (EnumType.COMMISSION.toString().equals(type)) {
-			enumDtos = Lists.newArrayList(CommissionStateEnum.values()).stream().map(m -> new EnumDto(m.getDbConstant(), m.getText()))
+			result = Lists.newArrayList(CommissionStateEnum.values()).stream().map(m -> new EnumDto(m.getDbConstant(), m.getText()))
 					.collect(Collectors.toList());
 		}
-		response.setData(enumDtos);
+		response.setCode(ResponseEnum.SUCCESS);
+		response.setData(result);
 		return response;
 	}
 
 	@Override
 	@CheckAuthority
 	public DmsResponse saveProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos) {
+
 		LOGGER.info("save project commissions, {}", projectCommissionDtos);
+
 		projectCommissionService.updateProjectCommissions(projectCommissionDtos);
+
 		DmsResponse response = new DmsResponse();
 		response.setCode(ResponseEnum.SUCCESS);
 		return response;
@@ -131,27 +140,29 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 	@Override
 	@CheckAuthority
 	public DmsResponse getProjectCommissions(String designer, String designerAssistant, String contractState, String commissionState, //
-			String acNumber, String contractId, //
+			String acNumber, String branch, String contractId, //
 			String payContractRatio, String payProjectRatio, //
 			String actualStartTime, String actualEndTime, String contractDate, //
 			String firstCommissionDate, String balanceTime, String balanceCommissionDate, //
-			int pageIndex, int pageSize, String sortField, String sortOrder) {
+			String designerAssistantCommissionDate, int pageIndex, int pageSize, String sortField, String sortOrder) {
 
 		LOGGER.info(
 				"get project commissions, designer {}, designerAssistant {}, contractState {}, acNumber {}, contractId {}, payContractRatio {}," + //
 						" payProjectRatio {},  commissionState {}, actualStartTime {}, actualEndTime {}, contractDate {}, firstCommissionDate {}, " + //
 						"balanceTime {}, balanceCommissionDate {}, pageIndex {}, pageSize {}, sortField {}, sortOrder {}", //
 				designer, designerAssistant, contractState, commissionState, acNumber, contractId, payContractRatio, payProjectRatio, actualStartTime,
-				actualEndTime, contractDate, firstCommissionDate, balanceTime, balanceCommissionDate, pageIndex, pageSize, sortField, sortOrder);
+				actualEndTime, //
+				contractDate, firstCommissionDate, balanceTime, balanceCommissionDate, designerAssistantCommissionDate, //
+				pageIndex, pageSize, sortField, sortOrder);
 
 		ProjectCommissionFilterRequest request = generateProjectCommissionFilterRequest(designer, designerAssistant, contractState, commissionState, //
-				acNumber, contractId, payContractRatio, payProjectRatio, actualStartTime, actualEndTime, contractDate, firstCommissionDate, balanceTime,
-				balanceCommissionDate, pageIndex, pageSize, sortField, sortOrder);
+				acNumber, branch, contractId, payContractRatio, payProjectRatio, actualStartTime, actualEndTime, contractDate, firstCommissionDate, balanceTime,
+				balanceCommissionDate, designerAssistantCommissionDate, pageIndex, pageSize, sortField, sortOrder);
 
 		int count = projectCommissionService.getProjectCommissionCount(request);
 		List<ProjectCommissionDto> projectCommissions = projectCommissionService.getProjectCommissions(request);
 
-		DmsResponse<List<ProjectCommissionDto>> response = new DmsResponse<>();
+		DmsResponse response = new DmsResponse();
 		response.setCode(ResponseEnum.SUCCESS);
 		response.setTotal(count);
 		response.setData(projectCommissions);
@@ -161,17 +172,20 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 
 	private ProjectCommissionFilterRequest generateProjectCommissionFilterRequest(String designer, String designerAssistant, String contractState,
 			String commissionState, //
-			String acNumber, String contractId, //
+			String acNumber, String branch, String contractId, //
 			String payContractRatio, String payProjectRatio, String actualStartTime, //
-			String actualEndTime, String contractDate, String firstCommissionDate, String balanceTime, String balanceCommissionDate, int pageIndex,
-			int pageSize, String sortField, String sortOrder) {
+			String actualEndTime, String contractDate, String firstCommissionDate, //
+			String balanceTime, String balanceCommissionDate, String designerAssistantCommissionDate, int pageIndex, int pageSize, String sortField,
+			String sortOrder) {
 		ProjectCommissionFilterRequest request = new ProjectCommissionFilterRequest();
 		request.setStart(pageIndex * pageSize + 1);
 		request.setEnd((pageIndex + 1) * pageSize);
 		request.setDesigner(designer);
+		request.setDesignerAssistantCommissionDate(designerAssistantCommissionDate);
 		request.setDesignerAssistant(designerAssistant);
 		request.setContractId(contractId);
 		request.setAcNumber(acNumber);
+		request.setBranch(branch);
 		request.setContractState(contractState);
 		if (payContractRatio != null && !payContractRatio.equals("")) {
 			request.setPayContractRatio(new BigDecimal(payContractRatio));
@@ -237,9 +251,13 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 				designAssistantDto.setDesignAssistant(designAssistant);
 			}
 
+			if (row.getCell(2) != null) {
+				double purchaseCost = row.getCell(2).getNumericCellValue();
+				designAssistantDto.setPurchaseCost(purchaseCost);
+			}
+
 			designAssistantDtos.add(designAssistantDto);
 		}
 		return designAssistantDtos;
 	}
-
 }

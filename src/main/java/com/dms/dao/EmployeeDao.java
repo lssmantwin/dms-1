@@ -21,6 +21,8 @@ public interface EmployeeDao {
 
 	List<EmployeeDto> getEmployees(DmsRequest request);
 
+	EmployeeDto getEmployeeByName(String name);
+
 	int getEmployeeCount(BaseFilterRequest request);
 
 	List<EmployeeDto> getEmployees(BaseFilterRequest request);

@@ -1,10 +1,10 @@
 package com.dms.job;
 
-import com.dms.service.ProjectCommissionService;
-import com.dms.service.impl.JobService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
+import com.dms.service.ProjectCommissionService;
 
 /**
  * Created by louis.liu on 2017/5/14.
@@ -13,8 +13,11 @@ public class SynchronizeProjects {
 
 	@Autowired
 	private ProjectCommissionService projectService;
+	private static final Logger LOGGER = LoggerFactory.getLogger(SynchronizeProjects.class);
 
 	public void synchronizeProjects() {
-		 projectService.sychronzieProejcts();
+		LOGGER.info("=====synchronizeProjects Start ");
+		projectService.sychronzieProejcts();
+		LOGGER.info("=====synchronizeProjects Finish ");
 	}
 }

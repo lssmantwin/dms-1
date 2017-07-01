@@ -10,15 +10,15 @@
     </resultMap>
 
     <select id="checkUsername" parameterType="string" resultMap="UserDtoMap">
-       select * from "user" where username = #{username}
+       select * from salary_user where username = #{username}
     </select>
 
     <insert id="register" parameterType="UserDto">
-        insert into "user" (username, password, created_on, last_login_on) values (#{username}, #{password}, getdate(), getdate())
+        insert into salary_user (username, password, created_on, last_login_on) values (#{username}, #{password}, getdate(), getdate())
     </insert>
 
     <select id="login" resultType="int">
-        update "user"
+        update salary_user
         set last_login_on = getdate(),
         login_count = login_count + 1
         where username = #{username} and password = #{password}

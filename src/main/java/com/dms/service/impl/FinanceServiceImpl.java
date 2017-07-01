@@ -30,4 +30,14 @@ public class FinanceServiceImpl implements FinanceService {
 	public void updateFinance(FinanceDto financeDto) {
 		financeDao.updateFinance(financeDto);
 	}
+
+	@Override
+	public void updateCommission(FinanceDto financeDto) {
+		financeDao.updateFinance(financeDto);
+	}
+
+	@Override
+	public void updateCommissions(List<FinanceDto> financeDtos) {
+
+	}
 }

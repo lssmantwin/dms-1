@@ -6,30 +6,30 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import com.dms.aspect.CheckAuthority;
-import com.dms.enums.ResponseEnum;
-import com.dms.export.FinanceExportXls;
-import com.dms.utils.DateUtils;
-import com.dms.utils.FileFactory;
+import javax.ws.rs.core.Response;
+
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dms.aspect.CheckAuthority;
 import com.dms.dto.ChargeDetailDto;
 import com.dms.dto.EmployeeDto;
 import com.dms.dto.FinanceDto;
+import com.dms.enums.ResponseEnum;
+import com.dms.export.FinanceExportXls;
 import com.dms.request.FinanceFilterRequest;
 import com.dms.request.FinanceRequest;
 import com.dms.response.DmsResponse;
 import com.dms.service.ChargeService;
 import com.dms.service.EmployeeService;
 import com.dms.service.FinanceService;
+import com.dms.utils.DateUtils;
+import com.dms.utils.FileFactory;
 import com.dms.utils.PersonalIncomeTaxUtils;
 import com.dms.ws.FinanceWebService;
-
-import javax.ws.rs.core.Response;
 
 @Service("financeWebService")
 public class FinanceWebServiceImpl implements FinanceWebService {
@@ -51,6 +51,11 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 		FinanceFilterRequest request = generateFilterRequest(employeeName, pageIndex, pageSize, sortField, sortOrder, month);
 		int count = employeeService.getEmployeeCount(request);
 		List<FinanceDto> finances = financeService.getFinances(request);
+		for (FinanceDto finance : finances) {
+			if (finance.getContractWages() == null) {
+				finance.setContractWages(calculateContractWages(finance));
+			}
+		}
 		DmsResponse<List<FinanceDto>> response = new DmsResponse<>();
 		response.setCode(ResponseEnum.SUCCESS);
 		response.setTotal(count);
@@ -66,11 +71,13 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 
 		for (FinanceDto financeDto : request.getFinances()) {
 			financeDto.setMonth(request.getMonth());
+			financeDto.setStorageCharge(financeDto.getChargePerMonth());
 			financeDto.setGrossPay(calculateGrossPay(financeDto));
 			financeDto.setBeforeTaxSalary(calculateBeforeTaxSalary(financeDto));
 			BigDecimal personalIncomeTax = PersonalIncomeTaxUtils.getPersonalIncomeTax(financeDto.getBeforeTaxSalary());
 			financeDto.setPersonalIncomeTax(personalIncomeTax);
 			financeDto.setAfterTaxSalary(financeDto.getBeforeTaxSalary().subtract(personalIncomeTax));
+			financeDto.setSalaryCash(calculateSalaryCash(financeDto));
 			if (financeDto.getId() == null) {
 				financeService.saveFinance(financeDto);
 				if (!financeDto.getAlreadyCharge()) {
@@ -102,7 +109,32 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 		return response;
 	}
 
+	private BigDecimal calculateContractWages(FinanceDto financeDto) {
+		BigDecimal contractWages = BigDecimal.ZERO;
+		if (financeDto.getBaseWage() != null) {
+			contractWages = contractWages.add(financeDto.getBaseWage());
+		}
+		if (financeDto.getOvertime() != null) {
+			contractWages = contractWages.add(financeDto.getOvertime());
+		}
+		if (financeDto.getMealsSubsidy() != null) {
+			contractWages = contractWages.add(financeDto.getMealsSubsidy());
+		}
+		if (financeDto.getSecrecySubsidy() != null) {
+			contractWages = contractWages.add(financeDto.getSecrecySubsidy());
+		}
+		if (financeDto.getWorkingAgeSubsidy() != null) {
+			contractWages = contractWages.add(financeDto.getWorkingAgeSubsidy());
+		}
+		if (financeDto.getCommunicationFee() != null) {
+			contractWages = contractWages.add(financeDto.getCommunicationFee());
+		}
+		return contractWages;
+	}
+
 	private BigDecimal calculateGrossPay(FinanceDto financeDto) {
+		// 应发工资 = 基本工资 + 加班 + 餐补 + 保密 + 提成（卡） + 工龄 + 绩效 （卡）
+		// + 通讯费 + 其他补贴 - 扣款 - 会展扣款 - 事假 - 病假 - 保管费
 		BigDecimal grossPay = BigDecimal.ZERO;
 		if (financeDto.getBaseWage() != null) {
 			grossPay = grossPay.add(financeDto.getBaseWage());
@@ -119,17 +151,11 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 		if (financeDto.getBonusCard() != null) {
 			grossPay = grossPay.add(financeDto.getBonusCard());
 		}
-		if (financeDto.getBonusCash() != null) {
-			grossPay = grossPay.add(financeDto.getBonusCash());
-		}
 		if (financeDto.getWorkingAgeSubsidy() != null) {
 			grossPay = grossPay.add(financeDto.getWorkingAgeSubsidy());
 		}
 		if (financeDto.getPerformanceAppraisalCard() != null) {
 			grossPay = grossPay.add(financeDto.getPerformanceAppraisalCard());
-		}
-		if (financeDto.getPerformanceAppraisalCash() != null) {
-			grossPay = grossPay.add(financeDto.getPerformanceAppraisalCash());
 		}
 		if (financeDto.getCommunicationFee() != null) {
 			grossPay = grossPay.add(financeDto.getCommunicationFee());
@@ -138,24 +164,26 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 			grossPay = grossPay.add(financeDto.getOtherSubsidy());
 		}
 		if (financeDto.getCharge() != null) {
-			grossPay.subtract(financeDto.getCharge());
+			grossPay = grossPay.subtract(financeDto.getCharge());
 		}
 		if (financeDto.getExhibitionCharge() != null) {
-			grossPay.subtract(financeDto.getExhibitionCharge());
+			grossPay = grossPay.subtract(financeDto.getExhibitionCharge());
 		}
 		if (financeDto.getCasualLeave() != null) {
-			grossPay.subtract(financeDto.getCasualLeave());
+			grossPay = grossPay.subtract(financeDto.getCasualLeave());
 		}
 		if (financeDto.getSickLeave() != null) {
-			grossPay.subtract(financeDto.getSickLeave());
+			grossPay = grossPay.subtract(financeDto.getSickLeave());
 		}
 		if (financeDto.getStorageCharge() != null) {
-			grossPay.subtract(financeDto.getStorageCharge());
+			grossPay = grossPay.subtract(financeDto.getStorageCharge());
 		}
 		return grossPay;
 	}
 
 	private BigDecimal calculateBeforeTaxSalary(FinanceDto financeDto) {
+		// 税前工资 = 基本工资 + 加班 + 餐补 + 保密 + 提成（卡） + 工龄 + 绩效 （卡）
+		// + 通讯费 + 其他补贴 - 扣款 - 会展扣款 - 事假 - 病假 - 保管费 - 公积金 - 社保
 		BigDecimal beforeTaxSalary = BigDecimal.ZERO;
 		if (financeDto.getBaseWage() != null) {
 			beforeTaxSalary = beforeTaxSalary.add(financeDto.getBaseWage());
@@ -185,27 +213,48 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 			beforeTaxSalary = beforeTaxSalary.add(financeDto.getOtherSubsidy());
 		}
 		if (financeDto.getCharge() != null) {
-			beforeTaxSalary.subtract(financeDto.getCharge());
+			beforeTaxSalary = beforeTaxSalary.subtract(financeDto.getCharge());
 		}
 		if (financeDto.getExhibitionCharge() != null) {
-			beforeTaxSalary.subtract(financeDto.getExhibitionCharge());
+			beforeTaxSalary = beforeTaxSalary.subtract(financeDto.getExhibitionCharge());
 		}
 		if (financeDto.getCasualLeave() != null) {
-			beforeTaxSalary.subtract(financeDto.getCasualLeave());
+			beforeTaxSalary = beforeTaxSalary.subtract(financeDto.getCasualLeave());
 		}
 		if (financeDto.getSickLeave() != null) {
-			beforeTaxSalary.subtract(financeDto.getSickLeave());
+			beforeTaxSalary = beforeTaxSalary.subtract(financeDto.getSickLeave());
 		}
 		if (financeDto.getStorageCharge() != null) {
-			beforeTaxSalary.subtract(financeDto.getStorageCharge());
+			beforeTaxSalary = beforeTaxSalary.subtract(financeDto.getStorageCharge());
 		}
 		if (financeDto.getMedicalInsurance() != null) {
-			beforeTaxSalary.subtract(financeDto.getMedicalInsurance());
+			beforeTaxSalary = beforeTaxSalary.subtract(financeDto.getMedicalInsurance());
 		}
 		if (financeDto.getHousingFund() != null) {
-			beforeTaxSalary.subtract(financeDto.getHousingFund());
+			beforeTaxSalary = beforeTaxSalary.subtract(financeDto.getHousingFund());
 		}
 		return beforeTaxSalary;
+	}
+
+	private BigDecimal calculateSalaryCash(FinanceDto financeDto) {
+		BigDecimal salaryCash = BigDecimal.ZERO;
+		// 提成现金
+		if (financeDto.getBonusCash() != null) {
+			salaryCash = salaryCash.add(financeDto.getBonusCash());
+		}
+		// 绩效现金
+		if (financeDto.getPerformanceAppraisalCash() != null) {
+			salaryCash = salaryCash.add(financeDto.getPerformanceAppraisalCash());
+		}
+		// 岗位津贴
+		if (financeDto.getPostAllowance() != null) {
+			salaryCash = salaryCash.add(financeDto.getPostAllowance());
+		}
+		// 其他扣款
+		if (financeDto.getOtherCharge() != null) {
+			salaryCash = salaryCash.subtract(financeDto.getOtherCharge());
+		}
+		return salaryCash;
 	}
 
 	private FinanceFilterRequest generateFilterRequest(String employeeName, int pageIndex, int pageSize, String sortField, String sortOrder, String month) {

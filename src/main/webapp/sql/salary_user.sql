@@ -1,4 +1,4 @@
-create table "user"(
+create table salary_user(
   id bigint primary key identity(1,1),
   username varchar(255) not null unique,
   password varchar(255) not null,

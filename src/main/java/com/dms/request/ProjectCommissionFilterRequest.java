@@ -23,10 +23,14 @@ public class ProjectCommissionFilterRequest extends BaseFilterRequest implements
     private String balanceTime;
     private String balanceCommissionDate;
     private String balanceCommissionStartDate;
-
     private String balanceCommissionEndDate;
+
+    private String designerAssistantCommissionDate;
+    private String designerAssistantCommissionStartDate;
+    private String designerAssistantCommissionEndDate;
     private BigDecimal payContractRatio;
     private BigDecimal payProjectRatio;
+    private String branch;
 
     public String getDesigner() {
         return designer;
@@ -193,4 +197,45 @@ public class ProjectCommissionFilterRequest extends BaseFilterRequest implements
         this.balanceCommissionEndDate = balanceCommissionEndDate;
     }
 
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
+
+    public String getDesignerAssistantCommissionDate() {
+        return designerAssistantCommissionDate;
+    }
+
+    public void setDesignerAssistantCommissionDate(String designerAssistantCommissionDate) {
+        this.designerAssistantCommissionDate = designerAssistantCommissionDate;
+    }
+
+    public String getDesignerAssistantCommissionStartDate() {
+        if (designerAssistantCommissionDate != null) {
+            String[] ymDate = designerAssistantCommissionDate.split("\\-");
+            return DateUtils.getFirstDayOfMontString((Integer.valueOf(ymDate[0])), Integer.valueOf(ymDate[1]));
+
+        }
+        return null;
+    }
+
+    public void setDesignerAssistantCommissionStartDate(String designerAssistantCommissionStartDate) {
+        this.designerAssistantCommissionStartDate = designerAssistantCommissionStartDate;
+    }
+
+    public String getDesignerAssistantCommissionEndDate() {
+        if (designerAssistantCommissionDate != null) {
+            String[] ymDate = designerAssistantCommissionDate.split("\\-");
+            return DateUtils.getLastDayOfMonthString(Integer.valueOf(ymDate[0]), Integer.valueOf(ymDate[1]));
+
+        }
+        return null;
+    }
+
+    public void setDesignerAssistantCommissionEndDate(String designerAssistantCommissionEndDate) {
+        this.designerAssistantCommissionEndDate = designerAssistantCommissionEndDate;
+    }
 }
