@@ -81,9 +81,11 @@ public class ProjectCommissionDto implements Serializable {
 			if (getPurchasingCost() == null) {
 				setPurchasingCost(BigDecimal.ZERO);
 			}
+			if (getContractTotal() == null) {
+				setContractTotal(BigDecimal.ZERO);
+			}
 			this.commissionBase = (getContractTotal().subtract(getPurchasingCost()));
 		}
-
 		return commissionBase;
 	}
 

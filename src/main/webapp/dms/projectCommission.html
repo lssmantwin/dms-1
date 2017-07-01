@@ -56,29 +56,29 @@
         <div property="columns">
             <div type="indexcolumn"></div>
             <div type="checkcolumn"></div>
-            <div field="designer" headerAlign="center" allowSort="false" width="50">设计师
-                <input id="designerFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="50"
+            <div field="designer" headerAlign="center" allowSort="false" width="100">设计师
+                <input id="designerFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="100"
                        onvaluechanged="onFilterChanged()"/>
             </div>
-            <div field="acNumber" width="60" headerAlign="center" allowSort="false">受理编号
-                <input id="acNumberFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="50"
+            <div field="acNumber" width="100" headerAlign="center" allowSort="false">受理编号
+                <input id="acNumberFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="100"
                        onvaluechanged="onFilterChanged()"/>
             </div>
-            <div field="contractId" width="80" headerAlign="center" allowSort="false">工程编号
-                <input id="contractFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="50"
+            <div field="contractId" width="100" headerAlign="center" allowSort="false">工程编号
+                <input id="contractFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="100"
                        onvaluechanged="onFilterChanged()"/>
             </div>
-            <div field="customerName" width="60" headerAlign="center" allowSort="false">客户名字
+            <div field="customerName" width="100" headerAlign="center" allowSort="false">客户名字
             </div>
-            <div field="payContractRatio" width="60" headerAlign="center" numberFormat="00.00%" allowSort="false">合同收款比
-                <input id="payContractFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="50"
+            <div field="payContractRatio" width="100" headerAlign="center" numberFormat="00.00%" allowSort="false">合同收款比
+                <input id="payContractFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="100"
                        onvaluechanged="onFilterChanged()"/>
             </div>
-            <div field="payProjectRatio" width="60" headerAlign="center" numberFormat="00.00%" allowSort="false">总收款比
-                <input id="payProjectFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="50"
+            <div field="payProjectRatio" width="100" headerAlign="center" numberFormat="00.00%" allowSort="false">总收款比
+                <input id="payProjectFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="100"
                        onvaluechanged="onFilterChanged()"/>
             </div>
-            <div field="commissionState" width="60" headerAlign="center" allowSort="false">提成状态
+            <div field="commissionState" width="100" headerAlign="center" allowSort="false">提成状态
 
                 <input id="commissionStateFilter" property="filter" class="mini-combobox" style="width:100%;"
                        textField="text" valueField="value"
@@ -87,9 +87,9 @@
                        allowInput="true" showNullItem="true" onvaluechanged="onFilterChanged()"/>
             </div>
 
-            <div header="首提信息">
+            <div header="首提信息" align="center" headeralign="center">
                 <div property="columns">
-                    <div field="actualStartTime" width="80" headerAlign="center" allowSort="false"
+                    <div field="actualStartTime" width="100" headerAlign="center" allowSort="false"
                          dateFormat="yyyy-MM-dd">
                         实际开工
                     </div>
@@ -97,29 +97,32 @@
                     <div field="contractTotal" width="100" numberFormat="¥#,0.00" headerAlign="center"
                          allowSort="false">合同价
                     </div>
-                    <div field="purchaseAgentFee" width="80" numberFormat="¥#,0.00" headerAlign="center"
+                    <div field="purchaseAgentFee" width="100" numberFormat="¥#,0.00" headerAlign="center"
                          allowSort="false">代采金额
-                        <input property="editor" vtype="float" class="mini-textbox" style="width:100%;" minWidth="80"/>
+                        <input property="editor" vtype="float" class="mini-textbox" style="width:100%;" minWidth="100"/>
                     </div>
-                    <div field="purchasingCost"  width="80" numberFormat="¥#,0.00" headerAlign="center" allowSort="false">代采金额折算后
-                        <input property="editor" vtype="float" class="mini-textbox" style="width:100%;" minWidth="80"/></div>
-                    <div field="commissionBase" width="80" headerAlign="center" numberFormat="¥#,0.00" allowSort="false">折算后合同价
+                    <div field="purchasingCost" width="100" numberFormat="¥#,0.00" headerAlign="center"
+                         allowSort="false">代采金额折算后
+                        <input property="editor" vtype="float" class="mini-textbox" style="width:100%;" minWidth="100"/>
+                    </div>
+                    <div field="commissionBase" width="100" headerAlign="center" numberFormat="¥#,0.00"
+                         allowSort="false">折算后合同价
 
                     </div>
-                    <div field="designCommissionRate" width="60" numberFormat="00.00%" headerAlign="center"
+                    <div field="designCommissionRate" width="100" numberFormat="00.00%" headerAlign="center"
                          allowSort="false">
                         提成系数
                     </div>
-                    <div field="firstCommissionRate" width="60" headerAlign="center" numberFormat="00.00%"
+                    <div field="firstCommissionRate" width="100" headerAlign="center" numberFormat="00.00%"
                          allowSort="false">首提系数
                     </div>
 
-                    <div field="firstCommission" width="60" headerAlign="center" numberFormat="¥#,0.00"
+                    <div field="firstCommission" width="100" headerAlign="center" numberFormat="¥#,0.00"
                          summaryType="sum" dataType="currency"
                          currencyUnit="￥" allowSort="false">首提
                     </div>
 
-                    <div field="firstCommissionDate" width="80" headerAlign="center" allowSort="false"
+                    <div field="firstCommissionDate" width="100" headerAlign="center" allowSort="false"
                          dateFormat="yyyy-MM">
                         首提日期
                         <input id="firstCommissionDateFilter" property="filter" class="mini-monthpicker"
@@ -129,65 +132,68 @@
                     </div>
                 </div>
             </div>
-            <div header="二次提成信息">
+            <div header="二次提成信息" align="center" headeralign="center">
                 <div property="columns">
 
                     <div field="projectChangeTotal" width="100" numberFormat="¥#,0.00" headerAlign="center"
                          allowSort="false">变更总价
                         <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
                     </div>
-                    <div field="balanceTime" width="80" headerAlign="center" allowSort="false" dateFormat="yyyy-MM">
+                    <div field="balanceTime" width="100" headerAlign="center" allowSort="false" dateFormat="yyyy-MM">
                         结算日期
                         <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
                         <input property="filter" class="mini-datepicker" style="width:100%;" minWidth="100"/>
                     </div>
-                    <div field="balanceCommission" width="60" headerAlign="center" numberFormat="¥#,0.00"
+                    <div field="balanceCommission" width="100" headerAlign="center" numberFormat="¥#,0.00"
                          allowSort="false">
                         二次提成
                     </div>
-                    <div field="balanceCommissionDate" width="60" headerAlign="center" allowSort="false"
+                    <div field="balanceCommissionDate" width="100" headerAlign="center" allowSort="false"
                          dateFormat="yyyy-MM">
                         二次提成日期
-                        <input id="balanceCommissionDateFilter" property="filter" class="mini-monthpicker" style="width:100%;" minWidth="60" onvaluechanged="onFilterChanged()" />
+                        <input id="balanceCommissionDateFilter" property="filter" class="mini-monthpicker"
+                               style="width:100%;" minWidth="100" onvaluechanged="onFilterChanged()"/>
                     </div>
-                </div>ss
+                </div>
+                ss
             </div>
 
-            <div header="设计助理提成">
+            <div header="设计助理提成" align="center" headeralign="center">
                 <div property="columns">
 
-                    <div field="designerAssistant" width="60" headerAlign="center" allowSort="false">设计助理
-                        <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60"/>
+                    <div field="designerAssistant" width="100" headerAlign="center" allowSort="false">设计助理
+                        <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
                         <input id="designerAssistantFilter" property="filter" class="mini-textbox" style="width:100%;"
-                               minWidth="50"
+                               minWidth="100"
                                onvaluechanged="onFilterChanged()"/>
                     </div>
 
-                    <div field="designerAssistantCommissionRate" width="60" headerAlign="center" numberFormat="##.##%"
+                    <div field="designerAssistantCommissionRate" width="100" headerAlign="center" numberFormat="##.##%"
                          allowSort="false">
                         提成比
-                        <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60"/>
+                        <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
                     </div>
-                    <div field="designerAssistantCommission" width="60" headerAlign="center" numberFormat="¥#,0.00"
+                    <div field="designerAssistantCommission" width="100" headerAlign="center" numberFormat="¥#,0.00"
                          allowSort="false">
                         提成
                     </div>
-                    <div field="designerAssistantCommissionDate" width="60" headerAlign="center" allowSort="false"
+                    <div field="designerAssistantCommissionDate" width="100" headerAlign="center" allowSort="false"
                          dateFormat="yyyy-MM-dd">
                         提成日期
-                        <input id="designerAssistantCommissionDateFilter" property="filter" class="mini-monthpicker" style="width:100%;" minWidth="60" onvaluechanged="onFilterChanged()" />
+                        <input id="designerAssistantCommissionDateFilter" property="filter" class="mini-monthpicker"
+                               style="width:100%;" minWidth="100" onvaluechanged="onFilterChanged()"/>
                     </div>
                 </div>
             </div>
 
             <div field="customerPay" width="100" numberFormat="¥#,0.00" headerAlign="center" allowSort="false">已付
             </div>
-            <div field="contractState" width="60" headerAlign="center" allowSort="false">状态
+            <div field="contractState" width="100" headerAlign="center" allowSort="false">状态
 
             </div>
-            <div field="branch" width="80" headerAlign="center" allowSort="false">网点
+            <div field="branch" width="100" headerAlign="center" allowSort="false">网点
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
-                <input id="branchFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="80"
+                <input id="branchFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="100"
                        onvaluechanged="onFilterChanged()"/>
             </div>
             <div field="actualEndTime" width="100" headerAlign="center" allowSort="false" dateFormat="yyyy-MM-dd">
@@ -225,14 +231,14 @@
     var grid = mini.get("datagrid1");
     grid.load();
 
-     function saveData() {
+    function saveData() {
 
         <!--grid.validate();-->
         <!--if (grid.isValid() == false) {-->
-            <!--alert("请校验输入单元格内容");-->
-            <!--var error = grid.getCellErrors()[0];-->
-            <!--grid.beginEditCell(error.record, error.column);-->
-            <!--return;-->
+        <!--alert("请校验输入单元格内容");-->
+        <!--var error = grid.getCellErrors()[0];-->
+        <!--grid.beginEditCell(error.record, error.column);-->
+        <!--return;-->
         <!--}-->
 
         var data = grid.getChanges();
@@ -267,7 +273,7 @@
                 grid.reload();
             }
             <!--error: function (jqXHR, textStatus, errorThrown) {-->
-                <!--alert(jqXHR.responseText);-->
+            <!--alert(jqXHR.responseText);-->
             <!--}-->
         });
     }
@@ -291,7 +297,7 @@
         });
     }
 
-     function onFilterChanged() {
+    function onFilterChanged() {
         var branch = mini.get("branchFilter").getValue();
         var designer = mini.get("designerFilter").getValue();
         var contractId = mini.get("contractFilter").getValue();
@@ -308,7 +314,7 @@
             designer: designer,
             designerAssistant: designerAssistant,
             commissionState: commissionState,
-            contractId:contractId,
+            contractId: contractId,
             acNumber: acNumber,
             payContractRatio: payContractRatio,
             payProjectRatio: payProjectRatio,
@@ -378,13 +384,13 @@
             e.cellHtml = "首提: " + e.cellHtml;
         }
 
-         if (e.field == "balanceCommission") {
+        if (e.field == "balanceCommission") {
             var total = 0;
             for (var i = 0, l = rows.length; i < l; i++) {
                 var row = rows[i];
                 var t = row.balanceCommission;
                 if (isNaN(t)) continue;
-                total += t;s
+                total += t;
             }
             e.cellHtml = "二次提成: " + total;
         }
