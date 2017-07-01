@@ -22,6 +22,7 @@
         <result property="exhibitionCharge" column="exhibition_charge"/>
         <result property="charge" column="charge"/>
         <result property="chargeComments" column="charge_comments"/>
+        <result property="otherCharge" column="other_charge" />
         <result property="casualLeave" column="casual_leave"/>
         <result property="sickLeave" column="sick_leave"/>
         <result property="storageCharge" column="storage_charge"/>
@@ -43,7 +44,8 @@
         t.attendance, t.bonus_card, t.bonus_cash, t.working_age_subsidy, t.performance_appraisal_card,
         t.performance_appraisal_cash,
         t.other_subsidy, t.exhibition_charge, t.charge,
-        t.charge_comments, t.casual_leave, t.sick_leave,
+        t.charge_comments,t.other_charge,
+        t.casual_leave, t.sick_leave,
         t.storage_charge, t.gross_pay, t.medical_insurance,
         t.housing_fund, t.before_tax_salary, t.personal_income_tax, t.after_tax_salary, t.already_charge,
         t.identity_card_number, t.bank_card_number
@@ -53,7 +55,8 @@
         f.id as fid, f.month, f.attendance,
         f.bonus_card, f.bonus_cash, f.performance_appraisal_card, f.performance_appraisal_cash,
         f.other_subsidy, f.exhibition_charge, f.charge,
-        f.charge_comments, f.casual_leave, f.sick_leave,
+        f.charge_comments,f.other_charge,
+        f.casual_leave, f.sick_leave,
         f.storage_charge, f.gross_pay, f.medical_insurance,
         f.housing_fund, f.before_tax_salary, f.personal_income_tax, f.after_tax_salary, f.already_charge,
         row_number() over (order by e.id) as rn from salary_employee e left join salary_finance f on e.id = f.employee_id and
@@ -74,10 +77,10 @@
 
     <insert id="saveFinance" parameterType="FinanceDto" >
         insert into "salary_finance" (created_on, employee_id, month, attendance, bonus_card, bonus_cash, performance_appraisal_card, performance_appraisal_cash,
-         other_subsidy, exhibition_charge, charge, charge_comments, casual_leave, sick_leave, storage_charge,
+         other_subsidy, exhibition_charge, charge, charge_comments, other_charge, casual_leave, sick_leave, storage_charge,
          gross_pay, medical_insurance, housing_fund, before_tax_salary, personal_income_tax, after_tax_salary, already_charge)
         values (current_timestamp, #{employeeId}, #{month}, #{attendance}, #{bonusCard}, #{bonusCash}, #{performanceAppraisalCard}, #{performanceAppraisalCash},
-         #{otherSubsidy}, #{exhibitionCharge}, #{charge}, #{chargeComments}, #{casualLeave}, #{sickLeave}, #{storageCharge},
+         #{otherSubsidy}, #{exhibitionCharge}, #{charge}, #{chargeComments}, #{otherCharge}, #{casualLeave}, #{sickLeave}, #{storageCharge},
          #{grossPay}, #{medicalInsurance}, #{housingFund}, #{beforeTaxSalary}, #{personalIncomeTax}, #{afterTaxSalary}, 1)
     </insert>
 
@@ -92,6 +95,7 @@
             exhibition_charge = #{exhibitionCharge},
             charge = #{charge},
             charge_comments = #{chargeComments},
+            other_charge = #{otherCharge},
             casual_leave = #{casualLeave},
             sick_leave = #{sickLeave},
             storage_charge = #{storageCharge},

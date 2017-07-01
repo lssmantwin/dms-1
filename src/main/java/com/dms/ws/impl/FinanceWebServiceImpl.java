@@ -104,6 +104,8 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 	}
 
 	private BigDecimal calculateGrossPay(FinanceDto financeDto) {
+		// 应发工资 = 基本工资 + 加班 + 餐补 + 保密 + 提成（卡） + 工龄 + 绩效 （卡）
+		// + 通讯费 + 其他补贴 - 扣款 - 会展扣款 - 事假 - 病假 - 保管费
 		BigDecimal grossPay = BigDecimal.ZERO;
 		if (financeDto.getBaseWage() != null) {
 			grossPay = grossPay.add(financeDto.getBaseWage());
@@ -120,17 +122,11 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 		if (financeDto.getBonusCard() != null) {
 			grossPay = grossPay.add(financeDto.getBonusCard());
 		}
-		if (financeDto.getBonusCash() != null) {
-			grossPay = grossPay.add(financeDto.getBonusCash());
-		}
 		if (financeDto.getWorkingAgeSubsidy() != null) {
 			grossPay = grossPay.add(financeDto.getWorkingAgeSubsidy());
 		}
 		if (financeDto.getPerformanceAppraisalCard() != null) {
 			grossPay = grossPay.add(financeDto.getPerformanceAppraisalCard());
-		}
-		if (financeDto.getPerformanceAppraisalCash() != null) {
-			grossPay = grossPay.add(financeDto.getPerformanceAppraisalCash());
 		}
 		if (financeDto.getCommunicationFee() != null) {
 			grossPay = grossPay.add(financeDto.getCommunicationFee());
@@ -157,6 +153,8 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 	}
 
 	private BigDecimal calculateBeforeTaxSalary(FinanceDto financeDto) {
+		// 税前工资 = 基本工资 + 加班 + 餐补 + 保密 + 提成（卡） + 工龄 + 绩效 （卡）
+		// + 通讯费 + 其他补贴 - 扣款 - 会展扣款 - 事假 - 病假 - 保管费 - 公积金 - 社保
 		BigDecimal beforeTaxSalary = BigDecimal.ZERO;
 		if (financeDto.getBaseWage() != null) {
 			beforeTaxSalary = beforeTaxSalary.add(financeDto.getBaseWage());

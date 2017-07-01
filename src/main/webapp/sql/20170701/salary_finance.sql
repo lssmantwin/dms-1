@@ -1,0 +1,1 @@
+alter table finance add other_charge decimal(10,2);
