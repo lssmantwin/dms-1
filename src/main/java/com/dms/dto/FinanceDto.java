@@ -37,11 +37,14 @@ public class FinanceDto implements Serializable {
     private BigDecimal medicalInsurance;
     private BigDecimal housingFund;
     private BigDecimal beforeTaxSalary;
+    // charge per month = storage charge
     private BigDecimal chargePerMonth;
     private BigDecimal personalIncomeTax;
     private BigDecimal afterTaxSalary;
     private BigDecimal salaryCash;
     private Boolean alreadyCharge = Boolean.FALSE;
+    private BigDecimal postAllowance;
+    private BigDecimal contractWages;
 
     public Long getId() {
         return id;
@@ -300,10 +303,7 @@ public class FinanceDto implements Serializable {
     }
 
     public BigDecimal getSalaryCash() {
-        BigDecimal bonus = bonusCash == null ? BigDecimal.ZERO : bonusCash;
-        BigDecimal performanceAppraisal = performanceAppraisalCash == null ? BigDecimal.ZERO : performanceAppraisalCash;
-        BigDecimal otherCharge2 = otherCharge == null ? BigDecimal.ZERO : otherCharge;
-        return bonus.add(performanceAppraisal).subtract(otherCharge2);
+        return salaryCash;
     }
 
     public void setSalaryCash(BigDecimal salaryCash) {
@@ -316,5 +316,21 @@ public class FinanceDto implements Serializable {
 
     public void setChargePerMonth(BigDecimal chargePerMonth) {
         this.chargePerMonth = chargePerMonth;
+    }
+
+    public BigDecimal getPostAllowance() {
+        return postAllowance;
+    }
+
+    public void setPostAllowance(BigDecimal postAllowance) {
+        this.postAllowance = postAllowance;
+    }
+
+    public BigDecimal getContractWages() {
+        return contractWages;
+    }
+
+    public void setContractWages(BigDecimal contractWages) {
+        this.contractWages = contractWages;
     }
 }

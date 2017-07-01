@@ -371,11 +371,24 @@
     function onDrawSummaryCell(e) {
         var result = e.result;
         var grid = e.sender;
+        var rows = e.data;
 
         //客户端汇总计算
         if (e.field == "firstCommission") {
-            e.cellHtml = "提成: " + e.cellHtml;
+            e.cellHtml = "首提: " + e.cellHtml;
         }
+
+         if (e.field == "balanceCommission") {
+            var total = 0;
+            for (var i = 0, l = rows.length; i < l; i++) {
+                var row = rows[i];
+                var t = row.balanceCommission;
+                if (isNaN(t)) continue;
+                total += t;s
+            }
+            e.cellHtml = "二次提成: " + total;
+        }
+
     }
 
 </script>

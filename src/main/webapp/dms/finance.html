@@ -18,7 +18,6 @@
         height: 100%;
         overflow: hidden;
     }
-
 </style>
 <div class="mini-toolbar" style="padding:2px;border-bottom:0;">
     <table style="width:100%;">
@@ -54,51 +53,53 @@
                 <input property="editor" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
                        url="../ws/employee/v1/attendance" required="true" allowInput="true"/>
             </div>
+            <div field="contractWages" width="100" headerAlign="center" allowSort="true" vtype="fl>合同工资
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
+            </div>
             <div field="bonusCard" width="100" headerAlign="center" allowSort="true" vtype="float">提成（卡）
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100/>
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
-            <div field=" bonusCash" width="100" headerAlign="center" allowSort="true" vtype="float">提成（现金）
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100/>
+            <div field="bonusCash" width="100" headerAlign="center" allowSort="true" vtype="float">提成（现金）
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
-            <div field=" performanceAppraisalCard" width="100" headerAlign="center" allowSort="true" vtype="float">绩效（卡）
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100/>
+            <div field="performanceAppraisalCard" width="100" headerAlign="center" allowSort="true" vtype="float">绩效（卡）
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
-            <div field=" performanceAppraisalCash" width="100" headerAlign="center" allowSort="true"
-                vtype="float">绩效（现金）
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100/>
+            <div field="performanceAppraisalCash" width="100" headerAlign="center" allowSort="true" vtype="float">绩效（现金）
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
-            <div field=" otherSubsidy" width="100" headerAlign="center" allowSort="true" vtype="float">其他补贴
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100/>
+            <div field="otherSubsidy" width="100" headerAlign="center" allowSort="true" vtype="float">其他补贴
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
-            <div field=" charge" width="100" headerAlign="center" allowSort="true" vtype="float">扣款
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100/>
+            <div field="charge" width="100" headerAlign="center" allowSort="true" vtype="float">扣款
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
-            <div field=" chargeComments" width="100" headerAlign="center" allowSort="true">扣款说明
+            <div field="chargeComments" width="100" headerAlign="center" allowSort="true">扣款说明
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="otherCharge" width="100" headerAlign="center" allowSort="true" vtype="float">扣款
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100/>
+            <div field="otherCharge" width="100" headerAlign="center" allowSort="true" vtype="float">其他扣款
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field=" exhibitionCharge" width="100" headerAlign="center" allowSort="true" vtype="float">会展扣款
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100/>
+            <div field="exhibitionCharge" width="100" headerAlign="center" allowSort="true" vtype="float">会展扣款
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
-            <div field=" casualLeave" width="100" headerAlign="center" allowSort="true" vtype="float">事假
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100/>
+            <div field="casualLeave" width="100" headerAlign="center" allowSort="true" vtype="float">事假
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
-            <div field=" sickLeave" width="100" headerAlign="center" allowSort="true" vtype="float">病假
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100/>
+            <div field="sickLeave" width="100" headerAlign="center" allowSort="true" vtype="float">病假
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
-            <div field=" chargePerMonth" width="100" headerAlign="center" allowSort="true" vtype="float">保管
+            <div field="storageCharge" width="100" headerAlign="center" allowSort="true" vtype="float">保管
             </div>
             <div field="grossPay" width="100" headerAlign="center" allowSort="true">应发工资（卡）
             </div>
             <div field="medicalInsurance" width="100" headerAlign="center" allowSort="true" vtype="float">代扣社保
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100/>
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
-            <div field=" housingFund" width="100" headerAlign="center" allowSort="true" vtype="float">代扣公积金
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100/>
+            <div field="housingFund" width="100" headerAlign="center" allowSort="true" vtype="float">代扣公积金
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50"/>
             </div>
-            <div field=" beforeTaxSalary" width="100" headerAlign="center" allowSort="true">税前工资
+            <div field="beforeTaxSalary" width="100" headerAlign="center" allowSort="true">税前工资
             </div>
             <div field="personalIncomeTax" width="100" headerAlign="center" allowSort="true">个人所得税
             </div>
@@ -236,7 +237,6 @@
         var excelForm = document.getElementById("excelForm");
         excelForm.submit();
     }
-
 
 </script>
 
