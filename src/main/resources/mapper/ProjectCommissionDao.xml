@@ -153,13 +153,16 @@
                 and first_commission_date &lt; #{firstCommissionEndDate}
             </if>
             <if test="actualStartTime != null and actualStartTime != ''">
-                and actual_start_time > #{actualStartTime}
+                and actual_start_time > #{actualStartBeginTime}
+                and actual_start_time > #{actualStartEndTime}
             </if>
             <if test="actualEndTime != null and actualEndTime != ''">
                 and actual_end_time > #{actualEndTime}
             </if>
             <if test="balanceTime != null and balanceTime != ''">
                 and balance_time > #{balanceTime}
+                and balance_time >= #{balanceStartTime}
+                and balance_time &lt; #{balanceEndTime}
             </if>
             <if test="balanceCommissionDate != null and balanceCommissionDate != ''">
                 and balance_commission_date >= #{balanceCommissionStartDate}

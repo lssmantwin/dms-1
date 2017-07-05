@@ -20,6 +20,10 @@ public class ProjectCommissionFilterRequest extends BaseFilterRequest implements
     private String firstCommissionEndDate;
     private String actualStartTime;
     private String actualEndTime;
+    private String balanceStartTime;
+    private String balanceEndTime;
+    private String actualStartBeginTime;
+    private String actualStartEndTime;
     private String balanceTime;
     private String balanceCommissionDate;
     private String balanceCommissionStartDate;
@@ -237,5 +241,54 @@ public class ProjectCommissionFilterRequest extends BaseFilterRequest implements
 
     public void setDesignerAssistantCommissionEndDate(String designerAssistantCommissionEndDate) {
         this.designerAssistantCommissionEndDate = designerAssistantCommissionEndDate;
+    }
+
+    public String getBalanceStartTime() {
+        if (balanceStartTime != null) {
+            String[] ymDate = balanceStartTime.split("\\-");
+            return DateUtils.getFirstDayOfMontString((Integer.valueOf(ymDate[0])), Integer.valueOf(ymDate[1]));
+
+        }
+        return null;
+    }
+
+    public void setBalanceStartTime(String balanceStartTime) {
+        this.balanceStartTime = balanceStartTime;
+    }
+
+    public String getBalanceEndTime() {
+        if (balanceEndTime != null) {
+            String[] ymDate = balanceEndTime.split("\\-");
+            return DateUtils.getLastDayOfMonthString(Integer.valueOf(ymDate[0]), Integer.valueOf(ymDate[1]));
+        }
+        return null;
+    }
+
+    public void setBalanceEndTime(String balanceEndTime) {
+        this.balanceEndTime = balanceEndTime;
+    }
+
+    public String getActualStartBeginTime() {
+        if (actualStartBeginTime != null) {
+            String[] ymDate = actualStartBeginTime.split("\\-");
+            return DateUtils.getFirstDayOfMontString((Integer.valueOf(ymDate[0])), Integer.valueOf(ymDate[1]));
+        }
+        return null;
+    }
+
+    public void setActualStartBeginTime(String actualStartBeginTime) {
+        this.actualStartBeginTime = actualStartBeginTime;
+    }
+
+    public String getActualStartEndTime() {
+        if (actualStartEndTime != null) {
+            String[] ymDate = actualStartEndTime.split("\\-");
+            return DateUtils.getLastDayOfMonthString(Integer.valueOf(ymDate[0]), Integer.valueOf(ymDate[1]));
+        }
+        return null;
+    }
+
+    public void setActualStartEndTime(String actualStartEndTime) {
+        this.actualStartEndTime = actualStartEndTime;
     }
 }
