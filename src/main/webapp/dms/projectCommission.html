@@ -301,7 +301,6 @@
     }
 
     function onFilterChanged() {
-
         var branch = mini.get("branchFilter").getValue();
         var designer = mini.get("designerFilter").getValue();
         var contractId = mini.get("contractFilter").getValue();
@@ -310,12 +309,11 @@
         var payContractRatio = mini.get("payContractFilter").getValue();
         var payProjectRatio = mini.get("payProjectFilter").getValue();
         var balanceTime = mini.get("balanceTimeFilter").getText();
-        var actualStartTime = mini.get("actualStartTimeFilter").getValue();
+        var actualStartTime = mini.get("actualStartTimeFilter").getText();
         var designerAssistant = mini.get("designerAssistantFilter").getValue();
         var firstCommissionDate = mini.get("firstCommissionDateFilter").getText();
         var balanceCommissionDate = mini.get("balanceCommissionDateFilter").getText();
         var designerAssistantCommissionDate = mini.get("designerAssistantCommissionDateFilter").getText();
-
         grid.load({
             designer: designer,
             designerAssistant: designerAssistant,
@@ -356,7 +354,6 @@
         document.getElementById("designerAssistant").value = designerAssistant;
         document.getElementById("firstCommissionDate").value = firstCommissionDate;
         document.getElementById("balanceTime").value = balanceTime;
- ,
         document.getElementById("balanceCommissionDate").value = balanceCommissionDate;
         document.getElementById("designerAssistantCommissionDate").value = designerAssistantCommissionDate;
 

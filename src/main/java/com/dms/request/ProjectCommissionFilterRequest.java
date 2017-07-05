@@ -244,8 +244,8 @@ public class ProjectCommissionFilterRequest extends BaseFilterRequest implements
     }
 
     public String getBalanceStartTime() {
-        if (balanceStartTime != null) {
-            String[] ymDate = balanceStartTime.split("\\-");
+        if (balanceTime != null) {
+            String[] ymDate = balanceTime.split("\\-");
             return DateUtils.getFirstDayOfMontString((Integer.valueOf(ymDate[0])), Integer.valueOf(ymDate[1]));
 
         }
@@ -257,8 +257,8 @@ public class ProjectCommissionFilterRequest extends BaseFilterRequest implements
     }
 
     public String getBalanceEndTime() {
-        if (balanceEndTime != null) {
-            String[] ymDate = balanceEndTime.split("\\-");
+        if (balanceTime != null) {
+            String[] ymDate = balanceTime.split("\\-");
             return DateUtils.getLastDayOfMonthString(Integer.valueOf(ymDate[0]), Integer.valueOf(ymDate[1]));
         }
         return null;
@@ -269,8 +269,8 @@ public class ProjectCommissionFilterRequest extends BaseFilterRequest implements
     }
 
     public String getActualStartBeginTime() {
-        if (actualStartBeginTime != null) {
-            String[] ymDate = actualStartBeginTime.split("\\-");
+        if (actualStartTime != null) {
+            String[] ymDate = actualStartTime.split("\\-");
             return DateUtils.getFirstDayOfMontString((Integer.valueOf(ymDate[0])), Integer.valueOf(ymDate[1]));
         }
         return null;
@@ -281,8 +281,8 @@ public class ProjectCommissionFilterRequest extends BaseFilterRequest implements
     }
 
     public String getActualStartEndTime() {
-        if (actualStartEndTime != null) {
-            String[] ymDate = actualStartEndTime.split("\\-");
+        if (actualStartTime != null) {
+            String[] ymDate = actualStartTime.split("\\-");
             return DateUtils.getLastDayOfMonthString(Integer.valueOf(ymDate[0]), Integer.valueOf(ymDate[1]));
         }
         return null;

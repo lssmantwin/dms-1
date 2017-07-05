@@ -194,7 +194,7 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 			request.setPayProjectRatio(new BigDecimal(payProjectRatio));
 		}
 		request.setCommissionState(StringUtils.isBlank(commissionState) ? null : CommissionStateEnum.fromDbConstant(Integer.valueOf(commissionState)));
-		request.setActualEndTime(actualStartTime);
+		request.setActualStartTime(actualStartTime);
 		request.setActualEndTime(actualEndTime);
 		request.setContractDate(contractDate);
 		request.setFirstCommissionDate(firstCommissionDate);
