@@ -41,6 +41,38 @@
         <result property="contractWages" column="contract_wages"/>
     </resultMap>
 
+    <resultMap id="SalaryBillMap" type="SalaryBill">
+        <result property="month" column="month"/>
+        <result property="companyId" column="company_id"/>
+        <result property="employeeName" column="employee_name"/>
+        <result property="position" column="position"/>
+        <result property="hiredate" column="hiredate" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
+        <result property="baseWage" column="base_wage"/>
+        <result property="otherSubsidy" column="other_subsidy"/>
+        <result property="mealsSubsidy" column="meals_subsidy"/>
+        <result property="secrecySubsidy" column="secrecy_subsidy"/>
+        <result property="workingAgeSubsidy" column="working_age_subsidy"/>
+        <result property="communicationFee" column="communication_fee"/>
+        <result property="charge" column="charge"/>
+        <result property="exhibitionCharge" column="exhibition_charge"/>
+        <result property="casualLeave" column="casual_leave"/>
+        <result property="sickLeave" column="sick_leave"/>
+        <result property="storageCharge" column="storage_charge"/>
+        <result property="grossPay" column="gross_pay"/>
+        <result property="medicalInsurance" column="medical_insurance"/>
+        <result property="housingFund" column="housing_fund"/>
+        <result property="beforeTaxSalary" column="before_tax_salary"/>
+        <result property="personalIncomeTax" column="personal_income_tax"/>
+        <result property="afterTaxSalary" column="after_tax_salary"/>
+        <result property="bankCardNumber" column="bank_card_number"/>
+        <result property="identityCardNumber" column="identity_card_number"/>
+
+        <result property="postAllowance" column="post_allowance"/>
+        <result property="performanceAppraisalCash" column="performance_appraisal_cash"/>
+        <result property="bonusCash" column="bonus_cash"/>
+        <result property="salaryCash" column="salary_cash"/>
+    </resultMap>
+
     <select id="getFinances" parameterType="FinanceFilterRequest" resultMap="FinanceMap">
         select t.eid as employee_id, t.name as employee_name, t.base_wage, t.overtime, t.meals_subsidy,
         t.secrecy_subsidy, t.communication_fee,
@@ -81,6 +113,31 @@
                 t.rn BETWEEN #{start} and #{end}
             </if>
         </where>
+    </select>
+
+    <select id="getSalaryBills" parameterType="FinanceFilterRequest" resultMap="SalaryBillMap">
+        select
+        t.company_id, t.name as employee_name, t."position", t.hiredate, t.base_wage, t.other_subsidy, t.meals_subsidy,
+        t.secrecy_subsidy, t.working_age_subsidy, t.communication_fee, t.charge, t.exhibition_charge,
+        t.casual_leave, t.sick_leave, t.storage_charge, t.gross_pay, t.medical_insurance, t.housing_fund,
+        t.before_tax_salary, t.personal_income_tax, t.after_tax_salary, t.bank_card_number, t.identity_card_number,
+        t.post_allowance, t.performance_appraisal_cash, t.bonus_cash, t.salary_cash, t."month"
+        from (
+        select e.company_id, e.name, e."position", e.hiredate, e.base_wage, f.other_subsidy, e.meals_subsidy,
+        e.secrecy_subsidy, e.working_age_subsidy, e.communication_fee, f.charge, f.exhibition_charge,
+        f.casual_leave, f.sick_leave, f.storage_charge, f.gross_pay, f.medical_insurance, f.housing_fund,
+        f.before_tax_salary, f.personal_income_tax, f.after_tax_salary, e.bank_card_number, e.identity_card_number,
+        e.post_allowance, f.performance_appraisal_cash, f.bonus_cash, f.salary_cash, f."month",
+        row_number() over (order by e.id) as rn from salary_employee e left join salary_finance f on e.id =
+        f.employee_id and f."month" = #{month}
+        <where>
+            <if test="employeeName != null and employeeName != ''">
+                <bind name="pattern" value="'%' + employeeName + '%'"/>
+                e.name like #{pattern}
+            </if>
+        </where>
+        ) t
+        order by t.company_id
     </select>
 
     <insert id="saveFinance" parameterType="FinanceDto">

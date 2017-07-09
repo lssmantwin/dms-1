@@ -2,6 +2,7 @@ package com.dms.service.impl;
 
 import java.util.List;
 
+import com.dms.dto.SalaryBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,12 +33,7 @@ public class FinanceServiceImpl implements FinanceService {
 	}
 
 	@Override
-	public void updateCommission(FinanceDto financeDto) {
-		financeDao.updateFinance(financeDto);
-	}
-
-	@Override
-	public void updateCommissions(List<FinanceDto> financeDtos) {
-
+	public List<SalaryBill> getSalaryBills(FinanceFilterRequest request) {
+		return financeDao.getSalaryBills(request);
 	}
 }
