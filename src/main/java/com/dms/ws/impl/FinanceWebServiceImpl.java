@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.ws.rs.core.Response;
 
+import com.dms.dto.SalaryBill;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -274,10 +275,10 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 		LOGGER.info("export finance");
 
 		FinanceFilterRequest request = generateFilterRequest(employeeName, 0, 0, null, null, month);
-		List<FinanceDto> finances = financeService.getFinances(request);
+		List<SalaryBill> bills = financeService.getSalaryBills(request);
 		InputStream in = null;
 		try {
-			in = new FinanceExportXls(finances).getStream();
+			in = new FinanceExportXls(bills).getStream();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

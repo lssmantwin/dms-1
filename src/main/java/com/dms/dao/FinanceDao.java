@@ -3,6 +3,7 @@ package com.dms.dao;
 import java.util.List;
 
 import com.dms.dto.FinanceDto;
+import com.dms.dto.SalaryBill;
 import com.dms.request.FinanceFilterRequest;
 
 public interface FinanceDao {
@@ -17,9 +18,5 @@ public interface FinanceDao {
 
 	void updateCommission(FinanceDto financeDto);
 
-	void updateCommissions(List<FinanceDto> financeDtos);
-
-	void updateFinanceCommission(FinanceDto financeDto);
-
-
+	List<SalaryBill> getSalaryBills(FinanceFilterRequest request);
 }

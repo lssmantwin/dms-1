@@ -17,6 +17,7 @@
         <typeAlias type="com.dms.dto.ChargeDetailDto" alias="ChargeDetailDto"/>
         <typeAlias type="com.dms.dto.DesignAssistantDto" alias="DesignAssistantDto"/>
         <typeAlias type="com.dms.dto.UserDto" alias="UserDto"/>
+        <typeAlias type="com.dms.dto.SalaryBill" alias="SalaryBill"/>
     </typeAliases>
 
     <typeHandlers>
