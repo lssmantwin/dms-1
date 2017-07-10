@@ -21,7 +21,7 @@ public class SalaryBill implements Serializable {
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
 	private LocalDateTime hiredate;
 	private BigDecimal baseWage;
-	private BigDecimal otherSubsidy;
+	private BigDecimal otherSubsidyCard;
 	private BigDecimal mealsSubsidy;
 	private BigDecimal secrecySubsidy;
 	private BigDecimal workingAgeSubsidy;
@@ -39,10 +39,14 @@ public class SalaryBill implements Serializable {
 	private BigDecimal afterTaxSalary;
 	private String bankCardNumber;
 	private String identityCardNumber;
+	private BigDecimal performanceAppraisalCard;
+	private BigDecimal bonusCard;
 
 	private BigDecimal postAllowance;
 	private BigDecimal performanceAppraisalCash;
 	private BigDecimal bonusCash;
+	private BigDecimal otherSubsidyCash;
+	private BigDecimal otherCharge;
 	private BigDecimal salaryCash;
 
 	public String getMonth() {
@@ -93,12 +97,20 @@ public class SalaryBill implements Serializable {
 		this.baseWage = baseWage;
 	}
 
-	public BigDecimal getOtherSubsidy() {
-		return otherSubsidy;
+	public BigDecimal getOtherSubsidyCard() {
+		return otherSubsidyCard;
 	}
 
-	public void setOtherSubsidy(BigDecimal otherSubsidy) {
-		this.otherSubsidy = otherSubsidy;
+	public void setOtherSubsidyCard(BigDecimal otherSubsidyCard) {
+		this.otherSubsidyCard = otherSubsidyCard;
+	}
+
+	public BigDecimal getOtherSubsidyCash() {
+		return otherSubsidyCash;
+	}
+
+	public void setOtherSubsidyCash(BigDecimal otherSubsidyCash) {
+		this.otherSubsidyCash = otherSubsidyCash;
 	}
 
 	public BigDecimal getMealsSubsidy() {
@@ -245,12 +257,28 @@ public class SalaryBill implements Serializable {
 		this.postAllowance = postAllowance;
 	}
 
+	public BigDecimal getPerformanceAppraisalCard() {
+		return performanceAppraisalCard;
+	}
+
+	public void setPerformanceAppraisalCard(BigDecimal performanceAppraisalCard) {
+		this.performanceAppraisalCard = performanceAppraisalCard;
+	}
+
 	public BigDecimal getPerformanceAppraisalCash() {
 		return performanceAppraisalCash;
 	}
 
 	public void setPerformanceAppraisalCash(BigDecimal performanceAppraisalCash) {
 		this.performanceAppraisalCash = performanceAppraisalCash;
+	}
+
+	public BigDecimal getBonusCard() {
+		return bonusCard;
+	}
+
+	public void setBonusCard(BigDecimal bonusCard) {
+		this.bonusCard = bonusCard;
 	}
 
 	public BigDecimal getBonusCash() {
@@ -267,5 +295,13 @@ public class SalaryBill implements Serializable {
 
 	public void setSalaryCash(BigDecimal salaryCash) {
 		this.salaryCash = salaryCash;
+	}
+
+	public BigDecimal getOtherCharge() {
+		return otherCharge;
+	}
+
+	public void setOtherCharge(BigDecimal otherCharge) {
+		this.otherCharge = otherCharge;
 	}
 }

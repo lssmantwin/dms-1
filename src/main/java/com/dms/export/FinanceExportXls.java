@@ -4,11 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-import com.dms.dto.SalaryBill;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -17,7 +14,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import com.dms.constant.DmsConstant;
-import com.dms.dto.FinanceDto;
+import com.dms.dto.SalaryBill;
 import com.dms.enums.CompanyEnum;
 
 public class FinanceExportXls implements StreamSource {
@@ -143,7 +140,7 @@ public class FinanceExportXls implements StreamSource {
 		cell6.setCellValue(bill.getBaseWage() == null ? StringUtils.EMPTY : bill.getBaseWage().toString());
 
 		Cell cell7 = body.createCell(column++);
-		cell7.setCellValue(bill.getOtherSubsidy() == null ? StringUtils.EMPTY : bill.getOtherSubsidy().toString());
+		cell7.setCellValue(bill.getOtherSubsidyCard() == null ? StringUtils.EMPTY : bill.getOtherSubsidyCard().toString());
 
 		Cell cell8 = body.createCell(column++);
 		cell8.setCellValue(bill.getMealsSubsidy() == null ? StringUtils.EMPTY : bill.getMealsSubsidy().toString());
@@ -151,22 +148,17 @@ public class FinanceExportXls implements StreamSource {
 		Cell cell9 = body.createCell(column++);
 		cell9.setCellValue(bill.getSecrecySubsidy() == null ? StringUtils.EMPTY : bill.getSecrecySubsidy().toString());
 
-		// TODO 提成补贴
 		Cell cell10 = body.createCell(column++);
-		cell10.setCellValue(StringUtils.EMPTY);
+		cell10.setCellValue(bill.getBonusCard() == null ? StringUtils.EMPTY : bill.getBonusCard().toString());
 
 		Cell cell11 = body.createCell(column++);
 		cell11.setCellValue(bill.getWorkingAgeSubsidy() == null ? StringUtils.EMPTY : bill.getWorkingAgeSubsidy().toString());
 
-		// TODO 考核奖励
 		Cell cell12 = body.createCell(column++);
-		cell12.setCellValue(StringUtils.EMPTY);
+		cell12.setCellValue(bill.getPerformanceAppraisalCard() == null ? StringUtils.EMPTY : bill.getPerformanceAppraisalCard().toString());
 
 		Cell cell13 = body.createCell(column++);
 		cell13.setCellValue(bill.getCommunicationFee() == null ? StringUtils.EMPTY : bill.getCommunicationFee().toString());
-
-		Cell cell14 = body.createCell(column++);
-		cell14.setCellValue(bill.getOtherSubsidy() == null ? StringUtils.EMPTY : bill.getOtherSubsidy().toString());
 
 		Cell cell15 = body.createCell(column++);
 		cell15.setCellValue(bill.getCharge() == null ? StringUtils.EMPTY : bill.getCharge().toString());
@@ -211,13 +203,11 @@ public class FinanceExportXls implements StreamSource {
 		Cell cell28 = body.createCell(column++);
 		cell28.setCellValue(bill.getPostAllowance() == null ? StringUtils.EMPTY : bill.getPostAllowance().toString());
 
-		// TODO 绩效考核
 		Cell cell29 = body.createCell(column++);
-		cell29.setCellValue(StringUtils.EMPTY);
+		cell29.setCellValue(bill.getPerformanceAppraisalCash() == null ? StringUtils.EMPTY : bill.getPerformanceAppraisalCash().toString());
 
-		// TODO 补贴
 		Cell cell30 = body.createCell(column++);
-		cell30.setCellValue(StringUtils.EMPTY);
+		cell30.setCellValue(bill.getOtherSubsidyCash() == null ? StringUtils.EMPTY : bill.getOtherSubsidyCash().toString());
 
 		Cell cell31 = body.createCell(column++);
 		cell31.setCellValue(bill.getBonusCash() == null ? StringUtils.EMPTY : bill.getBonusCash().toString());
@@ -226,9 +216,8 @@ public class FinanceExportXls implements StreamSource {
 		Cell cell32 = body.createCell(column++);
 		cell32.setCellValue(StringUtils.EMPTY);
 
-		// TODO 其他扣款
 		Cell cell33 = body.createCell(column++);
-		cell33.setCellValue(StringUtils.EMPTY);
+		cell33.setCellValue(bill.getOtherCharge() == null ? StringUtils.EMPTY : bill.getOtherCharge().toString());
 
 		// TODO 展会最后一名扣款
 		Cell cell34 = body.createCell(column++);
