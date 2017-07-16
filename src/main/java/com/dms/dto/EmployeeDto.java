@@ -43,6 +43,8 @@ public class EmployeeDto implements Serializable {
 	private BigDecimal charge;
 	private int companyId;
 	private String department;
+	private BigDecimal medicalInsurance;
+	private BigDecimal housingFund;
 
 	public String getId() {
 		return id;
@@ -242,5 +244,21 @@ public class EmployeeDto implements Serializable {
 
 	public void setDepartment(String department) {
 		this.department = department;
+	}
+
+	public BigDecimal getMedicalInsurance() {
+		return medicalInsurance;
+	}
+
+	public void setMedicalInsurance(BigDecimal medicalInsurance) {
+		this.medicalInsurance = medicalInsurance;
+	}
+
+	public BigDecimal getHousingFund() {
+		return housingFund;
+	}
+
+	public void setHousingFund(BigDecimal housingFund) {
+		this.housingFund = housingFund;
 	}
 }

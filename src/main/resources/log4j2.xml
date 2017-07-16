@@ -14,12 +14,12 @@
     <Appenders>
 
         <!--这个输出控制台的配置-->
-        <Console name="Console" target="SYSTEM_OUT">
-            <!-- 控制台只输出level及以上级别的信息(onMatch),其他的直接拒绝(onMismatch) -->
-            <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
-            <!-- 输出日志的格式 -->
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
-        </Console>
+        <!--<Console name="Console" target="SYSTEM_OUT">-->
+        <!--&lt;!&ndash; 控制台只输出level及以上级别的信息(onMatch),其他的直接拒绝(onMismatch) &ndash;&gt;-->
+        <!--<ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>-->
+        <!--&lt;!&ndash; 输出日志的格式 &ndash;&gt;-->
+        <!--<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>-->
+        <!--</Console>-->
 
         <!-- 设置日志格式并配置日志压缩格式(service.log.年份.gz) -->
         <RollingRandomAccessFile name="service_appender"
@@ -51,33 +51,31 @@
 
     <Loggers>
         <!-- 配置日志的根节点 -->
-        <root level="trace">
-            <appender-ref ref="Console"/>
-
-            <appender-ref ref="service_appender" />
+        <root level="info">
+            <!--<appender-ref ref="Console"/>-->
+            <appender-ref ref="service_appender"/>
 
         </root>
 
         <!-- 第三方日志系统 -->
-        <logger name="org.springframework.core" level="trace"/>
-        <logger name="org.springframework.beans" level="trace"/>
-        <logger name="org.springframework.context" level="trace"/>
-        <logger name="org.springframework.web" level="trace"/>
-        <logger name="java.sql.Connection" level="trace"/>
-        <logger name="java.sql.Statement" level="trace"/>
-        <logger name="java.sql.PreparedStatement" level="trace"/>
-        <logger name="java.sql.ResultSet" level="trace"/>
-        <logger name="java.sql.PreparedStatement" level="trace"/>
+        <logger name="org.springframework.core" level="info"/>
+        <logger name="org.springframework.beans" level="info"/>
+        <logger name="org.springframework.context" level="info"/>
+        <logger name="org.springframework.web" level="info"/>
+        <logger name="java.sql.Connection" level="info"/>
+        <logger name="java.sql.Statement" level="info"/>
+        <logger name="java.sql.PreparedStatement" level="info"/>
+        <logger name="java.sql.ResultSet" level="info"/>
+        <logger name="java.sql.PreparedStatement" level="info"/>
         <!--<logger name="javax.ws.rs.core" level="trace"/>-->
-        <logger name="org.jboss" level="trace"/>
-        <logger name="com.alibaba.druid.pool" level="trace"/>
+        <logger name="org.jboss" level="info"/>
+        <logger name="com.alibaba.druid.pool" level="info"/>
 
         <!-- 日志实例(info),其中'service-log'继承root,但是root将日志输出控制台,而'service-log'将日志输出到文件,通过属性'additivity="false"'将'service-log'的
              的日志不再输出到控制台 -->
         <logger name="service_log" level="info" includeLocation="true" additivity="true">
             <appender-ref ref="service_appender"/>
         </logger>
-
 
     </Loggers>
 

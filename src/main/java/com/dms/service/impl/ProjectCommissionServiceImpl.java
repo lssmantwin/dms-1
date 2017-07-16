@@ -63,7 +63,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 
 			boolean isExistedDesigner = isExistedDesignerId(commission);
 			if (isExistedDesigner) {
-				LOGGER.info( " ====designer exist ======" + commission.getDesigner() + commission.getEmployeeId());
+				LOGGER.info(" ====designer exist ======" + commission.getDesigner() + commission.getEmployeeId());
 				CommissionStateEnum commissionState = CommissionStateEnum.COMMISSION_STATE_START;
 				if (CommissionStateEnum.COMMISSION_STATE_START == commission.getCommissionState()) {
 					BigDecimal firstCommission = BigDecimal.ZERO;
@@ -71,18 +71,17 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 					if (commission.getContractTotal() != null && commission.getContractTotal().compareTo(DmsConstants.MIN_CONTRACT_COMMISSION) <= 0) {
 						firstCommission = DmsConstants.MIN_COMMISSION;
 						commissionState = CommissionStateEnum.COMMISSION_STATE_FINISH;
-						LOGGER.info( " === 小于1万 提成250======" + firstCommission);
+						LOGGER.info(" === 小于1万 提成250======" + firstCommission);
 					} else {
 						// 计算设计师助理提成
 						if (commission.getDesignerAssistant() != null && !commission.getDesignerAssistant().equals("")
 								&& commission.getDesignerAssistantCommissionRate() != null && commission.getDesignerAssistantCommission() == null) {
-							BigDecimal designCommissionRate = commission.getDesignCommissionRate().subtract(DmsConstants.DESIGN_COMMISSION_SUB_RATE);
-							commission.setDesignCommissionRate(designCommissionRate.setScale(4, BigDecimal.ROUND_HALF_UP));
-							commission.setDesignerAssistantCommission(
-									commission.getCommissionBase().multiply(commission.getDesignerAssistantCommissionRate()).setScale(2, BigDecimal.ROUND_HALF_UP));
+							commission.setDesignerAssistantCommission(commission.getCommissionBase().multiply(commission.getDesignerAssistantCommissionRate())
+									.setScale(2, BigDecimal.ROUND_HALF_UP));
 							commission.setDesignerAssistantCommissionDate(LocalDateTime.now());
 						}
-						LOGGER.info( " === 小于1万 getDesignCommissionRate ======" + commission.getDesignCommissionRate() + "fffff" +   commission.getFirstCommissionRate());
+						LOGGER.info(" === 小于1万 getDesignCommissionRate ======" + commission.getDesignCommissionRate() + "fffff"
+								+ commission.getFirstCommissionRate());
 
 						if (commission.getDesignCommissionRate() != null && commission.getFirstCommissionRate() != null) {
 							commissionState = CommissionStateEnum.COMMISSION_STATE_FIRST;
@@ -114,12 +113,12 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 
 	}
 
-	private boolean  isExistedDesignerId(ProjectCommissionDto commission) {
+	private boolean isExistedDesignerId(ProjectCommissionDto commission) {
 		if (StringUtils.isEmpty(commission.getEmployeeId())) {
-            EmployeeDto employee = employeeDao.getEmployeeByName(commission.getDesigner().trim());
-            if (employee != null) {
-                commission.setEmployeeId(Long.valueOf(employee.getId()));
-                if (commission.getDesignCommissionRate() == null || BigDecimal.ZERO.equals(commission.getDesignCommissionRate())) {
+			EmployeeDto employee = employeeDao.getEmployeeByName(commission.getDesigner().trim());
+			if (employee != null) {
+				commission.setEmployeeId(Long.valueOf(employee.getId()));
+				if (commission.getDesignCommissionRate() == null || BigDecimal.ZERO.equals(commission.getDesignCommissionRate())) {
 					if (commission.getContractId().startsWith(DmsConstants.JYW_PROJECT)) {
 						commission.setDesignCommissionRate(employee.getRenovateCommissionRatio());
 						// 佳园屋
@@ -130,12 +129,12 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 						commission.setFirstCommissionRate(DmsConstants.DESIGN_COMMISSION_FIRST_RATE.setScale(2, BigDecimal.ROUND_HALF_UP));
 					}
 				}
-                return true;
-            } else {
-            	return false;
+				return true;
+			} else {
+				return false;
 			}
-        }
-        return true;
+		}
+		return true;
 	}
 
 	private void updateCommission(Long employeeId, BigDecimal commission, LocalDateTime commissionDate) {
@@ -168,7 +167,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 			if (CommissionStateEnum.COMMISSION_STATE_FIRST == commission.getCommissionState()) {
 				BigDecimal balanceCommission = BigDecimal.ZERO;
 				commissionState = CommissionStateEnum.COMMISSION_STATE_FINISH;
-				boolean isExistedDesigner =  isExistedDesignerId(commission);
+				boolean isExistedDesigner = isExistedDesignerId(commission);
 				if (isExistedDesigner) {
 					if (commission.getProjectChangeTotal() == null) {
 						commission.setProjectChangeTotal(BigDecimal.ZERO);
@@ -186,7 +185,8 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 							&& (commission.getDesignerAssistantCommission() != null && BigDecimal.ZERO != commission.getDesignerAssistantCommission())) {
 						EmployeeDto employee = employeeDao.getEmployeeByName(commission.getDesignerAssistant().trim());
 						if (!StringUtils.isEmpty(employee.getId())) {
-							updateCommission(Long.valueOf(employee.getId()), commission.getDesignerAssistantCommission(), commission.getBalanceCommissionDate());
+							updateCommission(Long.valueOf(employee.getId()), commission.getDesignerAssistantCommission(),
+									commission.getBalanceCommissionDate());
 						}
 					}
 					projectCommissionDao.updateProjectCommission(commission);
@@ -286,7 +286,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 	@Override
 	public void updateDesignAssistants(List<DesignAssistantDto> designAssistantDtos) {
 		for (DesignAssistantDto designAssistantDto : designAssistantDtos) {
-//			ProjectCommissionDto projectCommissionDto = projectCommissionDao.getProjectCommission()
+			// ProjectCommissionDto projectCommissionDto = projectCommissionDao.getProjectCommission()
 			EmployeeDto employee = employeeDao.getEmployeeByName(designAssistantDto.getDesignAssistant());
 			if (!StringUtils.isEmpty(employee.getId())) {
 				designAssistantDto.setDesignAssistantId(Long.valueOf(employee.getId()));

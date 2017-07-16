@@ -70,6 +70,9 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 		List<EmployeeDto> addEmployees = Lists.newArrayList();
 		List<EmployeeDto> updateEmployees = Lists.newArrayList();
 		for (EmployeeDto employeeDto : employeeDtos) {
+			if (StringUtils.isBlank(employeeDto.getName())) {
+				continue;
+			}
 			if (StringUtils.isBlank(employeeDto.getId())) {
 				addEmployees.add(employeeDto);
 				continue;

@@ -29,6 +29,8 @@
         <result property="charge" column="charge"/>
         <result property="companyId" column="company_id"/>
         <result property="department" column="department"/>
+        <result property="medicalInsurance" column="medical_insurance"/>
+        <result property="housingFund" column="housing_fund"/>
     </resultMap>
 
     <select id="getAttendance" resultType="Attendance">
@@ -95,7 +97,7 @@
         meals_subsidy, secrecy_subsidy, communication_fee,
         jyw_commission_ratio, commencement_ratio, completion_ratio,
         renovate_commission_ratio, identity_card_number, transportation_allowance, post_allowance, leave_date,
-        storage_charge, total_charge, charge_per_month, charge, company_id, department)
+        storage_charge, total_charge, charge_per_month, charge, company_id, department, medical_insurance, housing_fund)
         values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.name}, #{item.position}, #{item.hiredate}, #{item.baseWage}, #{item.bankCardNumber},
@@ -112,7 +114,9 @@
             #{item.chargePerMonth},
             #{item.charge},
             #{item.companyId},
-            #{item.department}
+            #{item.department},
+            #{item.medicalInsurance},
+            #{item.housingFund}
             )
         </foreach>
     </insert>
@@ -143,7 +147,9 @@
             charge_per_month = #{item.chargePerMonth},
             charge = #{item.charge},
             company_id = #{item.companyId},
-            department = #{item.department}
+            department = #{item.department},
+            medical_insurance = #{item.medicalInsurance},
+            housing_fund = #{item.housingFund}
             where id = #{item.id}
         </foreach>
     </update>

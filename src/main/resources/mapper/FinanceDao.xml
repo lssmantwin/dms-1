@@ -99,8 +99,8 @@
         f.other_subsidy_card, f.other_subsidy_cash, f.exhibition_charge, f.charge,
         f.charge_comments,f.other_charge,
         f.casual_leave, f.sick_leave,
-        f.storage_charge, f.gross_pay, f.medical_insurance,
-        f.housing_fund, f.before_tax_salary, f.personal_income_tax, f.after_tax_salary, f.already_charge,
+        f.storage_charge, f.gross_pay, e.medical_insurance,
+        e.housing_fund, f.before_tax_salary, f.personal_income_tax, f.after_tax_salary, f.already_charge,
         f.salary_cash,f.contract_wages, f.post_allowance,
         row_number() over (order by e.id) as rn from salary_employee e left join salary_finance f on e.id =
         f.employee_id and
@@ -132,7 +132,7 @@
         select e.company_id, e.name, e."position", e.hiredate, e.base_wage, f.other_subsidy_card, f.other_subsidy_cash,
         e.meals_subsidy,
         e.secrecy_subsidy, e.working_age_subsidy, e.communication_fee, f.charge, f.exhibition_charge,
-        f.casual_leave, f.sick_leave, f.storage_charge, f.gross_pay, f.medical_insurance, f.housing_fund,
+        f.casual_leave, f.sick_leave, f.storage_charge, f.gross_pay, e.medical_insurance, e.housing_fund,
         f.before_tax_salary, f.personal_income_tax, f.after_tax_salary, e.bank_card_number, e.identity_card_number,
         f.post_allowance, f.performance_appraisal_cash, f.bonus_cash, f.salary_cash, f."month",
         f.performance_appraisal_card, f.bonus_card, f.other_charge,
