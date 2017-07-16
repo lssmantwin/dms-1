@@ -60,48 +60,82 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 				commission.setPurchasingCost(BigDecimal.ZERO);
 			}
 			commission.setCommissionBase(commission.getContractTotal().subtract(commission.getPurchasingCost()));
-			// 设计师助理提成
-			if (commission.getDesignerAssistant() != null && !commission.getDesignerAssistant().equals("")
-					&& commission.getDesignerAssistantCommissionRate() != null && commission.getDesignerAssistantCommission() == null) {
-				BigDecimal designCommissionRate = commission.getDesignCommissionRate().subtract(DmsConstants.DESIGN_COMMISSION_SUB_RATE);
-				commission.setDesignCommissionRate(designCommissionRate.setScale(4, BigDecimal.ROUND_HALF_UP));
-				commission.setDesignerAssistantCommission(
-						commission.getCommissionBase().multiply(commission.getDesignerAssistantCommissionRate()).setScale(2, BigDecimal.ROUND_HALF_UP));
-				commission.setDesignerAssistantCommissionDate(LocalDateTime.now());
-			}
-			CommissionStateEnum commissionState = CommissionStateEnum.COMMISSION_STATE_START;
-			if (CommissionStateEnum.COMMISSION_STATE_START == commission.getCommissionState()) {
-				BigDecimal firstCommission = BigDecimal.ZERO;
-				// 小于1万 提成250
-				if (commission.getContractTotal() != null && commission.getContractTotal().compareTo(DmsConstants.MIN_CONTRACT_COMMISSION) <= 0) {
-					firstCommission = DmsConstants.MIN_COMMISSION;
-					commissionState = CommissionStateEnum.COMMISSION_STATE_FINISH;
-				} else {
-					if (commission.getDesignCommissionRate() != null && commission.getFirstCommissionRate() != null) {
-						commissionState = CommissionStateEnum.COMMISSION_STATE_FIRST;
-						firstCommission = commission.getCommissionBase().multiply(commission.getDesignCommissionRate())
-								.multiply(commission.getFirstCommissionRate());
+
+			boolean isExistedDesigner = isExistedDesignerId(commission);
+			if (isExistedDesigner) {
+				LOGGER.info( " ====designer exist ======" + commission.getDesigner() + commission.getEmployeeId());
+				CommissionStateEnum commissionState = CommissionStateEnum.COMMISSION_STATE_START;
+				if (CommissionStateEnum.COMMISSION_STATE_START == commission.getCommissionState()) {
+					BigDecimal firstCommission = BigDecimal.ZERO;
+					// 小于1万 提成250
+					if (commission.getContractTotal() != null && commission.getContractTotal().compareTo(DmsConstants.MIN_CONTRACT_COMMISSION) <= 0) {
+						firstCommission = DmsConstants.MIN_COMMISSION;
+						commissionState = CommissionStateEnum.COMMISSION_STATE_FINISH;
+						LOGGER.info( " === 小于1万 提成250======" + firstCommission);
+					} else {
+						// 计算设计师助理提成
+						if (commission.getDesignerAssistant() != null && !commission.getDesignerAssistant().equals("")
+								&& commission.getDesignerAssistantCommissionRate() != null && commission.getDesignerAssistantCommission() == null) {
+							BigDecimal designCommissionRate = commission.getDesignCommissionRate().subtract(DmsConstants.DESIGN_COMMISSION_SUB_RATE);
+							commission.setDesignCommissionRate(designCommissionRate.setScale(4, BigDecimal.ROUND_HALF_UP));
+							commission.setDesignerAssistantCommission(
+									commission.getCommissionBase().multiply(commission.getDesignerAssistantCommissionRate()).setScale(2, BigDecimal.ROUND_HALF_UP));
+							commission.setDesignerAssistantCommissionDate(LocalDateTime.now());
+						}
+						LOGGER.info( " === 小于1万 getDesignCommissionRate ======" + commission.getDesignCommissionRate() + "fffff" +   commission.getFirstCommissionRate());
+
+						if (commission.getDesignCommissionRate() != null && commission.getFirstCommissionRate() != null) {
+							commissionState = CommissionStateEnum.COMMISSION_STATE_FIRST;
+							firstCommission = commission.getCommissionBase().multiply(commission.getDesignCommissionRate())
+									.multiply(commission.getFirstCommissionRate());
+						}
+
+					}
+					if (BigDecimal.ZERO != firstCommission && firstCommission != null) {
+						commission.setFirstCommission(firstCommission.setScale(2, BigDecimal.ROUND_HALF_UP));
+						commission.setFirstCommissionDate(LocalDateTime.now());
+						commission.setCommissionState(commissionState);
+						commission.setUpdatedTime(LocalDateTime.now());
+						updateCommission(commission.getEmployeeId(), commission.getFirstCommission(), commission.getFirstCommissionDate());
+						projectCommissionDao.updateProjectCommission(commission);
+					}
+
+					// 设计助理提成保存
+					if (!StringUtils.isEmpty(commission.getDesignerAssistant())) {
+						EmployeeDto employee = employeeDao.getEmployeeByName(commission.getDesignerAssistant().trim());
+						if (!StringUtils.isEmpty(employee.getId())) {
+							updateCommission(Long.valueOf(employee.getId()), commission.getDesignerAssistantCommission(), commission.getFirstCommissionDate());
+						}
 					}
 
 				}
-				if (BigDecimal.ZERO != firstCommission) {
-					commission.setFirstCommission(firstCommission.setScale(2, BigDecimal.ROUND_HALF_UP));
-					commission.setFirstCommissionDate(LocalDateTime.now());
-					commission.setCommissionState(commissionState);
-					commission.setUpdatedTime(LocalDateTime.now());
-				}
-				updateCommission(commission.getEmployeeId(), commission.getFirstCommission(), commission.getFirstCommissionDate());
-				// 设计助理提成
-				if (!StringUtils.isEmpty(commission.getDesignerAssistant())) {
-					EmployeeDto employee = employeeDao.getEmployeeByName(commission.getDesignerAssistant().trim());
-					if (!StringUtils.isEmpty(employee.getId())) {
-						updateCommission(Long.valueOf(employee.getId()), commission.getDesignerAssistantCommission(), commission.getFirstCommissionDate());
-					}
-				}
-				projectCommissionDao.updateProjectCommission(commission);
 			}
 		}
 
+	}
+
+	private boolean  isExistedDesignerId(ProjectCommissionDto commission) {
+		if (StringUtils.isEmpty(commission.getEmployeeId())) {
+            EmployeeDto employee = employeeDao.getEmployeeByName(commission.getDesigner().trim());
+            if (employee != null) {
+                commission.setEmployeeId(Long.valueOf(employee.getId()));
+                if (commission.getDesignCommissionRate() == null || BigDecimal.ZERO.equals(commission.getDesignCommissionRate())) {
+					if (commission.getContractId().startsWith(DmsConstants.JYW_PROJECT)) {
+						commission.setDesignCommissionRate(employee.getRenovateCommissionRatio());
+						// 佳园屋
+					} else if (commission.getContractId().startsWith(DmsConstants.FX_PROJECT)) {
+						commission.setDesignCommissionRate(employee.getJywCommissionRatio());
+					}
+					if (employee.getCommencementRatio() == null || employee.getCommencementRatio() == BigDecimal.ZERO) {
+						commission.setFirstCommissionRate(DmsConstants.DESIGN_COMMISSION_FIRST_RATE.setScale(2, BigDecimal.ROUND_HALF_UP));
+					}
+				}
+                return true;
+            } else {
+            	return false;
+			}
+        }
+        return true;
 	}
 
 	private void updateCommission(Long employeeId, BigDecimal commission, LocalDateTime commissionDate) {
@@ -134,26 +168,29 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 			if (CommissionStateEnum.COMMISSION_STATE_FIRST == commission.getCommissionState()) {
 				BigDecimal balanceCommission = BigDecimal.ZERO;
 				commissionState = CommissionStateEnum.COMMISSION_STATE_FINISH;
-				if (commission.getProjectChangeTotal() == null) {
-					commission.setProjectChangeTotal(BigDecimal.ZERO);
-				}
-				balanceCommission = commission.getCommissionBase().add(commission.getProjectChangeTotal());
-				balanceCommission = balanceCommission.multiply(commission.getDesignCommissionRate()).subtract(commission.getFirstCommission());
-				commission.setBalanceCommission(balanceCommission.setScale(2, BigDecimal.ROUND_HALF_UP));
-				commission.setBalanceCommissionDate(LocalDateTime.now());
-				commission.setCommissionState(commissionState);
-				commission.setUpdatedTime(LocalDateTime.now());
-				// 设计师提成
-				updateCommission(commission.getEmployeeId(), commission.getBalanceCommission(), commission.getBalanceCommissionDate());
-				// 设计助理提成
-				if (!StringUtils.isEmpty(commission.getDesignerAssistant())
-						&& (commission.getDesignerAssistantCommission() != null && BigDecimal.ZERO != commission.getDesignerAssistantCommission())) {
-					EmployeeDto employee = employeeDao.getEmployeeByName(commission.getDesignerAssistant().trim());
-					if (!StringUtils.isEmpty(employee.getId())) {
-						updateCommission(Long.valueOf(employee.getId()), commission.getDesignerAssistantCommission(), commission.getBalanceCommissionDate());
+				boolean isExistedDesigner =  isExistedDesignerId(commission);
+				if (isExistedDesigner) {
+					if (commission.getProjectChangeTotal() == null) {
+						commission.setProjectChangeTotal(BigDecimal.ZERO);
 					}
+					balanceCommission = commission.getCommissionBase().add(commission.getProjectChangeTotal());
+					balanceCommission = balanceCommission.multiply(commission.getDesignCommissionRate()).subtract(commission.getFirstCommission());
+					commission.setBalanceCommission(balanceCommission.setScale(2, BigDecimal.ROUND_HALF_UP));
+					commission.setBalanceCommissionDate(LocalDateTime.now());
+					commission.setCommissionState(commissionState);
+					commission.setUpdatedTime(LocalDateTime.now());
+					// 设计师提成
+					updateCommission(commission.getEmployeeId(), commission.getBalanceCommission(), commission.getBalanceCommissionDate());
+					// 设计助理提成
+					if (!StringUtils.isEmpty(commission.getDesignerAssistant())
+							&& (commission.getDesignerAssistantCommission() != null && BigDecimal.ZERO != commission.getDesignerAssistantCommission())) {
+						EmployeeDto employee = employeeDao.getEmployeeByName(commission.getDesignerAssistant().trim());
+						if (!StringUtils.isEmpty(employee.getId())) {
+							updateCommission(Long.valueOf(employee.getId()), commission.getDesignerAssistantCommission(), commission.getBalanceCommissionDate());
+						}
+					}
+					projectCommissionDao.updateProjectCommission(commission);
 				}
-				projectCommissionDao.updateProjectCommission(commission);
 			}
 		}
 
@@ -191,15 +228,17 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 					EmployeeDto employee = employeeDao.getEmployeeByName(project.getDesigner());
 					if (employee != null) {
 						// 翻新
-						if (project.getContractId().startsWith(DmsConstants.FX_PROJECT)) {
+						if (project.getContractId().startsWith(DmsConstants.JYW_PROJECT)) {
 							project.setDesignCommissionRate(employee.getRenovateCommissionRatio());
 							project.setFirstCommissionRate(employee.getCommencementRatio());
 							// 佳园屋
-						} else if (project.getContractId().startsWith(DmsConstants.JYW_PROJECT)) {
+						} else if (project.getContractId().startsWith(DmsConstants.FX_PROJECT)) {
 							project.setDesignCommissionRate(employee.getJywCommissionRatio());
 							project.setFirstCommissionRate(employee.getCommencementRatio());
 						}
-						project.setDesignCommissionRate(employee.getJywCommissionRatio());
+						if (employee.getCommencementRatio() == null || employee.getCommencementRatio() == BigDecimal.ZERO) {
+							project.setFirstCommissionRate(DmsConstants.DESIGN_COMMISSION_FIRST_RATE.setScale(2, BigDecimal.ROUND_HALF_UP));
+						}
 						project.setEmployeeId(Long.valueOf(employee.getId()));
 					}
 					// 郊区设计师助理
@@ -247,6 +286,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 	@Override
 	public void updateDesignAssistants(List<DesignAssistantDto> designAssistantDtos) {
 		for (DesignAssistantDto designAssistantDto : designAssistantDtos) {
+//			ProjectCommissionDto projectCommissionDto = projectCommissionDao.getProjectCommission()
 			EmployeeDto employee = employeeDao.getEmployeeByName(designAssistantDto.getDesignAssistant());
 			if (!StringUtils.isEmpty(employee.getId())) {
 				designAssistantDto.setDesignAssistantId(Long.valueOf(employee.getId()));

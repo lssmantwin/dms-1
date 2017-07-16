@@ -92,6 +92,8 @@
                     <div field="actualStartTime" width="100" headerAlign="center" allowSort="false"
                          dateFormat="yyyy-MM-dd">
                         实际开工
+                        <input id="actualStartTimeFilter" property="filter" class="mini-monthpicker"
+                               style="width:100%;" minWidth="100" onvaluechanged="onFilterChanged()"/>
                     </div>
 
                     <div field="contractTotal" width="100" numberFormat="¥#,0.00" headerAlign="center"
@@ -141,8 +143,8 @@
                     </div>
                     <div field="balanceTime" width="100" headerAlign="center" allowSort="false" dateFormat="yyyy-MM">
                         结算日期
-                        <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
-                        <input property="filter" class="mini-datepicker" style="width:100%;" minWidth="100"/>
+                        <input id="balanceTimeFilter" property="filter" class="mini-monthpicker"
+                               style="width:100%;" minWidth="100" onvaluechanged="onFilterChanged()"/>
                     </div>
                     <div field="balanceCommission" width="100" headerAlign="center" numberFormat="¥#,0.00"
                          allowSort="false">
@@ -221,6 +223,7 @@
     <input type="hidden" name="payProjectRatio" id="payProjectRatio"/>
     <input type="hidden" name="designerAssistant" id="designerAssistant"/>
     <input type="hidden" name="firstCommissionDate" id="firstCommissionDate"/>
+    <input type="hidden" name="firstCommissionDate" id="balanceTime"/>
     <input type="hidden" name="balanceCommissionDate" id="balanceCommissionDate"/>
     <input type="hidden" name="designerAssistantCommissionDate" id="designerAssistantCommissionDate"/>
 </form>
@@ -305,11 +308,12 @@
         var acNumber = mini.get("acNumberFilter").getValue();
         var payContractRatio = mini.get("payContractFilter").getValue();
         var payProjectRatio = mini.get("payProjectFilter").getValue();
+        var balanceTime = mini.get("balanceTimeFilter").getText();
+        var actualStartTime = mini.get("actualStartTimeFilter").getText();
         var designerAssistant = mini.get("designerAssistantFilter").getValue();
         var firstCommissionDate = mini.get("firstCommissionDateFilter").getText();
         var balanceCommissionDate = mini.get("balanceCommissionDateFilter").getText();
         var designerAssistantCommissionDate = mini.get("designerAssistantCommissionDateFilter").getText();
-
         grid.load({
             designer: designer,
             designerAssistant: designerAssistant,
@@ -318,6 +322,8 @@
             acNumber: acNumber,
             payContractRatio: payContractRatio,
             payProjectRatio: payProjectRatio,
+            actualStartTime:actualStartTime,
+             balanceTime:balanceTime,
             firstCommissionDate: firstCommissionDate,
             balanceCommissionDate: balanceCommissionDate,
             designerAssistantCommissionDate: designerAssistantCommissionDate,
@@ -335,6 +341,7 @@
         var designerAssistant = mini.get("designerAssistantFilter").getValue();
         var firstCommissionDate = mini.get("firstCommissionDateFilter").getText();
         var balanceCommissionDate = mini.get("balanceCommissionDateFilter").getText();
+        var balanceTimeDate = mini.get("balanceTimeFilter").getText();
         var designerAssistantCommissionDate = mini.get("designerAssistantCommissionDateFilter").getText();
 
         document.getElementById("designer").value = designer;
@@ -346,7 +353,7 @@
         document.getElementById("payProjectRatio").value = payProjectRatio;
         document.getElementById("designerAssistant").value = designerAssistant;
         document.getElementById("firstCommissionDate").value = firstCommissionDate;
-
+        document.getElementById("balanceTime").value = balanceTime;
         document.getElementById("balanceCommissionDate").value = balanceCommissionDate;
         document.getElementById("designerAssistantCommissionDate").value = designerAssistantCommissionDate;
 
