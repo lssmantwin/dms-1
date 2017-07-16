@@ -110,6 +110,7 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 		return response;
 	}
 
+	// 合同工资
 	private BigDecimal calculateContractWages(FinanceDto financeDto) {
 		BigDecimal contractWages = BigDecimal.ZERO;
 		if (financeDto.getBaseWage() != null) {
@@ -135,7 +136,7 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 
 	private BigDecimal calculateGrossPay(FinanceDto financeDto) {
 		// 应发工资 = 基本工资 + 加班 + 餐补 + 保密 + 提成（卡） + 工龄 + 绩效 （卡）
-		// + 通讯费 + 其他补贴 - 扣款 - 会展扣款 - 事假 - 病假 - 保管费
+		// + 通讯费 + 其他补贴（卡） - 扣款 - 会展扣款 - 事假 - 病假 - 保管费
 		BigDecimal grossPay = BigDecimal.ZERO;
 		if (financeDto.getBaseWage() != null) {
 			grossPay = grossPay.add(financeDto.getBaseWage());
@@ -161,8 +162,8 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 		if (financeDto.getCommunicationFee() != null) {
 			grossPay = grossPay.add(financeDto.getCommunicationFee());
 		}
-		if (financeDto.getOtherSubsidy() != null) {
-			grossPay = grossPay.add(financeDto.getOtherSubsidy());
+		if (financeDto.getOtherSubsidyCard() != null) {
+			grossPay = grossPay.add(financeDto.getOtherSubsidyCard());
 		}
 		if (financeDto.getCharge() != null) {
 			grossPay = grossPay.subtract(financeDto.getCharge());
@@ -184,7 +185,7 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 
 	private BigDecimal calculateBeforeTaxSalary(FinanceDto financeDto) {
 		// 税前工资 = 基本工资 + 加班 + 餐补 + 保密 + 提成（卡） + 工龄 + 绩效 （卡）
-		// + 通讯费 + 其他补贴 - 扣款 - 会展扣款 - 事假 - 病假 - 保管费 - 公积金 - 社保
+		// + 通讯费 + 其他补贴（卡） - 扣款 - 会展扣款 - 事假 - 病假 - 保管费 - 公积金 - 社保
 		BigDecimal beforeTaxSalary = BigDecimal.ZERO;
 		if (financeDto.getBaseWage() != null) {
 			beforeTaxSalary = beforeTaxSalary.add(financeDto.getBaseWage());
@@ -210,8 +211,8 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 		if (financeDto.getCommunicationFee() != null) {
 			beforeTaxSalary = beforeTaxSalary.add(financeDto.getCommunicationFee());
 		}
-		if (financeDto.getOtherSubsidy() != null) {
-			beforeTaxSalary = beforeTaxSalary.add(financeDto.getOtherSubsidy());
+		if (financeDto.getOtherSubsidyCard() != null) {
+			beforeTaxSalary = beforeTaxSalary.add(financeDto.getOtherSubsidyCard());
 		}
 		if (financeDto.getCharge() != null) {
 			beforeTaxSalary = beforeTaxSalary.subtract(financeDto.getCharge());
@@ -239,17 +240,21 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 
 	private BigDecimal calculateSalaryCash(FinanceDto financeDto) {
 		BigDecimal salaryCash = BigDecimal.ZERO;
-		// 提成现金
-		if (financeDto.getBonusCash() != null) {
-			salaryCash = salaryCash.add(financeDto.getBonusCash());
+		// 岗位津贴
+		if (financeDto.getPostAllowance() != null) {
+			salaryCash = salaryCash.add(financeDto.getPostAllowance());
 		}
 		// 绩效现金
 		if (financeDto.getPerformanceAppraisalCash() != null) {
 			salaryCash = salaryCash.add(financeDto.getPerformanceAppraisalCash());
 		}
-		// 岗位津贴
-		if (financeDto.getPostAllowance() != null) {
-			salaryCash = salaryCash.add(financeDto.getPostAllowance());
+		// 其他补贴现金
+		if (financeDto.getOtherSubsidyCash() != null) {
+			salaryCash = salaryCash.add(financeDto.getOtherSubsidyCash());
+		}
+		// 提成现金
+		if (financeDto.getBonusCash() != null) {
+			salaryCash = salaryCash.add(financeDto.getBonusCash());
 		}
 		// 其他扣款
 		if (financeDto.getOtherCharge() != null) {

@@ -25,7 +25,8 @@ public class FinanceDto implements Serializable {
 	private BigDecimal workingAgeSubsidy;
 	private BigDecimal performanceAppraisalCard;
 	private BigDecimal performanceAppraisalCash;
-	private BigDecimal otherSubsidy;
+	private BigDecimal otherSubsidyCard;
+	private BigDecimal otherSubsidyCash;
 	private BigDecimal exhibitionCharge;
 	private BigDecimal charge;
 	private String chargeComments;
@@ -182,12 +183,20 @@ public class FinanceDto implements Serializable {
 		this.performanceAppraisalCash = performanceAppraisalCash;
 	}
 
-	public BigDecimal getOtherSubsidy() {
-		return otherSubsidy;
+	public BigDecimal getOtherSubsidyCard() {
+		return otherSubsidyCard;
 	}
 
-	public void setOtherSubsidy(BigDecimal otherSubsidy) {
-		this.otherSubsidy = otherSubsidy;
+	public void setOtherSubsidyCard(BigDecimal otherSubsidyCard) {
+		this.otherSubsidyCard = otherSubsidyCard;
+	}
+
+	public BigDecimal getOtherSubsidyCash() {
+		return otherSubsidyCash;
+	}
+
+	public void setOtherSubsidyCash(BigDecimal otherSubsidyCash) {
+		this.otherSubsidyCash = otherSubsidyCash;
 	}
 
 	public BigDecimal getExhibitionCharge() {

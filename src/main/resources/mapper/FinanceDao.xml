@@ -18,7 +18,8 @@
         <result property="workingAgeSubsidy" column="working_age_subsidy"/>
         <result property="performanceAppraisalCard" column="performance_appraisal_card"/>
         <result property="performanceAppraisalCash" column="performance_appraisal_cash"/>
-        <result property="otherSubsidy" column="other_subsidy"/>
+        <result property="otherSubsidyCard" column="other_subsidy_card"/>
+        <result property="otherSubsidyCash" column="other_subsidy_cash"/>
         <result property="exhibitionCharge" column="exhibition_charge"/>
         <result property="charge" column="charge"/>
         <result property="chargeComments" column="charge_comments"/>
@@ -48,7 +49,7 @@
         <result property="position" column="position"/>
         <result property="hiredate" column="hiredate" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="baseWage" column="base_wage"/>
-        <result property="otherSubsidy" column="other_subsidy"/>
+        <result property="otherSubsidyCard" column="other_subsidy_card"/>
         <result property="mealsSubsidy" column="meals_subsidy"/>
         <result property="secrecySubsidy" column="secrecy_subsidy"/>
         <result property="workingAgeSubsidy" column="working_age_subsidy"/>
@@ -66,10 +67,14 @@
         <result property="afterTaxSalary" column="after_tax_salary"/>
         <result property="bankCardNumber" column="bank_card_number"/>
         <result property="identityCardNumber" column="identity_card_number"/>
+        <result property="performanceAppraisalCard" column="performance_appraisal_card"/>
+        <result property="bonusCard" column="bonus_card"/>
 
         <result property="postAllowance" column="post_allowance"/>
         <result property="performanceAppraisalCash" column="performance_appraisal_cash"/>
+        <result property="otherSubsidyCash" column="other_subsidy_cash"/>
         <result property="bonusCash" column="bonus_cash"/>
+        <result property="otherCharge" column="other_charge"/>
         <result property="salaryCash" column="salary_cash"/>
     </resultMap>
 
@@ -79,7 +84,7 @@
         t.fid as finance_id, t.month,
         t.attendance, t.bonus_card, t.bonus_cash, t.working_age_subsidy, t.performance_appraisal_card,
         t.performance_appraisal_cash,
-        t.other_subsidy, t.exhibition_charge, t.charge,
+        t.other_subsidy_card, t.other_subsidy_cash, t.exhibition_charge, t.charge,
         t.charge_comments,t.other_charge,
         t.casual_leave, t.sick_leave,
         t.storage_charge, t.gross_pay, t.medical_insurance,
@@ -89,15 +94,14 @@
         from (
         select e.id as eid, e.name, e.base_wage, e.overtime, e.meals_subsidy, e.secrecy_subsidy,
         e.communication_fee, e.working_age_subsidy, e.identity_card_number, e.bank_card_number, e.charge_per_month,
-        e.post_allowance,
         f.id as fid, f.month, f.attendance,
         f.bonus_card, f.bonus_cash, f.performance_appraisal_card, f.performance_appraisal_cash,
-        f.other_subsidy, f.exhibition_charge, f.charge,
+        f.other_subsidy_card, f.other_subsidy_cash, f.exhibition_charge, f.charge,
         f.charge_comments,f.other_charge,
         f.casual_leave, f.sick_leave,
         f.storage_charge, f.gross_pay, f.medical_insurance,
         f.housing_fund, f.before_tax_salary, f.personal_income_tax, f.after_tax_salary, f.already_charge,
-        f.salary_cash,f.contract_wages,
+        f.salary_cash,f.contract_wages, f.post_allowance,
         row_number() over (order by e.id) as rn from salary_employee e left join salary_finance f on e.id =
         f.employee_id and
         f."month" = #{month}
@@ -117,17 +121,21 @@
 
     <select id="getSalaryBills" parameterType="FinanceFilterRequest" resultMap="SalaryBillMap">
         select
-        t.company_id, t.name as employee_name, t."position", t.hiredate, t.base_wage, t.other_subsidy, t.meals_subsidy,
+        t.company_id, t.name as employee_name, t."position", t.hiredate, t.base_wage, t.other_subsidy_card,
+        t.other_subsidy_cash, t.meals_subsidy,
         t.secrecy_subsidy, t.working_age_subsidy, t.communication_fee, t.charge, t.exhibition_charge,
         t.casual_leave, t.sick_leave, t.storage_charge, t.gross_pay, t.medical_insurance, t.housing_fund,
         t.before_tax_salary, t.personal_income_tax, t.after_tax_salary, t.bank_card_number, t.identity_card_number,
-        t.post_allowance, t.performance_appraisal_cash, t.bonus_cash, t.salary_cash, t."month"
+        t.post_allowance, t.performance_appraisal_cash, t.bonus_cash, t.salary_cash, t."month",
+        t.performance_appraisal_card, t.bonus_card, t.other_charge
         from (
-        select e.company_id, e.name, e."position", e.hiredate, e.base_wage, f.other_subsidy, e.meals_subsidy,
+        select e.company_id, e.name, e."position", e.hiredate, e.base_wage, f.other_subsidy_card, f.other_subsidy_cash,
+        e.meals_subsidy,
         e.secrecy_subsidy, e.working_age_subsidy, e.communication_fee, f.charge, f.exhibition_charge,
         f.casual_leave, f.sick_leave, f.storage_charge, f.gross_pay, f.medical_insurance, f.housing_fund,
         f.before_tax_salary, f.personal_income_tax, f.after_tax_salary, e.bank_card_number, e.identity_card_number,
-        e.post_allowance, f.performance_appraisal_cash, f.bonus_cash, f.salary_cash, f."month",
+        f.post_allowance, f.performance_appraisal_cash, f.bonus_cash, f.salary_cash, f."month",
+        f.performance_appraisal_card, f.bonus_card, f.other_charge,
         row_number() over (order by e.id) as rn from salary_employee e left join salary_finance f on e.id =
         f.employee_id and f."month" = #{month}
         <where>
@@ -143,16 +151,16 @@
     <insert id="saveFinance" parameterType="FinanceDto">
         insert into "salary_finance" (created_on, employee_id, month, attendance, bonus_card, bonus_cash,
         performance_appraisal_card, performance_appraisal_cash,
-        other_subsidy, exhibition_charge, charge, charge_comments, other_charge, casual_leave, sick_leave,
+        other_subsidy_card, other_subsidy_cash, exhibition_charge, charge, charge_comments, other_charge, casual_leave, sick_leave,
         storage_charge,
         gross_pay, medical_insurance, housing_fund, before_tax_salary, personal_income_tax, after_tax_salary,
-        already_charge, salary_cash, contract_wages)
+        already_charge, salary_cash, contract_wages, post_allowance)
         values (current_timestamp, #{employeeId}, #{month}, #{attendance}, #{bonusCard}, #{bonusCash},
         #{performanceAppraisalCard}, #{performanceAppraisalCash},
-        #{otherSubsidy}, #{exhibitionCharge}, #{charge}, #{chargeComments}, #{otherCharge}, #{casualLeave},
+        #{otherSubsidyCard}, #{otherSubsidyCash}, #{exhibitionCharge}, #{charge}, #{chargeComments}, #{otherCharge}, #{casualLeave},
         #{sickLeave}, #{storageCharge},
         #{grossPay}, #{medicalInsurance}, #{housingFund}, #{beforeTaxSalary}, #{personalIncomeTax}, #{afterTaxSalary},
-        1, #{salaryCash}, #{contractWages})
+        1, #{salaryCash}, #{contractWages}, #{postAllowance})
     </insert>
 
     <update id="updateFinance" parameterType="FinanceDto">
@@ -162,7 +170,8 @@
         bonus_cash = #{bonusCash},
         performance_appraisal_card = #{performanceAppraisalCard},
         performance_appraisal_cash = #{performanceAppraisalCash},
-        other_subsidy = #{otherSubsidy},
+        other_subsidy_card = #{otherSubsidyCard},
+        other_subsidy_cash = #{otherSubsidyCash},
         exhibition_charge = #{exhibitionCharge},
         charge = #{charge},
         charge_comments = #{chargeComments},
@@ -177,7 +186,8 @@
         personal_income_tax = #{personalIncomeTax},
         after_tax_salary = #{afterTaxSalary},
         salary_cash = #{salaryCash},
-        contract_wages = #{contractWages}
+        contract_wages = #{contractWages},
+        post_allowance = #{postAllowance}
         where id = #{id}
     </update>
 
