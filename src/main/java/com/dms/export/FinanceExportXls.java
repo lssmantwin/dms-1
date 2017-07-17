@@ -193,8 +193,8 @@ public class FinanceExportXls implements StreamSource {
 		Cell cell25 = body.createCell(column++);
 		cell25.setCellValue(bill.getAfterTaxSalary() == null ? StringUtils.EMPTY : bill.getAfterTaxSalary().toString());
 
-		Cell cell26 = body.createCell(column++);
-		cell26.setCellValue(bill.getBankCardNumber());
+		// Cell cell26 = body.createCell(column++);
+		// cell26.setCellValue(bill.getBankCardNumber());
 
 		// add blank column
 		Cell cell27 = body.createCell(column++);
