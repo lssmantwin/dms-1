@@ -1,22 +1,22 @@
 package com.dms.ws.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.dms.aspect.CheckAuthority;
-import com.dms.enums.ResponseEnum;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dms.aspect.CheckAuthority;
 import com.dms.domain.Attendance;
 import com.dms.domain.Month;
 import com.dms.dto.EmployeeDto;
 import com.dms.dto.EnumDto;
 import com.dms.enums.CompanyEnum;
+import com.dms.enums.ResponseEnum;
 import com.dms.request.BaseFilterRequest;
 import com.dms.response.DmsResponse;
 import com.dms.service.EmployeeService;
@@ -64,30 +64,15 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 	@Override
 	@CheckAuthority
 	public DmsResponse saveEmployees(List<EmployeeDto> employeeDtos) {
-
 		LOGGER.info("save employees, {}", employeeDtos);
-
-		List<EmployeeDto> addEmployees = Lists.newArrayList();
-		List<EmployeeDto> updateEmployees = Lists.newArrayList();
+		List<EmployeeDto> employees = Lists.newArrayList();
 		for (EmployeeDto employeeDto : employeeDtos) {
 			if (StringUtils.isBlank(employeeDto.getName())) {
 				continue;
 			}
-			if (StringUtils.isBlank(employeeDto.getId())) {
-				addEmployees.add(employeeDto);
-				continue;
-			}
-			updateEmployees.add(employeeDto);
+			employees.add(employeeDto);
 		}
-
-		if (CollectionUtils.isNotEmpty(addEmployees)) {
-			employeeService.saveEmployees(addEmployees);
-		}
-
-		if (CollectionUtils.isNotEmpty(updateEmployees)) {
-			employeeService.updateEmployees(updateEmployees);
-		}
-
+		employeeService.saveEmployees(employees);
 		DmsResponse response = new DmsResponse();
 		response.setCode(ResponseEnum.SUCCESS);
 		return response;

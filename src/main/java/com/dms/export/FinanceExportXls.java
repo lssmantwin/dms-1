@@ -173,7 +173,7 @@ public class FinanceExportXls implements StreamSource {
 		cell18.setCellValue(bill.getSickLeave() == null ? StringUtils.EMPTY : bill.getSickLeave().toString());
 
 		Cell cell19 = body.createCell(column++);
-		cell19.setCellValue(bill.getStorageCharge() == null ? StringUtils.EMPTY : bill.getStorageCharge().toString());
+		cell19.setCellValue(bill.getStorage() == null ? StringUtils.EMPTY : bill.getStorage().toString());
 
 		Cell cell20 = body.createCell(column++);
 		cell20.setCellValue(bill.getGrossPay() == null ? StringUtils.EMPTY : bill.getGrossPay().toString());

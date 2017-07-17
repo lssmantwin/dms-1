@@ -9,7 +9,11 @@ import java.util.List;
 import javax.ws.rs.core.Response;
 
 import com.dms.dto.SalaryBill;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.DateTimeParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,12 +60,44 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 			if (finance.getContractWages() == null) {
 				finance.setContractWages(calculateContractWages(finance));
 			}
+			if (finance.getStorage() == null) {
+				calculateStorage(finance);
+			}
 		}
 		DmsResponse<List<FinanceDto>> response = new DmsResponse<>();
 		response.setCode(ResponseEnum.SUCCESS);
 		response.setTotal(count);
 		response.setData(finances);
 		return response;
+	}
+
+	private void calculateStorage(FinanceDto finance) {
+		BigDecimal storageCharge = finance.getStorageCharge() == null ? BigDecimal.ZERO : finance.getStorageCharge();
+		BigDecimal totalCharge = finance.getTotalCharge() == null ? BigDecimal.ZERO : finance.getTotalCharge();
+		BigDecimal chargePerMonth = finance.getChargePerMonth() == null ? BigDecimal.ZERO : finance.getChargePerMonth();
+		// 如果员工管理保管费为0，财务管理中的保管费为0
+		if (storageCharge.compareTo(BigDecimal.ZERO) == 0) {
+			finance.setStorage(BigDecimal.ZERO);
+			return;
+		}
+		// 如果员工管理月扣款为0，财务管理中的保管费为0
+		if (chargePerMonth.compareTo(BigDecimal.ZERO) == 0) {
+			finance.setStorage(BigDecimal.ZERO);
+			return;
+		}
+
+		BigDecimal balance = storageCharge.subtract(totalCharge);
+		// 不可能情况：剩余保管费为负数，将剩余扣款设置为0
+		if (balance.compareTo(BigDecimal.ZERO) < 0) {
+			balance = BigDecimal.ZERO;
+		}
+		if (balance.compareTo(chargePerMonth) >= 0) {
+			// 如果剩余保管费大于等于月扣款，财务管理中的保管费为月扣款
+			finance.setStorage(chargePerMonth);
+		} else {
+			// 如果剩余保管费小于月扣款， 财务管理中的保管费为剩余的保管费
+			finance.setStorage(balance);
+		}
 	}
 
 	@Override
@@ -72,7 +108,8 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 
 		for (FinanceDto financeDto : request.getFinances()) {
 			financeDto.setMonth(request.getMonth());
-			financeDto.setStorageCharge(financeDto.getChargePerMonth());
+			// 保管费
+			financeDto.setStorage(financeDto.getStorage());
 			financeDto.setGrossPay(calculateGrossPay(financeDto));
 			financeDto.setBeforeTaxSalary(calculateBeforeTaxSalary(financeDto));
 			BigDecimal personalIncomeTax = PersonalIncomeTaxUtils.getPersonalIncomeTax(financeDto.getBeforeTaxSalary());
@@ -82,24 +119,8 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 			if (financeDto.getId() == null) {
 				financeService.saveFinance(financeDto);
 				if (!financeDto.getAlreadyCharge()) {
-					EmployeeDto employeeDto = employeeService.getEmployee(financeDto.getEmployeeId());
-					if (employeeDto.getCharge() != null && employeeDto.getStorageCharge() != null
-							&& employeeDto.getStorageCharge().intValue() > employeeDto.getCharge().intValue()) {
-						BigDecimal charge = employeeDto.getChargePerMonth().add(employeeDto.getCharge() == null ? BigDecimal.ZERO : employeeDto.getCharge());
-
-						ChargeDetailDto chargeDetailDto = new ChargeDetailDto();
-						chargeDetailDto.setEmployeeId(Long.valueOf(employeeDto.getId()));
-						String year = financeDto.getMonth().substring(0, 4);
-						String month = financeDto.getMonth().substring(4);
-						Date currentMonth = DateUtils.getFirstDayOfMonthDate(Integer.valueOf(year), Integer.valueOf(month));
-						chargeDetailDto.setChargeTime(LocalDateTime.fromDateFields(currentMonth));
-						chargeDetailDto.setCharge(employeeDto.getChargePerMonth());
-						chargeDetailDto.setChargeBalance(employeeDto.getStorageCharge().subtract(charge));
-						financeDto.setChargePerMonth(employeeDto.getChargePerMonth());
-						chargeService.audit(chargeDetailDto);
-
-						employeeService.updateCharge(Long.valueOf(employeeDto.getId()), charge);
-					}
+					auditChargeDetail(financeDto);
+					updateEmployeeTotalCharge(financeDto);
 				}
 			} else {
 				financeService.updateFinance(financeDto);
@@ -108,6 +129,38 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 		DmsResponse<List<FinanceDto>> response = new DmsResponse<>();
 		response.setCode(ResponseEnum.SUCCESS);
 		return response;
+	}
+
+	private void auditChargeDetail(FinanceDto financeDto) {
+		BigDecimal storage = financeDto.getStorage() == null ? BigDecimal.ZERO : financeDto.getStorage();
+		if (storage.compareTo(BigDecimal.ZERO) > 0) {
+			ChargeDetailDto chargeDetailDto = new ChargeDetailDto();
+			chargeDetailDto.setEmployeeId(Long.valueOf(financeDto.getEmployeeId()));
+			LocalDateTime chargeTime = LocalDateTime.parse(financeDto.getMonth(), DateTimeFormat.forPattern("yyyyMM"));
+			chargeDetailDto.setChargeTime(chargeTime);
+			chargeDetailDto.setCharge(storage);
+			chargeDetailDto.setChargeBalance(calculateChargeBalance(financeDto));
+			chargeService.audit(chargeDetailDto);
+		}
+	}
+
+	private BigDecimal calculateChargeBalance(FinanceDto financeDto) {
+		BigDecimal storageCharge = financeDto.getStorageCharge() == null ? BigDecimal.ZERO : financeDto.getStorageCharge();
+		BigDecimal totalCharge = financeDto.getTotalCharge() == null ? BigDecimal.ZERO : financeDto.getTotalCharge();
+		BigDecimal storage = financeDto.getStorage() == null ? BigDecimal.ZERO : financeDto.getStorage();
+		BigDecimal balance = storageCharge.subtract(totalCharge).subtract(storage);
+		if (balance.compareTo(BigDecimal.ZERO) < 0) {
+			return BigDecimal.ZERO;
+		} else {
+			return balance;
+		}
+	}
+
+	private void updateEmployeeTotalCharge(FinanceDto financeDto) {
+		BigDecimal oldTotalCharge = financeDto.getTotalCharge() == null ? BigDecimal.ZERO : financeDto.getTotalCharge();
+		BigDecimal storage = financeDto.getStorage() == null ? BigDecimal.ZERO : financeDto.getStorage();
+		BigDecimal newTotalCharge = oldTotalCharge.add(storage);
+		employeeService.updateCharge(Long.valueOf(financeDto.getEmployeeId()), newTotalCharge);
 	}
 
 	// 合同工资
@@ -177,8 +230,8 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 		if (financeDto.getSickLeave() != null) {
 			grossPay = grossPay.subtract(financeDto.getSickLeave());
 		}
-		if (financeDto.getStorageCharge() != null) {
-			grossPay = grossPay.subtract(financeDto.getStorageCharge());
+		if (financeDto.getStorage() != null) {
+			grossPay = grossPay.subtract(financeDto.getStorage());
 		}
 		return grossPay;
 	}
@@ -226,8 +279,8 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 		if (financeDto.getSickLeave() != null) {
 			beforeTaxSalary = beforeTaxSalary.subtract(financeDto.getSickLeave());
 		}
-		if (financeDto.getStorageCharge() != null) {
-			beforeTaxSalary = beforeTaxSalary.subtract(financeDto.getStorageCharge());
+		if (financeDto.getStorage() != null) {
+			beforeTaxSalary = beforeTaxSalary.subtract(financeDto.getStorage());
 		}
 		if (financeDto.getMedicalInsurance() != null) {
 			beforeTaxSalary = beforeTaxSalary.subtract(financeDto.getMedicalInsurance());

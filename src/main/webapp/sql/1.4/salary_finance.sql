@@ -1,0 +1,1 @@
+EXEC sp_rename 'salary_finance.[storage_charge]', 'storage', 'column';

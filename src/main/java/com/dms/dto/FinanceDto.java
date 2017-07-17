@@ -28,24 +28,32 @@ public class FinanceDto implements Serializable {
 	private BigDecimal otherSubsidyCard;
 	private BigDecimal otherSubsidyCash;
 	private BigDecimal exhibitionCharge;
+	// 扣款
 	private BigDecimal charge;
 	private String chargeComments;
 	private BigDecimal otherCharge;
 	private BigDecimal casualLeave;
 	private BigDecimal sickLeave;
-	private BigDecimal storageCharge;
 	private BigDecimal grossPay;
 	private BigDecimal medicalInsurance;
 	private BigDecimal housingFund;
 	private BigDecimal beforeTaxSalary;
-	// charge per month = storage charge
-	private BigDecimal chargePerMonth;
 	private BigDecimal personalIncomeTax;
 	private BigDecimal afterTaxSalary;
 	private BigDecimal salaryCash;
 	private Boolean alreadyCharge = Boolean.FALSE;
 	private BigDecimal postAllowance;
 	private BigDecimal contractWages;
+	/* 员工管理 */
+	// 总保管费
+	private BigDecimal storageCharge;
+	// 月保管费
+	private BigDecimal chargePerMonth;
+	// 总扣款总额
+	private BigDecimal totalCharge;
+	/* 员工管理 */
+	// 当月需扣除的保管费：根据总保管费，月保管费和总扣款总额计算
+	private BigDecimal storage;
 
 	public Long getId() {
 		return id;
@@ -287,14 +295,6 @@ public class FinanceDto implements Serializable {
 		this.beforeTaxSalary = beforeTaxSalary;
 	}
 
-	public BigDecimal getChargePerMonth() {
-		return chargePerMonth;
-	}
-
-	public void setChargePerMonth(BigDecimal chargePerMonth) {
-		this.chargePerMonth = chargePerMonth;
-	}
-
 	public BigDecimal getPersonalIncomeTax() {
 		return personalIncomeTax;
 	}
@@ -341,5 +341,29 @@ public class FinanceDto implements Serializable {
 
 	public void setContractWages(BigDecimal contractWages) {
 		this.contractWages = contractWages;
+	}
+
+	public BigDecimal getTotalCharge() {
+		return totalCharge;
+	}
+
+	public void setTotalCharge(BigDecimal totalCharge) {
+		this.totalCharge = totalCharge;
+	}
+
+	public BigDecimal getStorage() {
+		return storage;
+	}
+
+	public void setStorage(BigDecimal storage) {
+		this.storage = storage;
+	}
+
+	public BigDecimal getChargePerMonth() {
+		return chargePerMonth;
+	}
+
+	public void setChargePerMonth(BigDecimal chargePerMonth) {
+		this.chargePerMonth = chargePerMonth;
 	}
 }

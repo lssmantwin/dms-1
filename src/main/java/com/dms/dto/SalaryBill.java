@@ -30,7 +30,7 @@ public class SalaryBill implements Serializable {
 	private BigDecimal exhibitionCharge;
 	private BigDecimal casualLeave;
 	private BigDecimal sickLeave;
-	private BigDecimal storageCharge;
+	private BigDecimal storage;
 	private BigDecimal grossPay;
 	private BigDecimal medicalInsurance;
 	private BigDecimal housingFund;
@@ -177,12 +177,12 @@ public class SalaryBill implements Serializable {
 		this.sickLeave = sickLeave;
 	}
 
-	public BigDecimal getStorageCharge() {
-		return storageCharge;
+	public BigDecimal getStorage() {
+		return storage;
 	}
 
-	public void setStorageCharge(BigDecimal storageCharge) {
-		this.storageCharge = storageCharge;
+	public void setStorage(BigDecimal storage) {
+		this.storage = storage;
 	}
 
 	public BigDecimal getGrossPay() {

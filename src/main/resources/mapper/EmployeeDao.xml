@@ -24,7 +24,6 @@
         <result property="postAllowance" column="post_allowance"/>
         <result property="leaveDate" column="leave_date" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
         <result property="storageCharge" column="storage_charge"/>
-        <result property="totalCharge" column="total_charge"/>
         <result property="chargePerMonth" column="charge_per_month"/>
         <result property="charge" column="charge"/>
         <result property="companyId" column="company_id"/>
@@ -92,32 +91,64 @@
     </select>
 
     <insert id="saveEmployees" parameterType="list">
-        insert into "salary_employee" (name, "position", hiredate, base_wage, bank_card_number,
-        working_age_subsidy, overtime,
-        meals_subsidy, secrecy_subsidy, communication_fee,
-        jyw_commission_ratio, commencement_ratio, completion_ratio,
-        renovate_commission_ratio, identity_card_number, transportation_allowance, post_allowance, leave_date,
-        storage_charge, total_charge, charge_per_month, charge, company_id, department, medical_insurance, housing_fund)
-        values
-        <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.name}, #{item.position}, #{item.hiredate}, #{item.baseWage}, #{item.bankCardNumber},
-            #{item.workingAgeSubsidy}, #{item.overtime},
-            #{item.mealsSubsidy}, #{item.secrecySubsidy}, #{item.communicationFee},
-            #{item.jywCommissionRatio}, #{item.commencementRatio}, #{item.completionRatio},
-            #{item.renovateCommissionRatio},
-            #{item.identityCardNumber},
-            #{item.transportationAllowance},
-            #{item.postAllowance},
-            #{item.leaveDate},
-            #{item.storageCharge},
-            #{item.totalCharge},
-            #{item.chargePerMonth},
-            #{item.charge},
-            #{item.companyId},
-            #{item.department},
-            #{item.medicalInsurance},
-            #{item.housingFund}
-            )
+        <foreach collection="list" item="item" index="index">
+            <choose>
+                <when test="item.id != null and item.id != ''">
+                    update "salary_employee"
+                    set name = #{item.name},
+                    position = #{item.position},
+                    hiredate = #{item.hiredate},
+                    base_wage = #{item.baseWage},
+                    bank_card_number = #{item.bankCardNumber},
+                    working_age_subsidy = #{item.workingAgeSubsidy},
+                    overtime = #{item.overtime},
+                    meals_subsidy = #{item.mealsSubsidy},
+                    secrecy_subsidy = #{item.secrecySubsidy},
+                    communication_fee = #{item.communicationFee},
+                    jyw_commission_ratio = #{item.jywCommissionRatio},
+                    commencement_ratio = #{item.commencementRatio},
+                    completion_ratio = #{item.completionRatio},
+                    renovate_commission_ratio = #{item.renovateCommissionRatio},
+                    identity_card_number = #{item.identityCardNumber},
+                    transportation_allowance = #{item.transportationAllowance},
+                    post_allowance = #{item.postAllowance},
+                    leave_date = #{item.leaveDate},
+                    storage_charge = #{item.storageCharge},
+                    charge_per_month = #{item.chargePerMonth},
+                    company_id = #{item.companyId},
+                    department = #{item.department},
+                    medical_insurance = #{item.medicalInsurance},
+                    housing_fund = #{item.housingFund}
+                    where id = #{item.id};
+                </when>
+                <otherwise>
+                    insert into "salary_employee" (name, "position", hiredate, base_wage, bank_card_number,
+                    working_age_subsidy, overtime,
+                    meals_subsidy, secrecy_subsidy, communication_fee,
+                    jyw_commission_ratio, commencement_ratio, completion_ratio,
+                    renovate_commission_ratio, identity_card_number, transportation_allowance, post_allowance,
+                    leave_date,
+                    storage_charge, charge_per_month, company_id, department, medical_insurance,
+                    housing_fund)
+                    values
+                    (#{item.name}, #{item.position}, #{item.hiredate}, #{item.baseWage}, #{item.bankCardNumber},
+                    #{item.workingAgeSubsidy}, #{item.overtime},
+                    #{item.mealsSubsidy}, #{item.secrecySubsidy}, #{item.communicationFee},
+                    #{item.jywCommissionRatio}, #{item.commencementRatio}, #{item.completionRatio},
+                    #{item.renovateCommissionRatio},
+                    #{item.identityCardNumber},
+                    #{item.transportationAllowance},
+                    #{item.postAllowance},
+                    #{item.leaveDate},
+                    #{item.storageCharge},
+                    #{item.chargePerMonth},
+                    #{item.companyId},
+                    #{item.department},
+                    #{item.medicalInsurance},
+                    #{item.housingFund}
+                    );
+                </otherwise>
+            </choose>
         </foreach>
     </insert>
 
@@ -143,9 +174,7 @@
             post_allowance = #{item.postAllowance},
             leave_date = #{item.leaveDate},
             storage_charge = #{item.storageCharge},
-            total_charge = #{item.totalCharge},
             charge_per_month = #{item.chargePerMonth},
-            charge = #{item.charge},
             company_id = #{item.companyId},
             department = #{item.department},
             medical_insurance = #{item.medicalInsurance},

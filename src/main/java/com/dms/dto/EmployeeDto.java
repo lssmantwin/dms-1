@@ -38,7 +38,6 @@ public class EmployeeDto implements Serializable {
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
 	private LocalDateTime leaveDate;
 	private BigDecimal storageCharge;
-	private BigDecimal totalCharge;
 	private BigDecimal chargePerMonth;
 	private BigDecimal charge;
 	private int companyId;
@@ -204,14 +203,6 @@ public class EmployeeDto implements Serializable {
 
 	public void setStorageCharge(BigDecimal storageCharge) {
 		this.storageCharge = storageCharge;
-	}
-
-	public BigDecimal getTotalCharge() {
-		return totalCharge;
-	}
-
-	public void setTotalCharge(BigDecimal totalCharge) {
-		this.totalCharge = totalCharge;
 	}
 
 	public BigDecimal getChargePerMonth() {
