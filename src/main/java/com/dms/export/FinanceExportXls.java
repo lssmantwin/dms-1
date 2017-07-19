@@ -81,19 +81,19 @@ public class FinanceExportXls implements StreamSource {
 			cell3.setCellValue(bill.getIdentityCardNumber());
 
 			Cell cell4 = row.createCell(cellNumber++);
-			cell4.setCellValue(bill.getBeforeTaxSalary() == null ? StringUtils.EMPTY : bill.getBeforeTaxSalary().toString());
+			cell4.setCellValue(bill.getBankCardNumber());
 
 			Cell cell5 = row.createCell(cellNumber++);
-			cell5.setCellValue(bill.getPersonalIncomeTax() == null ? StringUtils.EMPTY : bill.getPersonalIncomeTax().toString());
+			cell5.setCellValue(bill.getBeforeTaxSalary() == null ? StringUtils.EMPTY : bill.getBeforeTaxSalary().toString());
 
 			Cell cell6 = row.createCell(cellNumber++);
-			cell6.setCellValue(bill.getAfterTaxSalary() == null ? StringUtils.EMPTY : bill.getAfterTaxSalary().toString());
+			cell6.setCellValue(bill.getPersonalIncomeTax() == null ? StringUtils.EMPTY : bill.getPersonalIncomeTax().toString());
 
 			Cell cell7 = row.createCell(cellNumber++);
-			cell7.setCellValue(bill.getBankCardNumber());
+			cell7.setCellValue(bill.getAfterTaxSalary() == null ? StringUtils.EMPTY : bill.getAfterTaxSalary().toString());
 
 			Cell cell8 = row.createCell(cellNumber++);
-			cell8.setCellValue(bill.getSalaryCash() == null ? StringUtils.EMPTY : bill.getAfterTaxSalary().toString());
+			cell8.setCellValue(bill.getSalaryCash() == null ? StringUtils.EMPTY : bill.getSalaryCash().toString());
 
 		}
 	}
