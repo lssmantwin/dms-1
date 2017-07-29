@@ -58,25 +58,25 @@
             <div type="checkcolumn"></div>
             <div field="designer" headerAlign="center" allowSort="false" width="100">设计师
                 <input id="designerFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="100"
-                       onvaluechanged="onFilterChanged()"/>
+                       onvaluechanged="onFilterChanged()" onenter="onEnter"/>
             </div>
             <div field="acNumber" width="100" headerAlign="center" allowSort="false">受理编号
                 <input id="acNumberFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="100"
-                       onvaluechanged="onFilterChanged()"/>
+                       onvaluechanged="onFilterChanged()" onenter="onEnter"/>
             </div>
             <div field="contractId" width="100" headerAlign="center" allowSort="false">工程编号
                 <input id="contractFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="100"
-                       onvaluechanged="onFilterChanged()"/>
+                       onvaluechanged="onFilterChanged()" onenter="onEnter"/>
             </div>
             <div field="customerName" width="100" headerAlign="center" allowSort="false">客户名字
             </div>
             <div field="payContractRatio" width="100" headerAlign="center" numberFormat="00.00%" allowSort="false">合同收款比
                 <input id="payContractFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="100"
-                       onvaluechanged="onFilterChanged()"/>
+                       onvaluechanged="onFilterChanged()" onenter="onEnter"/>
             </div>
             <div field="payProjectRatio" width="100" headerAlign="center" numberFormat="00.00%" allowSort="false">总收款比
                 <input id="payProjectFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="100"
-                       onvaluechanged="onFilterChanged()"/>
+                       onvaluechanged="onFilterChanged()" onenter="onEnter"/>
             </div>
             <div field="commissionState" width="100" headerAlign="center" allowSort="false">提成状态
 
@@ -84,7 +84,7 @@
                        textField="text" valueField="value"
                        url="../ws/commission/v1/states?type=COMMISSION"
                        ajaxOptions="{type: 'get', contentType: 'application/json;charset=utf-8'}"
-                       allowInput="true" showNullItem="true" onvaluechanged="onFilterChanged()"/>
+                       allowInput="true" showNullItem="true" onvaluechanged="onFilterChanged()" onenter="onEnter"/>
             </div>
 
             <div header="首提信息" align="center" headeralign="center">
@@ -93,7 +93,7 @@
                          dateFormat="yyyy-MM-dd">
                         实际开工
                         <input id="actualStartTimeFilter" property="filter" class="mini-monthpicker"
-                               style="width:100%;" minWidth="100" onvaluechanged="onFilterChanged()"/>
+                               style="width:100%;" minWidth="100" onvaluechanged="onFilterChanged()" onenter="onEnter"/>
                     </div>
 
                     <div field="contractTotal" width="100" numberFormat="¥#,0.00" headerAlign="center"
@@ -129,7 +129,7 @@
                         首提日期
                         <input id="firstCommissionDateFilter" property="filter" class="mini-monthpicker"
                                style="width:100%;"
-                               minWidth="100" onvaluechanged="onFilterChanged()"/>
+                               minWidth="100" onvaluechanged="onFilterChanged()" onenter="onEnter"/>
 
                     </div>
                 </div>
@@ -144,7 +144,7 @@
                     <div field="balanceTime" width="100" headerAlign="center" allowSort="false" dateFormat="yyyy-MM">
                         结算日期
                         <input id="balanceTimeFilter" property="filter" class="mini-monthpicker"
-                               style="width:100%;" minWidth="100" onvaluechanged="onFilterChanged()"/>
+                               style="width:100%;" minWidth="100" onvaluechanged="onFilterChanged()" onenter="onEnter"/>
                     </div>
                     <div field="balanceCommission" width="100" headerAlign="center" numberFormat="¥#,0.00"
                          allowSort="false">
@@ -154,7 +154,7 @@
                          dateFormat="yyyy-MM">
                         二次提成日期
                         <input id="balanceCommissionDateFilter" property="filter" class="mini-monthpicker"
-                               style="width:100%;" minWidth="100" onvaluechanged="onFilterChanged()"/>
+                               style="width:100%;" minWidth="100" onvaluechanged="onFilterChanged()" onenter="onEnter"/>
                     </div>
                 </div>
                 ss
@@ -167,7 +167,7 @@
                         <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
                         <input id="designerAssistantFilter" property="filter" class="mini-textbox" style="width:100%;"
                                minWidth="100"
-                               onvaluechanged="onFilterChanged()"/>
+                               onvaluechanged="onFilterChanged()" onenter="onEnter"/>
                     </div>
 
                     <div field="designerAssistantCommissionRate" width="100" headerAlign="center" numberFormat="##.##%"
@@ -183,7 +183,7 @@
                          dateFormat="yyyy-MM-dd">
                         提成日期
                         <input id="designerAssistantCommissionDateFilter" property="filter" class="mini-monthpicker"
-                               style="width:100%;" minWidth="100" onvaluechanged="onFilterChanged()"/>
+                               style="width:100%;" minWidth="100" onvaluechanged="onFilterChanged()" onenter="onEnter"/>
                     </div>
                 </div>
             </div>
@@ -196,7 +196,7 @@
             <div field="branch" width="100" headerAlign="center" allowSort="false">网点
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
                 <input id="branchFilter" property="filter" class="mini-textbox" style="width:100%;" minWidth="100"
-                       onvaluechanged="onFilterChanged()"/>
+                       onvaluechanged="onFilterChanged()" onenter="onEnter"/>
             </div>
             <div field="actualEndTime" width="100" headerAlign="center" allowSort="false" dateFormat="yyyy-MM-dd">
                 实际竣工
@@ -325,13 +325,17 @@
             acNumber: acNumber,
             payContractRatio: payContractRatio,
             payProjectRatio: payProjectRatio,
-            actualStartTime:actualStartTime,
-             balanceTime:balanceTime,
+            actualStartTime: actualStartTime,
+            balanceTime: balanceTime,
             firstCommissionDate: firstCommissionDate,
             balanceCommissionDate: balanceCommissionDate,
             designerAssistantCommissionDate: designerAssistantCommissionDate,
             branch: branch
         });
+    }
+
+    function onEnter() {
+        onFilterChanged();
     }
 
     function ExportExcel() {
@@ -350,7 +354,6 @@
         var actualStartTime = mini.get("actualStartTimeFilter").getText();
 
 
-
         document.getElementById("designer").value = designer;
         document.getElementById("branch").value = branch;
         document.getElementById("acNumber").value = acNumber;
@@ -364,7 +367,7 @@
         document.getElementById("balanceCommissionDate").value = balanceCommissionDate;
         document.getElementById("designerAssistantCommissionDate").value = designerAssistantCommissionDate;
 
-         document.getElementById("balanceTime").value = balanceTime;
+        document.getElementById("balanceTime").value = balanceTime;
         document.getElementById("actualStartTime").value = actualStartTime;
 
 
