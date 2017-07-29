@@ -124,6 +124,9 @@ public class FinanceExportXls implements StreamSource {
 		Cell cell1 = body.createCell(column++);
 		cell1.setCellValue(CompanyEnum.fromDbConstant(bill.getCompanyId()).getText());
 
+		Cell cell36 = body.createCell(column++);
+		cell36.setCellValue(bill.getDepartment());
+
 		Cell cell2 = body.createCell(column++);
 		cell2.setCellValue(bill.getMonth());
 

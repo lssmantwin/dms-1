@@ -17,8 +17,8 @@
     </bean>
     <bean id="monthGenerateTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="monthGenerateTask"/>
-        <!-- every month 1th 00:05 execute -->
-        <property name="cronExpression" value="0 5 0 1 * ?"/>
+        <!-- every day 01:00:00 execute -->
+        <property name="cronExpression" value="0 0 1 * * ?"/>
     </bean>
 
     <bean id="synchronizeProjectsTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
@@ -29,10 +29,9 @@
     <bean lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
-                <!-- e  <ref bean="monthGenerateTrigger"/>  -->
-                  <ref bean="synchronizeProjectsTrigger"/>
-
-              </list>
-          </property>
-      </bean>
-  </beans>
+                <ref bean="monthGenerateTrigger"/>
+                <ref bean="synchronizeProjectsTrigger"/>
+            </list>
+        </property>
+    </bean>
+</beans>

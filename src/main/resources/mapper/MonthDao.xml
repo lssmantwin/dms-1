@@ -4,7 +4,10 @@
 <mapper namespace="com.dms.dao.JobDao">
 
     <insert id="addCurrentMonth" parameterType="Month">
-       insert into "salary_month" (value, text) values (#{value}, #{text})
+      if not exists (select 1 from salary_month where value = #{value})
+        begin
+          insert into "salary_month" (value, text) values (#{value}, #{text})
+        end
     </insert>
 
 </mapper>

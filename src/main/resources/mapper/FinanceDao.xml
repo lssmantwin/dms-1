@@ -47,6 +47,7 @@
     <resultMap id="SalaryBillMap" type="SalaryBill">
         <result property="month" column="month"/>
         <result property="companyId" column="company_id"/>
+        <result property="department" column="department"/>
         <result property="employeeName" column="employee_name"/>
         <result property="position" column="position"/>
         <result property="hiredate" column="hiredate" typeHandler="com.dms.handler.LocalDateTimeHandler"/>
@@ -120,7 +121,7 @@
     <select id="getSalaryBills" parameterType="FinanceFilterRequest" resultMap="SalaryBillMap">
         select
         t.company_id, t.name as employee_name, t."position", t.hiredate, t.base_wage, t.other_subsidy_card,
-        t.other_subsidy_cash, t.meals_subsidy,
+        t.other_subsidy_cash, t.meals_subsidy, t.department,
         t.secrecy_subsidy, t.working_age_subsidy, t.communication_fee, t.charge, t.exhibition_charge,
         t.casual_leave, t.sick_leave, t.storage, t.gross_pay, t.medical_insurance, t.housing_fund,
         t.before_tax_salary, t.personal_income_tax, t.after_tax_salary, t.bank_card_number, t.identity_card_number,
@@ -128,7 +129,7 @@
         t.performance_appraisal_card, t.bonus_card, t.other_charge
         from (
         select e.company_id, e.name, e."position", e.hiredate, e.base_wage, f.other_subsidy_card, f.other_subsidy_cash,
-        e.meals_subsidy,
+        e.meals_subsidy, e.department,
         e.secrecy_subsidy, e.working_age_subsidy, e.communication_fee, f.charge, f.exhibition_charge,
         f.casual_leave, f.sick_leave, f.storage, f.gross_pay, e.medical_insurance, e.housing_fund,
         f.before_tax_salary, f.personal_income_tax, f.after_tax_salary, e.bank_card_number, e.identity_card_number,

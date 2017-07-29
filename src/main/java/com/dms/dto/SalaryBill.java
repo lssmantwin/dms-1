@@ -16,6 +16,7 @@ public class SalaryBill implements Serializable {
 
 	private String month;
 	private int companyId;
+	private String department;
 	private String employeeName;
 	private String position;
 	@JsonDeserialize(using = LocalDateTimeJacksonDeSerializable.class)
@@ -63,6 +64,14 @@ public class SalaryBill implements Serializable {
 
 	public void setCompanyId(int companyId) {
 		this.companyId = companyId;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
 	}
 
 	public String getEmployeeName() {
