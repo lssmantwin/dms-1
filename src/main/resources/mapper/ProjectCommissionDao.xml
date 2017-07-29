@@ -115,9 +115,8 @@
     </select>
 
     <select id="getProjectCommissions" parameterType="ProjectCommissionFilterRequest" resultMap="ProjectCommissionMap">
-        select * from
-        (
-        select *, row_number() over (order by id) rn from "salary_project_commission"
+        select * from (
+        select *, row_number() over (order by actual_start_time, designer desc) rn from "salary_project_commission"
         <where>
             1 = 1
             <if test="designer != null and designer != ''">
@@ -181,22 +180,6 @@
                 t.rn BETWEEN #{start} and #{end}
             </if>
         </where>
-        <choose>
-            <when test="sortField == 'designer'">
-                order by designer
-            </when>
-            <otherwise>
-                order by id
-            </otherwise>
-        </choose>
-        <choose>
-            <when test="sortOrder == 'desc'">
-                desc
-            </when>
-            <otherwise>
-                asc
-            </otherwise>
-        </choose>
     </select>
 
     <select id="getProjectCommission" parameterType="java.lang.String" resultType="int">
@@ -313,6 +296,52 @@
 
     </select>
 
+    <update id="updateProject" parameterType="ProjectCommissionDto">
+        update "salary_project_commission"
+        set
+        <if test="contractTotal != null">
+            contract_total = #{contractTotal},
+        </if>
+        <if test="purchaseAgentFee != null">
+            purchase_agent_fee = #{purchaseAgentFee},
+        </if>
+        <if test="projectChangeTotal != null">
+            project_change_total = #{projectChangeTotal},
+        </if>
+        <if test="customerPay != null">
+            customer_pay = #{customerPay},
+        </if>
+
+        <if test="payContractRatio != null">
+            pay_contract_ratio = #{payContractRatio},
+        </if>
+
+        <if test="payProjectRatio != null">
+            pay_project_ratio = #{payProjectRatio},
+        </if>
+
+        <if test="contractState != null">
+            contract_state = #{contractState},
+        </if>
+
+        <if test="actualStartTime != null">
+            actual_start_time = #{actualStartTime},
+        </if>
+
+        <if test="actualEndTime != null">
+            actual_end_time = #{actualEndTime},
+        </if>
+
+        <if test="balanceTime != null">
+            balance_time = #{balanceTime},
+        </if>
+
+        <if test="updatedTime != null">
+            updated_time =  #{updatedTime}
+        </if>
+        where ac_number = #{acNumber}
+    </update>
+
     <update id="updateProjectCommission" parameterType="ProjectCommissionDto">
         update "salary_project_commission"
         set
@@ -361,27 +390,9 @@
         </foreach>
     </update>
 
-    <update id="updateProject" parameterType="ProjectCommissionDto">
-        update "salary_project_commission"
-        set
-        contract_total = #{contractTotal},
-        purchase_agent_fee = #{purchaseAgentFee},
-        project_change_total = #{projectChangeTotal},
-        customer_pay = #{customerPay},
-        pay_contract_ratio = #{payContractRatio},
-        pay_project_ratio = #{payProjectRatio},
-        contract_state = #{contractState},
-        actual_start_time = #{actualStartTime},
-        actual_end_time = #{actualEndTime},
-        balance_time = #{balanceTime},
-        updated_time =  #{updatedTime}
-        where ac_number = #{acNumber}
-    </update>
-
     <update id="updateDesignAssistant" parameterType="DesignAssistantDto">
         update "salary_project_commission"
-        set purchasing_cost = #{purchasingCost},
-        designer_assistant = #{designAssistant}
+        set designer_assistant = #{designAssistant}
         where ac_number = #{acNumber}
     </update>
 </mapper>

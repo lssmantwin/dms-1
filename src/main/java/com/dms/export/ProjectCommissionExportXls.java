@@ -63,6 +63,9 @@ public class ProjectCommissionExportXls implements StreamSource {
 			Cell cell2 = row.createCell(cellNumber++);
 			cell2.setCellValue(dto.getDesignerAssistant());
 
+			Cell cell222 = row.createCell(cellNumber++);
+			cell222.setCellValue(dto.getBranch());
+
 			Cell cell3 = row.createCell(cellNumber++);
 			cell3.setCellValue(dto.getAcNumber());
 
@@ -88,7 +91,7 @@ public class ProjectCommissionExportXls implements StreamSource {
 			cell10.setCellValue(dto.getPayProjectRatio() == null ? StringUtils.EMPTY : dto.getPayProjectRatio().toString());
 
 			Cell cell11 = row.createCell(cellNumber++);
-			String contractState = dto.getContractState();
+			cell11.setCellValue(dto.getContractState());
 
 			Cell cell12 = row.createCell(cellNumber++);
 			CommissionStateEnum commissionState = dto.getCommissionState();

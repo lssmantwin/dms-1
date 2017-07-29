@@ -73,4 +73,11 @@ public class DateUtils {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         return format.format(calendar.getTime());
     }
+
+    public static Date getPreviousMonth() {
+        Calendar cl = Calendar.getInstance();
+        cl.setTime(new Date());
+        cl.add(Calendar.MONTH, -1);
+        return cl.getTime();
+    }
 }

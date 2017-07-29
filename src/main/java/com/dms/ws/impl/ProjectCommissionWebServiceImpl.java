@@ -17,6 +17,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -207,7 +208,7 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 
 	@Override
 	@CheckAuthority
-	public DmsResponse upload(HttpServletRequest request) throws FileUploadException, IOException {
+	public Response upload(HttpServletRequest request) throws FileUploadException, IOException {
 		String savePath = request.getServletContext().getRealPath("/WEB-INF/upload");
 		File file = new File(savePath);
 		if (!file.exists() && !file.isDirectory()) {
@@ -223,9 +224,7 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 		List<DesignAssistantDto> designAssistantDtos = readXLSXFile(in);
 		projectCommissionService.updateDesignAssistants(designAssistantDtos);
 		IOUtils.closeQuietly(in);
-		DmsResponse response = new DmsResponse();
-		response.setCode(ResponseEnum.SUCCESS);
-		return response;
+		return  FileFactory.getResponse(in, LocalDateTime.now().toString("yyyyMMddHHmmSS"));
 	}
 
 	private List<DesignAssistantDto> readXLSXFile(InputStream inputStream) throws IOException {
@@ -242,7 +241,8 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 			row = (XSSFRow) rows.next();
 			DesignAssistantDto designAssistantDto = new DesignAssistantDto();
 			if (row.getCell(0) != null) {
-				String acNumber = String.valueOf((int) row.getCell(0).getNumericCellValue());
+				row.getCell(0).setCellType(Cell.CELL_TYPE_STRING);
+				String acNumber = row.getCell(0).getStringCellValue();
 				designAssistantDto.setAcNumber(acNumber);
 			}
 
@@ -251,10 +251,10 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 				designAssistantDto.setDesignAssistant(designAssistant);
 			}
 
-			if (row.getCell(2) != null) {
-				double purchaseCost = row.getCell(2).getNumericCellValue();
-				designAssistantDto.setPurchaseCost(purchaseCost);
-			}
+//			if (row.getCell(2) != null) {
+//				double purchaseCost = row.getCell(2).getNumericCellValue();
+//				designAssistantDto.setPurchaseCost(purchaseCost);
+//			}
 
 			designAssistantDtos.add(designAssistantDto);
 		}
