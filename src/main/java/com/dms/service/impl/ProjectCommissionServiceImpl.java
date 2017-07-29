@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,7 +79,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 								&& commission.getDesignerAssistantCommissionRate() != null && commission.getDesignerAssistantCommission() == null) {
 							commission.setDesignerAssistantCommission(commission.getCommissionBase().multiply(commission.getDesignerAssistantCommissionRate())
 									.setScale(2, BigDecimal.ROUND_HALF_UP));
-							commission.setDesignerAssistantCommissionDate(LocalDateTime.now());
+							commission.setDesignerAssistantCommissionDate(new LocalDateTime(DateUtils.getPreviousMonth()));
 						}
 						LOGGER.info(" === 小于1万 getDesignCommissionRate ======" + commission.getDesignCommissionRate() + "fffff"
 								+ commission.getFirstCommissionRate());
@@ -92,7 +93,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 					}
 					if (BigDecimal.ZERO != firstCommission && firstCommission != null) {
 						commission.setFirstCommission(firstCommission.setScale(2, BigDecimal.ROUND_HALF_UP));
-						commission.setFirstCommissionDate(LocalDateTime.now());
+						commission.setFirstCommissionDate(new LocalDateTime(DateUtils.getPreviousMonth()));
 						commission.setCommissionState(commissionState);
 						commission.setUpdatedTime(LocalDateTime.now());
 						updateCommission(commission.getEmployeeId(), commission.getFirstCommission(), commission.getFirstCommissionDate());
@@ -100,13 +101,12 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 					}
 
 					// 设计助理提成保存
-					if (!StringUtils.isEmpty(commission.getDesignerAssistant())) {
+					if (commission.getFirstCommission() != null && commission.getFirstCommission() != BigDecimal.ZERO && !StringUtils.isEmpty(commission.getDesignerAssistant())) {
 						EmployeeDto employee = employeeDao.getEmployeeByName(commission.getDesignerAssistant().trim());
 						if (!StringUtils.isEmpty(employee.getId())) {
 							updateCommission(Long.valueOf(employee.getId()), commission.getDesignerAssistantCommission(), commission.getFirstCommissionDate());
 						}
 					}
-
 				}
 			}
 		}
@@ -114,7 +114,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 	}
 
 	private boolean isExistedDesignerId(ProjectCommissionDto commission) {
-		if (StringUtils.isEmpty(commission.getEmployeeId())) {
+		if (StringUtils.isEmpty(commission.getEmployeeId()) || commission.getDesignCommissionRate() == null) {
 			EmployeeDto employee = employeeDao.getEmployeeByName(commission.getDesigner().trim());
 			if (employee != null) {
 				commission.setEmployeeId(Long.valueOf(employee.getId()));
@@ -175,7 +175,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 					balanceCommission = commission.getCommissionBase().add(commission.getProjectChangeTotal());
 					balanceCommission = balanceCommission.multiply(commission.getDesignCommissionRate()).subtract(commission.getFirstCommission());
 					commission.setBalanceCommission(balanceCommission.setScale(2, BigDecimal.ROUND_HALF_UP));
-					commission.setBalanceCommissionDate(LocalDateTime.now());
+					commission.setBalanceCommissionDate(new LocalDateTime(DateUtils.getPreviousMonth()));
 					commission.setCommissionState(commissionState);
 					commission.setUpdatedTime(LocalDateTime.now());
 					// 设计师提成
@@ -220,8 +220,10 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 		LOGGER.info("======= sychronzieProejcts Start");
 		List<ProjectCommissionDto> projects = getProjects(DateUtils.getCurrentDayStart(), DateUtils.getCurrentDayEnd());
 		for (ProjectCommissionDto project : projects) {
+			LOGGER.info("======= sychronzieProejcts Start project " + project.getAcNumber());
 			ProjectCommissionDto extProjectCommissionDto = projectCommissionDao.getProject(project.getAcNumber());
 			if (extProjectCommissionDto == null) {
+				LOGGER.info("======= sychronzieProejcts Start: new  project " + project.getAcNumber());
 				project.setCreatedTime(LocalDateTime.now());
 				if (project.getDesigner() != null) {
 					// 取得设计师的提成系数
@@ -251,6 +253,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 				}
 				projectCommissionDao.saveProjectCommission(project);
 			} else {
+				LOGGER.info("======= sychronzieProejcts Start: existed project " + project.getAcNumber());
 				extProjectCommissionDto.setUpdatedTime(LocalDateTime.now());
 				extProjectCommissionDto.setPurchaseAgentFee(project.getPurchaseAgentFee());
 				extProjectCommissionDto.setActualStartTime(project.getActualStartTime());
@@ -260,6 +263,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 				extProjectCommissionDto.setPayContractRatio(project.getPayContractRatio());
 				extProjectCommissionDto.setPayProjectRatio(project.getPayProjectRatio());
 				extProjectCommissionDto.setProjectChangeTotal(project.getProjectChangeTotal());
+				extProjectCommissionDto.setAcNumber(project.getAcNumber());
 				projectCommissionDao.updateProject(extProjectCommissionDto);
 			}
 		}
@@ -288,8 +292,10 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 		for (DesignAssistantDto designAssistantDto : designAssistantDtos) {
 			// ProjectCommissionDto projectCommissionDto = projectCommissionDao.getProjectCommission()
 			EmployeeDto employee = employeeDao.getEmployeeByName(designAssistantDto.getDesignAssistant());
-			if (!StringUtils.isEmpty(employee.getId())) {
+			if (employee != null && !StringUtils.isEmpty(employee.getId())) {
 				designAssistantDto.setDesignAssistantId(Long.valueOf(employee.getId()));
+			} else {
+				LOGGER.error( designAssistantDto.getDesignAssistant()   + "doesn't exist ");
 			}
 			projectCommissionDao.updateDesignAssistant(designAssistantDto);
 		}

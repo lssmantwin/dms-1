@@ -70,5 +70,5 @@ public interface ProjectCommissionWebService {
 	@Path("/upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.MULTIPART_FORM_DATA)
-	DmsResponse upload(@Context HttpServletRequest request) throws FileUploadException, IOException;
+	Response upload(@Context HttpServletRequest request) throws FileUploadException, IOException;
 }

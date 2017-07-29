@@ -223,9 +223,11 @@
     <input type="hidden" name="payProjectRatio" id="payProjectRatio"/>
     <input type="hidden" name="designerAssistant" id="designerAssistant"/>
     <input type="hidden" name="firstCommissionDate" id="firstCommissionDate"/>
-    <input type="hidden" name="firstCommissionDate" id="balanceTime"/>
     <input type="hidden" name="balanceCommissionDate" id="balanceCommissionDate"/>
     <input type="hidden" name="designerAssistantCommissionDate" id="designerAssistantCommissionDate"/>
+    <input type="hidden" name="balanceTime" id="balanceTime"/>
+    <input type="hidden" name="actualStartTime" id="actualStartTime"/>
+
 </form>
 
 <script type="text/javascript">
@@ -314,6 +316,7 @@
         var firstCommissionDate = mini.get("firstCommissionDateFilter").getText();
         var balanceCommissionDate = mini.get("balanceCommissionDateFilter").getText();
         var designerAssistantCommissionDate = mini.get("designerAssistantCommissionDateFilter").getText();
+
         grid.load({
             designer: designer,
             designerAssistant: designerAssistant,
@@ -343,6 +346,10 @@
         var balanceCommissionDate = mini.get("balanceCommissionDateFilter").getText();
         var balanceTimeDate = mini.get("balanceTimeFilter").getText();
         var designerAssistantCommissionDate = mini.get("designerAssistantCommissionDateFilter").getText();
+        var balanceTime = mini.get("balanceTimeFilter").getText();
+        var actualStartTime = mini.get("actualStartTimeFilter").getText();
+
+
 
         document.getElementById("designer").value = designer;
         document.getElementById("branch").value = branch;
@@ -356,6 +363,10 @@
         document.getElementById("balanceTime").value = balanceTime;
         document.getElementById("balanceCommissionDate").value = balanceCommissionDate;
         document.getElementById("designerAssistantCommissionDate").value = designerAssistantCommissionDate;
+
+         document.getElementById("balanceTime").value = balanceTime;
+        document.getElementById("actualStartTime").value = actualStartTime;
+
 
         var excelForm = document.getElementById("excelForm");
         excelForm.submit();
