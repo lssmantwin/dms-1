@@ -128,7 +128,9 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 					if (employee.getCommencementRatio() == null || employee.getCommencementRatio() == BigDecimal.ZERO) {
 						commission.setFirstCommissionRate(DmsConstants.DESIGN_COMMISSION_FIRST_RATE.setScale(2, BigDecimal.ROUND_HALF_UP));
 					} else {
-						commission.setFirstCommissionRate(employee.getCommencementRatio());
+						if (commission.getFirstCommissionRate() == null) {
+							commission.setFirstCommissionRate(employee.getCommencementRatio());
+						}
 					}
 				}
 				return true;
