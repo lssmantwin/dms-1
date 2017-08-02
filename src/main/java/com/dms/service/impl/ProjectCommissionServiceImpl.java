@@ -127,6 +127,8 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 					}
 					if (employee.getCommencementRatio() == null || employee.getCommencementRatio() == BigDecimal.ZERO) {
 						commission.setFirstCommissionRate(DmsConstants.DESIGN_COMMISSION_FIRST_RATE.setScale(2, BigDecimal.ROUND_HALF_UP));
+					} else {
+						commission.setFirstCommissionRate(employee.getCommencementRatio());
 					}
 				}
 				return true;
@@ -184,12 +186,16 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
 					if (!StringUtils.isEmpty(commission.getDesignerAssistant())
 							&& (commission.getDesignerAssistantCommission() != null && BigDecimal.ZERO != commission.getDesignerAssistantCommission())) {
 						EmployeeDto employee = employeeDao.getEmployeeByName(commission.getDesignerAssistant().trim());
-						if (!StringUtils.isEmpty(employee.getId())) {
+						if (employee != null && !StringUtils.isEmpty(employee.getId())) {
 							updateCommission(Long.valueOf(employee.getId()), commission.getDesignerAssistantCommission(),
 									commission.getBalanceCommissionDate());
+						} else {
+							LOGGER.info( "结算" + commission.getContractId() + "设计助理不存在:" + commission.getDesignerAssistant());
 						}
 					}
 					projectCommissionDao.updateProjectCommission(commission);
+				} else {
+					LOGGER.info( "结算" + commission.getContractId() + "设计师:" + commission.getDesigner());
 				}
 			}
 		}

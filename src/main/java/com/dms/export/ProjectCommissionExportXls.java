@@ -63,6 +63,9 @@ public class ProjectCommissionExportXls implements StreamSource {
 			Cell cell2 = row.createCell(cellNumber++);
 			cell2.setCellValue(dto.getDesignerAssistant());
 
+			Cell cell221 = row.createCell(cellNumber++);
+			cell221.setCellValue(dto.getContractId());
+
 			Cell cell222 = row.createCell(cellNumber++);
 			cell222.setCellValue(dto.getBranch());
 
