@@ -18,8 +18,9 @@
         height: 100%;
         overflow: hidden;
     }
+
     .myrow {
-        background:#fceee2;
+        background: #fceee2;
     }
 </style>
 <div class="mini-toolbar" style="padding:2px;border-bottom:0;">
@@ -136,10 +137,12 @@
 
     mini.parse();
     var grid = mini.get("datagrid1");
+    grid.frozenColumns(0, 1);
+    
     var lastMonth = lastMonth();
-    grid.load({month: lastMonth});
-
     mini.get('combo1').setValue(lastMonth);
+
+    grid.load({month: lastMonth});
 
     grid.on("drawcell", function (e) {
         var record = e.record,
