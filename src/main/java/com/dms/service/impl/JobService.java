@@ -18,8 +18,8 @@ public class JobService {
 	private JobDao jobDao;
 
 	public void addCurrentMonth() {
-		LOGGER.info("==== add current month ====");
-		LocalDateTime now = LocalDateTime.now();
+		LOGGER.info("==== add last month ====");
+		LocalDateTime now = LocalDateTime.now().minusMonths(1);
 		Month month = new Month();
 		month.setValue(now.toString("yyyyMM"));
 		month.setText(now.toString("yyyy年MM月"));
