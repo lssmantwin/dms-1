@@ -132,20 +132,20 @@
 
     mini.parse();
     var grid = mini.get("datagrid1");
-    var now = now();
-    grid.load({month: now});
+    var lastMonth = lastMonth();
+    grid.load({month: lastMonth});
 
-    mini.get('combo1').setValue(now);
+    mini.get('combo1').setValue(lastMonth);
 
     function onMonthChange() {
         var value = mini.get('combo1').getValue();
         grid.load({month: value});
     }
 
-    function now() {
+    function lastMonth() {
         var now = new Date();
         var year = String(now.getFullYear());
-        var month = zeroize(now.getMonth() + 1);
+        var month = zeroize(now.getMonth());
         return year + month;
     }
 
