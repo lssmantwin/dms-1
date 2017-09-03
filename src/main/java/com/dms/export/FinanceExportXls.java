@@ -166,6 +166,9 @@ public class FinanceExportXls implements StreamSource {
 		Cell cell15 = body.createCell(column++);
 		cell15.setCellValue(bill.getCharge() == null ? StringUtils.EMPTY : bill.getCharge().toString());
 
+		Cell cell37 = body.createCell(column++);
+		cell37.setCellValue(bill.getChargeComments());
+
 		Cell cell16 = body.createCell(column++);
 		cell16.setCellValue(bill.getExhibitionCharge() == null ? StringUtils.EMPTY : bill.getExhibitionCharge().toString());
 
@@ -228,6 +231,9 @@ public class FinanceExportXls implements StreamSource {
 
 		Cell cell35 = body.createCell(column++);
 		cell35.setCellValue(bill.getSalaryCash() == null ? StringUtils.EMPTY : bill.getSalaryCash().toString());
+
+		Cell cell38 = body.createCell(column++);
+		cell38.setCellValue(StringUtils.EMPTY);
 	}
 
 }

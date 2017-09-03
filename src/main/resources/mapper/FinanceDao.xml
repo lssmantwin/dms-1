@@ -58,6 +58,7 @@
         <result property="workingAgeSubsidy" column="working_age_subsidy"/>
         <result property="communicationFee" column="communication_fee"/>
         <result property="charge" column="charge"/>
+        <result property="chargeComments" column="charge_comments" />
         <result property="exhibitionCharge" column="exhibition_charge"/>
         <result property="casualLeave" column="casual_leave"/>
         <result property="sickLeave" column="sick_leave"/>
@@ -122,7 +123,7 @@
         select
         t.company_id, t.name as employee_name, t."position", t.hiredate, t.base_wage, t.other_subsidy_card,
         t.other_subsidy_cash, t.meals_subsidy, t.department,
-        t.secrecy_subsidy, t.working_age_subsidy, t.communication_fee, t.charge, t.exhibition_charge,
+        t.secrecy_subsidy, t.working_age_subsidy, t.communication_fee, t.charge, t.charge_comments, t.exhibition_charge,
         t.casual_leave, t.sick_leave, t.storage, t.gross_pay, t.medical_insurance, t.housing_fund,
         t.before_tax_salary, t.personal_income_tax, t.after_tax_salary, t.bank_card_number, t.identity_card_number,
         t.post_allowance, t.performance_appraisal_cash, t.bonus_cash, t.salary_cash, t."month",
@@ -134,7 +135,7 @@
         f.casual_leave, f.sick_leave, f.storage, f.gross_pay, e.medical_insurance, e.housing_fund,
         f.before_tax_salary, f.personal_income_tax, f.after_tax_salary, e.bank_card_number, e.identity_card_number,
         f.post_allowance, f.performance_appraisal_cash, f.bonus_cash, f.salary_cash, f."month",
-        f.performance_appraisal_card, f.bonus_card, f.other_charge,
+        f.performance_appraisal_card, f.bonus_card, f.other_charge, f.charge_comments,
         row_number() over (order by e.id) as rn from salary_employee e left join salary_finance f on e.id =
         f.employee_id and f."month" = #{month}
         <where>
