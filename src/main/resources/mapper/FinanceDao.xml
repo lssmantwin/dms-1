@@ -42,6 +42,8 @@
         <result property="postAllowance" column="post_allowance"/>
         <result property="salaryCash" column="salary_cash"/>
         <result property="contractWages" column="contract_wages"/>
+        <result property="ischanged" column="ischanged" />
+        <result property="lock" column="lock" />
     </resultMap>
 
     <resultMap id="SalaryBillMap" type="SalaryBill">
@@ -90,7 +92,7 @@
         t.charge_comments,t.other_charge, t.casual_leave, t.sick_leave, t.gross_pay, t.medical_insurance,
         t.housing_fund, t.before_tax_salary, t.personal_income_tax, t.after_tax_salary, t.already_charge,
         t.identity_card_number, t.bank_card_number, t.storage_charge, t.charge_per_month, t.total_charge, t.storage,
-        t.post_allowance, t.salary_cash, t.contract_wages
+        t.post_allowance, t.salary_cash, t.contract_wages, t.ischanged, t.lock
         from (
         select e.id as eid, e.name, e.base_wage, e.overtime, e.meals_subsidy, e.secrecy_subsidy,
         e.communication_fee, e.working_age_subsidy, e.identity_card_number, e.bank_card_number,
@@ -101,7 +103,7 @@
         f.charge_comments,f.other_charge, f.casual_leave, f.sick_leave,
         f.storage, f.gross_pay, e.medical_insurance,
         e.housing_fund, f.before_tax_salary, f.personal_income_tax, f.after_tax_salary, f.already_charge,
-        f.salary_cash,f.contract_wages, f.post_allowance,
+        f.salary_cash,f.contract_wages, f.post_allowance, f.ischanged, f.lock,
         row_number() over (order by e.id) as rn from salary_employee e left join salary_finance f on e.id =
         f.employee_id and
         f."month" = #{month}
@@ -185,7 +187,8 @@
         after_tax_salary = #{afterTaxSalary},
         salary_cash = #{salaryCash},
         contract_wages = #{contractWages},
-        post_allowance = #{postAllowance}
+        post_allowance = #{postAllowance},
+        ischanged = 1
         where id = #{id}
     </update>
 
@@ -217,6 +220,10 @@
                 and month like #{month}
             </if>
         </where>
+    </update>
+
+    <update id="lockFinances" parameterType="String">
+        update salary_finance set lock = 1 where "month" = #{month}
     </update>
 
 </mapper>

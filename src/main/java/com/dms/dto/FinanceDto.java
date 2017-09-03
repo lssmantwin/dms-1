@@ -55,6 +55,11 @@ public class FinanceDto implements Serializable {
 	// 当月需扣除的保管费：根据总保管费，月保管费和总扣款总额计算
 	private BigDecimal storage;
 
+	// 是否被修改过
+	private Boolean ischanged;
+	// 是否被锁定
+	private Boolean lock;
+
 	public Long getId() {
 		return id;
 	}
@@ -365,5 +370,21 @@ public class FinanceDto implements Serializable {
 
 	public void setChargePerMonth(BigDecimal chargePerMonth) {
 		this.chargePerMonth = chargePerMonth;
+	}
+
+	public Boolean getIschanged() {
+		return ischanged;
+	}
+
+	public void setIschanged(Boolean ischanged) {
+		this.ischanged = ischanged;
+	}
+
+	public Boolean isLock() {
+		return lock;
+	}
+
+	public void setLock(Boolean lock) {
+		this.lock = lock;
 	}
 }

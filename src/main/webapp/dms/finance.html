@@ -18,6 +18,9 @@
         height: 100%;
         overflow: hidden;
     }
+    .myrow {
+        background:#fceee2;
+    }
 </style>
 <div class="mini-toolbar" style="padding:2px;border-bottom:0;">
     <table style="width:100%;">
@@ -30,6 +33,7 @@
                 <span class="separator"></span>
                 <a class="mini-button" iconCls="icon-save" plain="true" onclick="saveData()">保存</a>
                 <a class="mini-button" iconCls="icon-upload" plain="true" onclick="ExportExcel()">导出Excel</a>
+                <a class="mini-button" iconCls="icon-lock" plain="true" onclick="lockData()">锁定</a>
             </td>
         </tr>
     </table>
@@ -137,6 +141,16 @@
 
     mini.get('combo1').setValue(lastMonth);
 
+    grid.on("drawcell", function (e) {
+        var record = e.record,
+            column = e.column,
+            field = e.field,
+            value = e.value;
+        if (record.ischanged) {
+            e.rowCls = "myrow";
+        }
+    })
+
     function onMonthChange() {
         var value = mini.get('combo1').getValue();
         grid.load({month: value});
@@ -178,6 +192,25 @@
             url: '../ws/finance/v1/finances',
             data: json,
             type: 'post',
+            dataType: 'json',
+            contentType: 'application/json;charset=utf-8',
+            success: function (text) {
+                grid.reload();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR.responseText);
+            }
+        });
+    }
+
+    function lockData() {
+
+        var month = mini.get('combo1').getValue();
+
+        grid.loading("锁定中，请稍后......");
+        $.ajax({
+            url: '../ws/finance/v1/finances/lock?month=' + month,
+            type: 'get',
             dataType: 'json',
             contentType: 'application/json;charset=utf-8',
             success: function (text) {

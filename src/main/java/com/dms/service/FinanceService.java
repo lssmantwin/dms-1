@@ -15,4 +15,6 @@ public interface FinanceService {
 	void updateFinance(FinanceDto financeDto);
 
 	List<SalaryBill> getSalaryBills(FinanceFilterRequest request);
+
+	void lockFinances(String month);
 }

@@ -3,17 +3,13 @@ package com.dms.ws.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.core.Response;
 
 import com.dms.dto.SalaryBill;
-import org.joda.time.DateTimeFieldType;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.DateTimeParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import com.dms.aspect.CheckAuthority;
 import com.dms.dto.ChargeDetailDto;
-import com.dms.dto.EmployeeDto;
 import com.dms.dto.FinanceDto;
 import com.dms.enums.ResponseEnum;
 import com.dms.export.FinanceExportXls;
@@ -31,7 +26,6 @@ import com.dms.response.DmsResponse;
 import com.dms.service.ChargeService;
 import com.dms.service.EmployeeService;
 import com.dms.service.FinanceService;
-import com.dms.utils.DateUtils;
 import com.dms.utils.FileFactory;
 import com.dms.utils.PersonalIncomeTaxUtils;
 import com.dms.ws.FinanceWebService;
@@ -107,6 +101,11 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 		LOGGER.info("save finances, {}", request);
 
 		for (FinanceDto financeDto : request.getFinances()) {
+
+			if (financeDto.isLock()) {
+				continue;
+			}
+
 			financeDto.setMonth(request.getMonth());
 			// 保管费
 			financeDto.setStorage(financeDto.getStorage());
@@ -126,7 +125,7 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 				financeService.updateFinance(financeDto);
 			}
 		}
-		DmsResponse<List<FinanceDto>> response = new DmsResponse<>();
+		DmsResponse response = new DmsResponse();
 		response.setCode(ResponseEnum.SUCCESS);
 		return response;
 	}
@@ -343,4 +342,14 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 
 		return FileFactory.getResponse(in, LocalDateTime.now().toString("yyyyMMddHHmmSS"));
 	}
+
+	@Override
+	@CheckAuthority
+	public DmsResponse lockFinances(String month) {
+		financeService.lockFinances(month);
+		DmsResponse response = new DmsResponse();
+		response.setCode(ResponseEnum.SUCCESS);
+		return response;
+	}
+
 }

@@ -36,4 +36,9 @@ public class FinanceServiceImpl implements FinanceService {
 	public List<SalaryBill> getSalaryBills(FinanceFilterRequest request) {
 		return financeDao.getSalaryBills(request);
 	}
+
+	@Override
+	public void lockFinances(String month) {
+		financeDao.lockFinances(month);
+	}
 }
