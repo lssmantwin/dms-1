@@ -26,4 +26,6 @@ public interface EmployeeService {
 
 	void updateCharge(Long employeeId, BigDecimal charge);
 
+	void  synchronizeCommissionRate(List<EmployeeDto> employeeDtos);
+
 }

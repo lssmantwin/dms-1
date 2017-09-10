@@ -34,4 +34,6 @@ public interface EmployeeDao {
 	EmployeeDto getEmployee(Long employeeId);
 
 	void updateCharge(@Param("id") Long employeeId, @Param("charge") BigDecimal charge);
+
+	void synchronizeDesignerRate(List<EmployeeDto> employeeDtos);
 }

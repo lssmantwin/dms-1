@@ -35,6 +35,10 @@ public interface EmployeeWebService {
 	@Path("/employees")
 	DmsResponse saveEmployees(List<EmployeeDto> employeeDtos);
 
+	@POST
+	@Path("/synchronizeCommissionRate")
+	DmsResponse synchronizeCommissionRate(List<EmployeeDto> employeeDtos);
+
 	@GET
 	@Path("/employees")
 	DmsResponse getEmployees(@QueryParam("employeeName") String employeeName, @QueryParam("pageIndex") int pageIndex, @QueryParam("pageSize") int pageSize,

@@ -79,6 +79,14 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 	}
 
 	@Override
+	public DmsResponse synchronizeCommissionRate(List<EmployeeDto> employeeDtos) {
+		employeeService.synchronizeCommissionRate(employeeDtos);
+		DmsResponse<EmployeeDto> response = new DmsResponse<>();
+		response.setCode(ResponseEnum.SUCCESS);
+		return response;
+	}
+
+	@Override
 	@CheckAuthority
 	public DmsResponse<List<EmployeeDto>> getEmployees(String employeeName, int pageIndex, int pageSize, String sortField, String sortOrder) {
 

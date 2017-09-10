@@ -14,5 +14,10 @@ public interface FinanceService {
 
 	void updateFinance(FinanceDto financeDto);
 
+	void synchronizeDesignerCommissions(String currentMonth);
+
+	void synchronizeDesignerAssistantCommission(String currentMonth);
+
 	List<SalaryBill> getSalaryBills(FinanceFilterRequest request);
+
 }

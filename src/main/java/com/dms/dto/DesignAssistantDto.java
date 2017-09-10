@@ -1,6 +1,7 @@
 package com.dms.dto;
 
 import com.dms.serializable.LocalDateTimeJacksonDeSerializable;
+import com.dms.serializable.ShortDateTimeJacksonDeSerializable;
 import com.dms.serializable.ShortLocalDateTimeJacksonSerializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -16,6 +17,9 @@ public class DesignAssistantDto implements Serializable {
 	private String designAssistant;
 	private double purchaseCost;
 	private Long designAssistantId;
+	private BigDecimal designerAssistantCommission;
+	private BigDecimal designerAssistantCommissionRate;
+	private LocalDateTime designerAssistantCommissionDate;
 
 	public String getAcNumber() {
 		return acNumber;
@@ -47,5 +51,29 @@ public class DesignAssistantDto implements Serializable {
 
 	public void setDesignAssistantId(Long designAssistantId) {
 		this.designAssistantId = designAssistantId;
+	}
+
+	public BigDecimal getDesignerAssistantCommission() {
+		return designerAssistantCommission;
+	}
+
+	public void setDesignerAssistantCommission(BigDecimal designerAssistantCommission) {
+		this.designerAssistantCommission = designerAssistantCommission;
+	}
+
+	public BigDecimal getDesignerAssistantCommissionRate() {
+		return designerAssistantCommissionRate;
+	}
+
+	public void setDesignerAssistantCommissionRate(BigDecimal designerAssistantCommissionRate) {
+		this.designerAssistantCommissionRate = designerAssistantCommissionRate;
+	}
+
+	public LocalDateTime getDesignerAssistantCommissionDate() {
+		return designerAssistantCommissionDate;
+	}
+
+	public void setDesignerAssistantCommissionDate(LocalDateTime designerAssistantCommissionDate) {
+		this.designerAssistantCommissionDate = designerAssistantCommissionDate;
 	}
 }

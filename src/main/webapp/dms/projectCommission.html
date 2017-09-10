@@ -28,6 +28,8 @@
                 <a class="mini-button" iconCls="icon-save" plain="true" onclick="saveData()">保存</a>
                 <a class="mini-button" iconCls="icon-node" plain="true" onclick="calculateFirstCommission()">首次提成</a>
                 <a class="mini-button" iconCls="icon-node" plain="true" onclick="calculateBalanceCommission()">二次提成</a>
+                <a class="mini-button" iconCls="icon-node" plain="true" onclick="revertFirstCommission()">取消首次提成</a>
+                <a class="mini-button" iconCls="icon-node" plain="true" onclick="revertBalanceCommission()">取消二次提成</a>
                 <a class="mini-button" iconCls="icon-upload" plain="true" onclick="ExportExcel()">导出Excel</a>
 
                 <form id="upload" action="../ws/commission/v1/upload" method="post" enctype="multipart/form-data">
@@ -207,6 +209,11 @@
                 <input property="editor" class="mini-datepicker" style="width:100%;" minWidth="100"/>
             </div>
 
+            <div field="materialCommission" width="100" headerAlign="center" allowSort="false">
+                材料提成
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            </div>
+
 
         </div>
     </div>
@@ -283,6 +290,25 @@
         });
     }
 
+     function revertFirstCommission() {
+        var data = grid.getSelecteds();
+        var json = mini.encode(data);
+        grid.loading("保存中，请稍后......");
+        $.ajax({
+            url: '../ws/commission/v1/revertFirstCommission',
+            data: json,
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json;charset=utf-8',
+            success: function (text) {
+                grid.reload();
+            }
+            <!--error: function (jqXHR, textStatus, errorThrown) {-->
+            <!--alert(jqXHR.responseText);-->
+            <!--}-->
+        });
+    }
+
     function calculateBalanceCommission() {
         var data = grid.getSelecteds();
         var json = mini.encode(data);
@@ -301,6 +327,26 @@
             }
         });
     }
+
+     function revertBalanceCommission() {
+        var data = grid.getSelecteds();
+        var json = mini.encode(data);
+        grid.loading("保存中，请稍后......");
+        $.ajax({
+            url: '../ws/commission/v1/revertBalanceCommission',
+            data: json,
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json;charset=utf-8',
+            success: function (text) {
+                grid.reload();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR.responseText);
+            }
+        });
+    }
+
 
     function onFilterChanged() {
         var branch = mini.get("branchFilter").getValue();

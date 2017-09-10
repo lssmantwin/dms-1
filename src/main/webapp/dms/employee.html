@@ -26,6 +26,7 @@
                 <a class="mini-button" iconCls="icon-add" plain="true" onclick="addRow()">增加</a>
                 <span class="separator"></span>
                 <a class="mini-button" iconCls="icon-save" plain="true" onclick="saveData()">保存</a>
+                <a class="mini-button" iconCls="icon-save" plain="true" onclick="synchronzieCommissionRate()">半年考核同步提成</a>
             </td>
         </tr>
     </table>
@@ -132,17 +133,6 @@
     var grid = mini.get("datagrid1");
     grid.load();
 
-    grid.on("drawcell", function (e) {
-        var record = e.record,
-            column = e.column,
-            field = e.field,
-            value = e.value;
-        if (record.leaveDate != null) {
-            if (field == "name") {
-                e.cellStyle = "color:red;font-weight:bold;";
-            }
-        }
-    })
 
     function addRow() {
         var newRow = {};
@@ -177,6 +167,26 @@
             }
         });
     }
+
+     function synchronzieCommissionRate() {
+        var data = grid.getSelecteds();
+        var json = mini.encode(data);
+        grid.loading("保存中，请稍后......");
+        $.ajax({
+            url: "../ws/employee/v1/synchronizeCommissionRate",
+            data: json,
+            type: 'post',
+            dataType: 'json',
+            contentType: "application/json;charset=utf-8",
+            success: function (text) {
+                grid.reload();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR.responseText);
+            }
+        });
+    }
+
 
     //    function onKeyEnter(e) {
     //        onSearch();

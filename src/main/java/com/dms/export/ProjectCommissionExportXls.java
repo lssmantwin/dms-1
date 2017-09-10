@@ -81,6 +81,9 @@ public class ProjectCommissionExportXls implements StreamSource {
 			Cell cell6 = row.createCell(cellNumber++);
 			cell6.setCellValue(dto.getPurchaseAgentFee() == null ? StringUtils.EMPTY : dto.getPurchaseAgentFee().toString());
 
+			Cell cell62 = row.createCell(cellNumber++);
+			cell62.setCellValue(dto.getCommissionBase() == null ? StringUtils.EMPTY : dto.getCommissionBase().toString());
+
 			Cell cell7 = row.createCell(cellNumber++);
 			cell7.setCellValue(dto.getProjectChangeTotal() == null ? StringUtils.EMPTY : dto.getProjectChangeTotal().toString());
 
@@ -111,16 +114,12 @@ public class ProjectCommissionExportXls implements StreamSource {
 			Cell cell15 = row.createCell(cellNumber++);
 			cell15.setCellValue(dto.getDesignCommissionRate() == null ? StringUtils.EMPTY : dto.getDesignCommissionRate().toString());
 
-			Cell cell16 = row.createCell(cellNumber++);
-			cell16.setCellValue(dto.getContractDate() == null ? StringUtils.EMPTY : dto.getContractDate().toString("yyyy-MM-dd"));
 			Cell cell17 = row.createCell(cellNumber++);
 			cell17.setCellValue(dto.getFirstCommissionDate() == null ? StringUtils.EMPTY : dto.getFirstCommissionDate().toString("yyyy-MM-dd"));
 
 			Cell cell18 = row.createCell(cellNumber++);
 			cell18.setCellValue(dto.getActualStartTime() == null ? StringUtils.EMPTY : dto.getActualStartTime().toString("yyyy-MM-dd"));
 
-			Cell cell19 = row.createCell(cellNumber++);
-			cell19.setCellValue(dto.getActualEndTime() == null ? StringUtils.EMPTY : dto.getActualEndTime().toString("yyyy-MM-dd"));
 			Cell cell20 = row.createCell(cellNumber++);
 			cell20.setCellValue(dto.getBalanceTime() == null ? StringUtils.EMPTY : dto.getBalanceTime().toString("yyyy-MM-dd"));
 
@@ -129,6 +128,9 @@ public class ProjectCommissionExportXls implements StreamSource {
 
 			Cell cell22 = row.createCell(cellNumber++);
 			cell22.setCellValue(dto.getDesignerAssistantCommissionRate() == null ? StringUtils.EMPTY : dto.getDesignerAssistantCommissionRate().toString());
+
+			Cell cell23 = row.createCell(cellNumber++);
+			cell22.setCellValue(dto.getDesignerAssistantCommission() == null ? StringUtils.EMPTY : dto.getDesignerAssistantCommission().toString());
 
 		}
 	}

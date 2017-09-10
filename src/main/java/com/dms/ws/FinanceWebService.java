@@ -27,4 +27,12 @@ public interface FinanceWebService {
 	@GET
 	@Path("/export")
 	Response export(@QueryParam("employeeName") String employeeName, @QueryParam("month") String month);
+
+	@POST
+	@Path("/synchronizeDesignerCommissions")
+	DmsResponse synchronizeDesignerCommissions(FinanceRequest financeRequest);
+
+	@POST
+	@Path("/synchronizeDesignerAssistantCommissions")
+	DmsResponse synchronizeDesignerAssistantCommissions(FinanceRequest financeRequest);
 }

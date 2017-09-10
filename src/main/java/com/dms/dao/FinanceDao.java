@@ -12,6 +12,8 @@ public interface FinanceDao {
 
 	List<FinanceDto> getFinance(FinanceDto financeDto);
 
+	void synchronizeDesignerAssistantCommission(String currentMonth);
+
 	void saveFinance(FinanceDto financeDto);
 
 	void updateFinance(FinanceDto financeDto);

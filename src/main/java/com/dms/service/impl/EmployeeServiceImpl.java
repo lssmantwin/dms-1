@@ -12,6 +12,7 @@ import com.dms.domain.Month;
 import com.dms.dto.EmployeeDto;
 import com.dms.request.BaseFilterRequest;
 import com.dms.service.EmployeeService;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -57,5 +58,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public void updateCharge(Long employeeId, BigDecimal charge) {
 		employeeDao.updateCharge(employeeId, charge);
+	}
+
+	@Override
+	@Transactional
+	public void synchronizeCommissionRate(List<EmployeeDto> employeeDtos) {
+		employeeDao.synchronizeDesignerRate(employeeDtos);
 	}
 }

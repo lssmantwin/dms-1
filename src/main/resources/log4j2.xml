@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!--
     status : 这个用于设置log4j2自身内部的信息输出,可以不设置,当设置成trace时,会看到log4j2内部各种详细输出
     monitorInterval : Log4j能够自动检测修改配置文件和重新配置本身, 设置间隔秒数。
@@ -7,7 +7,7 @@
 
     <Properties>
         <!-- 配置日志文件输出目录 -->
-        <Property name="LOG_HOME">E:/log</Property>
+        <Property name="LOG_HOME">C:/log</Property>
         <property name="LOG_NAME">dms</property>
     </Properties>
 
@@ -73,7 +73,7 @@
 
         <!-- 日志实例(info),其中'service-log'继承root,但是root将日志输出控制台,而'service-log'将日志输出到文件,通过属性'additivity="false"'将'service-log'的
              的日志不再输出到控制台 -->
-        <logger name="service_log" level="info" includeLocation="true" additivity="true">
+        <logger name="service_log" level="debug" includeLocation="true" additivity="true">
             <appender-ref ref="service_appender"/>
         </logger>
 

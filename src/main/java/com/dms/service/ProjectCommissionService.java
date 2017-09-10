@@ -12,7 +12,10 @@ public interface ProjectCommissionService {
 
 	List<ProjectCommissionDto> getProjectCommissions(ProjectCommissionFilterRequest request);
 
+	List<ProjectCommissionDto>  getCurrentMonthProjectCommissions(String currentMonth);
+
 	int getProjectCommissionCount(ProjectCommissionFilterRequest request);
+
 
 	ProjectCommissionDto getProject(String acNumber);
 
@@ -21,6 +24,10 @@ public interface ProjectCommissionService {
 	void calculateFirstCommission(List<ProjectCommissionDto> projectCommissionDtos);
 
 	void calculateBalanceCommission(List<ProjectCommissionDto> projectCommissionDtos);
+
+	void revertFirstCommissions(List<ProjectCommissionDto> projectCommissionDtos);
+
+	void revertBalanceCommissions(List<ProjectCommissionDto> projectCommissionDtos);
 
 	void saveProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos) throws IllegalAccessException;
 

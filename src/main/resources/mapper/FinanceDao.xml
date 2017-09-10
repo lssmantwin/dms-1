@@ -42,6 +42,8 @@
         <result property="postAllowance" column="post_allowance"/>
         <result property="salaryCash" column="salary_cash"/>
         <result property="contractWages" column="contract_wages"/>
+        <result property="commission" column="commission"/>
+
     </resultMap>
 
     <resultMap id="SalaryBillMap" type="SalaryBill">
@@ -79,6 +81,8 @@
         <result property="bonusCash" column="bonus_cash"/>
         <result property="otherCharge" column="other_charge"/>
         <result property="salaryCash" column="salary_cash"/>
+        <result property="isChanged" column="is_changed"/>
+
     </resultMap>
 
     <select id="getFinances" parameterType="FinanceFilterRequest" resultMap="FinanceMap">
@@ -89,7 +93,7 @@
         t.charge_comments,t.other_charge, t.casual_leave, t.sick_leave, t.gross_pay, t.medical_insurance,
         t.housing_fund, t.before_tax_salary, t.personal_income_tax, t.after_tax_salary, t.already_charge,
         t.identity_card_number, t.bank_card_number, t.storage_charge, t.charge_per_month, t.total_charge, t.storage,
-        t.post_allowance, t.salary_cash, t.contract_wages
+        t.post_allowance, t.salary_cash, t.contract_wages, t.commission
         from (
         select e.id as eid, e.name, e.base_wage, e.overtime, e.meals_subsidy, e.secrecy_subsidy,
         e.communication_fee, e.working_age_subsidy, e.identity_card_number, e.bank_card_number,
@@ -100,7 +104,7 @@
         f.charge_comments,f.other_charge, f.casual_leave, f.sick_leave,
         f.storage, f.gross_pay, e.medical_insurance,
         e.housing_fund, f.before_tax_salary, f.personal_income_tax, f.after_tax_salary, f.already_charge,
-        f.salary_cash,f.contract_wages, f.post_allowance,
+        f.salary_cash,f.contract_wages, f.post_allowance, f.commission,
         row_number() over (order by e.id) as rn from salary_employee e left join salary_finance f on e.id =
         f.employee_id and
         f."month" = #{month}
@@ -152,12 +156,12 @@
         performance_appraisal_card, performance_appraisal_cash,
         other_subsidy_card, other_subsidy_cash, exhibition_charge, charge, charge_comments, other_charge, casual_leave,
         sick_leave, storage, gross_pay, medical_insurance, housing_fund, before_tax_salary, personal_income_tax,
-        after_tax_salary, already_charge, salary_cash, contract_wages, post_allowance)
+        after_tax_salary, already_charge, salary_cash, contract_wages, post_allowance, commission)
         values (current_timestamp, #{employeeId}, #{month}, #{attendance}, #{bonusCard}, #{bonusCash},
         #{performanceAppraisalCard}, #{performanceAppraisalCash},
         #{otherSubsidyCard}, #{otherSubsidyCash}, #{exhibitionCharge}, #{charge}, #{chargeComments}, #{otherCharge},
         #{casualLeave}, #{sickLeave}, #{storage}, #{grossPay}, #{medicalInsurance}, #{housingFund}, #{beforeTaxSalary},
-        #{personalIncomeTax}, #{afterTaxSalary}, 1, #{salaryCash}, #{contractWages}, #{postAllowance})
+        #{personalIncomeTax}, #{afterTaxSalary}, 1, #{salaryCash}, #{contractWages}, #{postAllowance}, #{bonusCash})
     </insert>
 
     <update id="updateFinance" parameterType="FinanceDto">
@@ -184,8 +188,26 @@
         after_tax_salary = #{afterTaxSalary},
         salary_cash = #{salaryCash},
         contract_wages = #{contractWages},
-        post_allowance = #{postAllowance}
+        post_allowance = #{postAllowance},
+        commission = #{commission},
+        is_changed =  #{isChanged}
         where id = #{id}
+    </update>
+
+    <update id="synchronizeDesignerAssistantCommission" parameterType="string">
+        update f
+        set f.bonus_card = sum_total,
+            f.commission = sum_total,
+            f.is_changed = 0
+        from salary_finance f,
+        (select distinct design_assistant_id, e.name, sum(designer_assistant_commission)sum_total
+        from salary_project_commission p
+        join salary_employee e
+        on p.designer_assistant = e.name
+        where month(designer_assistant_commission_date)= SUBSTRING(#{0}, 5, 5)
+        group by design_assistant_id, e.name) da
+        where  (f.employee_id = da.design_assistant_id
+        and f.month=#{0})
     </update>
 
     <select id="getFinance" parameterType="FinanceDto" resultMap="FinanceMap">

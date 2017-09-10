@@ -184,6 +184,29 @@
     </update>
 
 
+    <update id="synchronizeDesignerRate" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+        update spc
+        set spc.design_commission_rate = e.jyw_commission_ratio
+        from salary_project_commission spc,
+        salary_employee e
+        where spc.designer = e.name
+        and  spc.actual_start_time> DATEADD(yy, DATEDIFF(yy,0,getdate()), 0)
+        and spc.contract_id like 'CG%'
+        and spc.designer = #{item.name}
+        ;
+        update spc
+        set spc.design_commission_rate = e.renovate_commission_ratio
+        from salary_project_commission spc,
+        salary_employee e
+        where spc.designer = e.name
+        and spc.actual_start_time> DATEADD(yy, DATEDIFF(yy,0,getdate()), 0)
+        and spc.contract_id like 'FG%'
+        and  spc.designer = #{item.name}
+        </foreach>
+    </update>
+
+
     <select id="getEmployee" parameterType="long" resultMap="EmployeeMap">
         select * from salary_employee where id = #{0}
     </select>

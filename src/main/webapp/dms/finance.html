@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -29,6 +29,8 @@
                        required="true" allowInput="true" showNullItem="false" onvaluechanged="onMonthChange"/>
                 <span class="separator"></span>
                 <a class="mini-button" iconCls="icon-save" plain="true" onclick="saveData()">保存</a>
+                <a class="mini-button" iconCls="icon-save" plain="true" onclick="synchronizeDesignerCommissions()">同步设计师提成</a>
+                <a class="mini-button" iconCls="icon-save" plain="true" onclick="synchronizeDesignerAssistantCommissions()">同步设计助理提成</a>
                 <a class="mini-button" iconCls="icon-upload" plain="true" onclick="ExportExcel()">导出Excel</a>
             </td>
         </tr>
@@ -53,7 +55,12 @@
                 <input property="editor" class="mini-combobox" style="width:100%;" textField="text" valueField="value"
                        url="../ws/employee/v1/attendance" required="true" allowInput="true"/>
             </div>
+            <div field="baseWage" width="100" headerAlign="center" allowSort="true" vtype="float">基本工资
+            </div>
             <div field="contractWages" width="100" headerAlign="center" allowSort="true" vtype="float">合同工资
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+            </div>
+            <div field="commission" width="100" headerAlign="center" allowSort="true" vtype="float">工程提成
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
             <div field="bonusCard" width="100" headerAlign="center" allowSort="true" vtype="float">提成（卡）
@@ -68,7 +75,7 @@
             <div field="charge" width="100" headerAlign="center" allowSort="true" vtype="float">扣款
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
-            <div field="chargeComments" width="100" headerAlign="center" allowSort="true">扣款说明
+            <div field="chargeComments" width="100" headerAlign="center" allowSort="true">说明
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
             </div>
             <div field="exhibitionCharge" width="100" headerAlign="center" allowSort="true" vtype="float">会展扣款
@@ -137,6 +144,21 @@
 
     mini.get('combo1').setValue(now);
 
+
+
+    grid.on("drawcell", function (e) {
+        var record = e.record,
+            column = e.column,
+            field = e.field,
+            value = e.value;
+        if (record.leaveDate != null) {
+            if (field == "name") {
+                e.cellStyle = "color:red;font-weight:bold;";
+            }
+        }
+    })
+
+
     function onMonthChange() {
         var value = mini.get('combo1').getValue();
         grid.load({month: value});
@@ -169,8 +191,7 @@
         }
 
         var finances = grid.getChanges();
-        var month = mini.get('combo1').getValue();
-        var data = {'finances': finances, 'month': month};
+      var data = {'finances': finances, 'month': month};
         var json = mini.encode(data);
 
         grid.loading("保存中，请稍后......");
@@ -195,6 +216,18 @@
         grid.load({employeeName: employeeName, month: month});
     }
 
+    grid.on("drawcell", function (e) {
+        var record = e.record,
+        column = e.column,
+        field = e.field,
+        value = e.value;
+
+        //给帐号列，增加背景色
+        if (field == "loginname") {
+            e.cellStyle = "background:#ecedef";
+        }
+
+    });
     function onEnter() {
         onFilterChanged();
     }
@@ -247,6 +280,47 @@
 
         var excelForm = document.getElementById("excelForm");
         excelForm.submit();
+    }
+
+
+     function synchronizeDesignerCommissions() {
+        var month = mini.get('combo1').getValue();
+        var data = { 'month': month};
+        var json = mini.encode(data);
+        grid.loading("保存中，请稍后......");
+        $.ajax({
+            url: '../ws/finance/v1/synchronizeDesignerCommissions',
+            data: json,
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json;charset=utf-8',
+            success: function (text) {
+                grid.reload();
+            }
+            <!--error: function (jqXHR, textStatus, errorThrown) {-->
+            <!--alert(jqXHR.responseText);-->
+            <!--}-->
+        });
+    }
+
+    function synchronizeDesignerAssistantCommissions() {
+        var month = mini.get('combo1').getValue();
+        var data = { 'month': month};
+        var json = mini.encode(data);
+        grid.loading("保存中，请稍后......");
+        $.ajax({
+            url: '../ws/finance/v1/synchronizeDesignerAssistantCommissions',
+            data: json,
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json;charset=utf-8',
+            success: function (text) {
+                grid.reload();
+            }
+            <!--error: function (jqXHR, textStatus, errorThrown) {-->
+            <!--alert(jqXHR.responseText);-->
+            <!--}-->
+        });
     }
 
     $(document).ajaxComplete(function (event, jqXHR, options) {

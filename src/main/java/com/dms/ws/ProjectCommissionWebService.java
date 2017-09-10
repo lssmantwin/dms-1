@@ -54,6 +54,15 @@ public interface ProjectCommissionWebService {
 	@Path("/importDesignAssistant")
 	DmsResponse updateDesignAssistant(@QueryParam("designAssistant") String designAssistant);
 
+	@POST
+	@Path("/revertFirstCommission")
+	DmsResponse revertFirstCommissions(List<ProjectCommissionDto> projectCommissionDtos);
+
+	@POST
+	@Path("/revertBalanceCommission")
+	DmsResponse revertBalanceCommissions(List<ProjectCommissionDto> projectCommissionDtos);
+
+
 	@GET
 	@Path("/projectCommissions")
 	DmsResponse getProjectCommissions(@QueryParam("designer") String designer, @QueryParam("designerAssistant") String designerAssistant,

@@ -17,4 +17,7 @@ public interface DmsConstants {
     BigDecimal DESIGN_ASSISTANT_COMMISSION_RATE = new BigDecimal(0.005);
     BigDecimal DESIGN_COMMISSION_FIRST_RATE = new BigDecimal(0.7);
 
+    String SUBURBS_JIADING = "嘉定店";
+    String SUBURBS_SONGJIANG_DIAN="松江店";
+
 }

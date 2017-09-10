@@ -9,6 +9,8 @@
         <result property="acNumber" column="ac_number"/>
         <result property="contractId" column="contract_id"/>
         <result property="employeeId" column="employee_id"/>
+        <result property="materialCommission" column="material_commission"/>
+
         <result property="customerName" column="customer_name"/>
         <result property="contractTotal" column="contract_total" typeHandler="com.dms.handler.BigDecimalHandler"/>
         <result property="purchaseAgentFee" column="purchase_agent_fee"
@@ -85,24 +87,24 @@
                 and first_commission_date &lt;= #{firstCommissionEndDate}
             </if>
             <if test="actualStartTime != null and actualStartTime != ''">
-                and actual_start_time > #{actualStartBeginTime}
+                and actual_start_time >= #{actualStartBeginTime}
                 and actual_start_time &lt;=  #{actualStartEndTime}
             </if>
             <if test="actualEndTime != null and actualEndTime != ''">
                 and actual_end_time > #{actualEndTime}
             </if>
             <if test="balanceTime != null and balanceTime != ''">
-                and balance_time > #{balanceStartTime}
-                and balance_time &lt; #{balanceEndTime}
+                and balance_time >= #{balanceStartTime}
+                and balance_time &lt;= #{balanceEndTime}
             </if>
             <if test="balanceCommissionDate != null and balanceCommissionDate != ''">
                 and balance_commission_date >= #{balanceCommissionStartDate}
-                and balance_commission_date &lt; #{balanceCommissionEndDate}
+                and balance_commission_date &lt;= #{balanceCommissionEndDate}
             </if>
 
             <if test="designerAssistantCommissionDate != null and designerAssistantCommissionDate != ''">
                 and designer_assistant_commission_date >= #{designerAssistantCommissionStartDate}
-                and designer_assistant_commission_date &lt; #{designerAssistantCommissionEndDate}
+                and designer_assistant_commission_date &lt;= #{designerAssistantCommissionEndDate}
             </if>
         </where>
     </select>
@@ -154,15 +156,15 @@
                 and first_commission_date &lt; #{firstCommissionEndDate}
             </if>
             <if test="actualStartTime != null and actualStartTime != ''">
-                and actual_start_time > #{actualStartBeginTime}
+                and actual_start_time >= #{actualStartBeginTime}
                 and actual_start_time &lt;=  #{actualStartEndTime}
             </if>
             <if test="actualEndTime != null and actualEndTime != ''">
                 and actual_end_time > #{actualEndTime}
             </if>
             <if test="balanceTime != null and balanceTime != ''">
-                and balance_time > #{balanceStartTime}
-                and balance_time &lt; #{balanceEndTime}
+                and balance_time >= #{balanceStartTime}
+                and balance_time &lt;= #{balanceEndTime}
             </if>
             <if test="balanceCommissionDate != null and balanceCommissionDate != ''">
                 and balance_commission_date >= #{balanceCommissionStartDate}
@@ -189,7 +191,6 @@
         </where>
     </select>
 
-
     <insert id="saveProjects" parameterType="ProjectCommissionDto">
         INSERT INTO dms.dbo.salary_project_commission
         (
@@ -209,6 +210,7 @@
         ,actual_end_time
         ,balance_time
         ,customer_name
+        ,material_commission
         ,created_time)
         values
         <foreach collection="list" item="item" index="index" separator=",">
@@ -216,7 +218,7 @@
             #{item.projectChangeTotal}, #{item.customerPay},
             #{item.payContractRatio}, #{item.payProjectRatio}, #{item.contractState},
             #{item.contractDate}, #{item.actualStartTime}, #{item.actualEndTime},
-            #{item.balanceTime}, #{item.customerName}, #{item.createdTime})
+            #{item.balanceTime}, #{item.customerName},#{item.materialCommission}, #{item.createdTime})
         </foreach>
     </insert>
 
@@ -243,6 +245,7 @@
         ,design_commission_rate
         ,first_commission_rate
         ,designer_assistant_commission_rate
+        ,material_commission
         ,created_time)
         values
         (#{designer}, #{acNumber}, #{contractId}, #{contractTotal}, #{purchaseAgentFee},
@@ -250,7 +253,7 @@
         #{payContractRatio}, #{payProjectRatio}, #{contractState},
         #{branch}, #{contractDate}, #{actualStartTime}, #{actualEndTime},
         #{balanceTime}, #{customerName}, #{employeeId}, #{designCommissionRate},  #{firstCommissionRate},
-        #{designerAssistantCommissionRate},  #{createdTime})
+        #{designerAssistantCommissionRate}, #{materialCommission}, #{createdTime})
     </insert>
 
 
@@ -269,7 +272,7 @@
         ci.contract_date AS contractDate,
         ci.actual_start_time AS actualStartTime,
         ci.actual_end_time AS actualEndTime,
-        ci.balance_time AS balanceTime,
+        ci.end_balance AS balanceTime,
         View_Max_Flow_Form.CustName as customerName
         FROM   Contract_Info AS ci
         INNER JOIN   View_Max_Flow_Form ON ci.ACNumber = View_Max_Flow_Form.ACNumber LEFT OUTER JOIN
@@ -294,6 +297,20 @@
         AND ci.ACNumber not in ( SELECT ac_number from salary_project_commission where commission_state = 2)
         ORDER BY ci.state,designer
 
+    </select>
+
+    <select id="getCurrentMonthProjectCommissions" parameterType="java.lang.String" resultMap="ProjectCommissionMap">
+        select isnull(f.designer, b.designer) as designer, f.first_commission, b.balance_commission
+        from (select distinct designer, sum(isnull(first_commission,0))as first_commission
+        from "salary_project_commission"
+        where substring(convert(varchar ,first_commission_date,112), 1,6) = #{0}
+        group by designer ) f
+        full join
+        (select distinct designer, sum(isnull(balance_commission,0)) as balance_commission
+        from "salary_project_commission"
+        where substring(convert(varchar ,balance_commission_date,112), 1,6) = #{0}
+        group by designer) b
+        on f.designer = b.designer
     </select>
 
     <update id="updateProject" parameterType="ProjectCommissionDto">
@@ -342,6 +359,31 @@
         where ac_number = #{acNumber}
     </update>
 
+    <update id="revertFirstCommissions" parameterType="list">
+        <foreach collection="list" item="item" index="index" separator=",">
+            update "salary_project_commission"
+            set
+            first_commission = null,
+            first_commission_date = null,
+            commission_state = 0,
+            updated_time = getdate()
+            where ac_number = #{item.acNumber}
+        </foreach>
+    </update>
+
+    <update id="revertBalanceCommissions" parameterType="list">
+        <foreach collection="list" item="item" index="index" separator=",">
+            update "salary_project_commission"
+            set
+            balance_commission = null,
+            balance_commission_date = null,
+            commission_state = 1,
+            updated_time = getdate()
+            where ac_number = #{item.acNumber}
+        </foreach>
+    </update>
+
+
     <update id="updateProjectCommission" parameterType="ProjectCommissionDto">
         update "salary_project_commission"
         set
@@ -360,6 +402,7 @@
         updated_time =  #{updatedTime}
         where ac_number = #{acNumber}
     </update>
+
 
     <update id="updateProjectCommissions" parameterType="list">
         <foreach collection="list" item="item" index="index" open="" close="" separator=";">
@@ -385,14 +428,19 @@
             design_commission_rate = #{item.designCommissionRate},
             designer_assistant_commission = #{item.designerAssistantCommission},
             designer_assistant_commission_date = #{item.designerAssistantCommissionDate},
-            designer_assistant_commission_rate = #{item.designerAssistantCommissionRate}
+            designer_assistant_commission_rate = #{item.designerAssistantCommissionRate},
+            material_commission  = #{item.materialCommission}
             where ac_number = #{item.acNumber}
         </foreach>
     </update>
 
     <update id="updateDesignAssistant" parameterType="DesignAssistantDto">
         update "salary_project_commission"
-        set designer_assistant = #{designAssistant}
+        set designer_assistant = #{designAssistant},
+            designer_assistant_commission = #{designerAssistantCommission},
+            designer_assistant_commission_rate = #{designerAssistantCommissionRate},
+            designer_assistant_commission_date = #{designerAssistantCommissionDate},
+            design_assistant_id = #{designAssistantId}
         where ac_number = #{acNumber}
     </update>
 </mapper>

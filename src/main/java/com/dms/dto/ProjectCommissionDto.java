@@ -67,6 +67,7 @@ public class ProjectCommissionDto implements Serializable {
 	private BigDecimal commissionBase;
 	private Long employeeId;
 	private String branch;
+	private String materialCommission;
 
 	public BigDecimal getPurchasingCost() {
 		return purchasingCost;
@@ -347,6 +348,14 @@ public class ProjectCommissionDto implements Serializable {
 
 	public void setBranch(String branch) {
 		this.branch = branch;
+	}
+
+	public String getMaterialCommission() {
+		return materialCommission;
+	}
+
+	public void setMaterialCommission(String materialCommission) {
+		this.materialCommission = materialCommission;
 	}
 
 	@Override

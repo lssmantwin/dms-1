@@ -26,13 +26,21 @@ public interface ProjectCommissionDao {
 
 	List<ProjectCommissionDto> getProjectCommissions(ProjectCommissionFilterRequest request);
 
+	List<ProjectCommissionDto>  getCurrentMonthProjectCommissions(String currentMonth);
+
 	int getProjectCommissionCount(ProjectCommissionFilterRequest request);
 
 	void updateProjectCommissions(List<ProjectCommissionDto> projectCommissionDtos);
+
+	void revertFirstCommissions(List<ProjectCommissionDto> projectCommissionDtos);
+
+	void revertBalanceCommissions(List<ProjectCommissionDto> projectCommissionDtos);
 
 	void updateProjectCommission(ProjectCommissionDto projectCommission);
 
 	void updateProject(ProjectCommissionDto projectCommission);
 
 	void updateDesignAssistant(DesignAssistantDto designAssistantDto);
+
+
 }

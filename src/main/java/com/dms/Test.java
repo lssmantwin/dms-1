@@ -8,7 +8,9 @@ import org.joda.time.LocalDateTime;
  */
 public class Test {
      public static void main(String[] args) {
-        System.out.println( new LocalDateTime(DateUtils.getPreviousMonth()));
+
+         System.out.println( new LocalDateTime(DateUtils.getPreviousMonth()));
+         System.out.println( DateUtils.getFirstDayOfMontString(2017,8));
      }
 }
 

@@ -121,6 +121,26 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 
 	@Override
 	@CheckAuthority
+	public DmsResponse revertFirstCommissions(List<ProjectCommissionDto> projectCommissionDtos) {
+		LOGGER.info("Revert project commissions, {}", projectCommissionDtos);
+		projectCommissionService.revertFirstCommissions(projectCommissionDtos);
+		DmsResponse response = new DmsResponse();
+		response.setCode(ResponseEnum.SUCCESS);
+		return response;
+	}
+
+	@Override
+	public DmsResponse revertBalanceCommissions(List<ProjectCommissionDto> projectCommissionDtos) {
+		LOGGER.info("Revert project commissions, {}", projectCommissionDtos);
+		projectCommissionService.revertBalanceCommissions(projectCommissionDtos);
+		DmsResponse response = new DmsResponse();
+		response.setCode(ResponseEnum.SUCCESS);
+		return response;
+	}
+
+
+	@Override
+	@CheckAuthority
 	public DmsResponse calculateBalanceCommissions(List<ProjectCommissionDto> projectCommissionDtos) {
 		LOGGER.info("Calculate balance project commissions, {}", projectCommissionDtos);
 		projectCommissionService.calculateBalanceCommission(projectCommissionDtos);
@@ -223,7 +243,7 @@ public class ProjectCommissionWebServiceImpl implements ProjectCommissionWebServ
 
 		List<DesignAssistantDto> designAssistantDtos = readXLSXFile(in);
 		projectCommissionService.updateDesignAssistants(designAssistantDtos);
-		IOUtils.closeQuietly(in);
+//		IOUtils.closeQuietly(in);
 		return  FileFactory.getResponse(in, LocalDateTime.now().toString("yyyyMMddHHmmSS"));
 	}
 

@@ -44,6 +44,9 @@ public class FinanceDto implements Serializable {
 	private Boolean alreadyCharge = Boolean.FALSE;
 	private BigDecimal postAllowance;
 	private BigDecimal contractWages;
+
+	private BigDecimal commission;
+	private int  isChanged;
 	/* 员工管理 */
 	// 总保管费
 	private BigDecimal storageCharge;
@@ -365,5 +368,21 @@ public class FinanceDto implements Serializable {
 
 	public void setChargePerMonth(BigDecimal chargePerMonth) {
 		this.chargePerMonth = chargePerMonth;
+	}
+
+	public BigDecimal getCommission() {
+		return commission;
+	}
+
+	public void setCommission(BigDecimal commission) {
+		this.commission = commission;
+	}
+
+	public int getIsChanged() {
+		return isChanged;
+	}
+
+	public void setIsChanged(int isChanged) {
+		this.isChanged = isChanged;
 	}
 }

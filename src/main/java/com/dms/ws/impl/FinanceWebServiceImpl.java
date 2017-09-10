@@ -60,6 +60,7 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 			if (finance.getContractWages() == null) {
 				finance.setContractWages(calculateContractWages(finance));
 			}
+
 			if (finance.getStorage() == null) {
 				calculateStorage(finance);
 			}
@@ -342,5 +343,23 @@ public class FinanceWebServiceImpl implements FinanceWebService {
 		}
 
 		return FileFactory.getResponse(in, LocalDateTime.now().toString("yyyyMMddHHmmSS"));
+	}
+
+	@Override
+	@CheckAuthority
+	public DmsResponse synchronizeDesignerCommissions(FinanceRequest financeRequest) {
+		financeService.synchronizeDesignerCommissions(financeRequest.getMonth());
+		DmsResponse<FinanceDto> response = new DmsResponse<>();
+		response.setCode(ResponseEnum.SUCCESS);
+		return response;
+	}
+
+	@Override
+	@CheckAuthority
+	public DmsResponse synchronizeDesignerAssistantCommissions(FinanceRequest financeRequest) {
+		financeService.synchronizeDesignerAssistantCommission(financeRequest.getMonth());
+		DmsResponse<FinanceDto> response = new DmsResponse<>();
+		response.setCode(ResponseEnum.SUCCESS);
+		return response;
 	}
 }
