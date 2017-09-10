@@ -153,7 +153,7 @@
             </if>
             <if test="firstCommissionDate != null and firstCommissionDate != ''">
                 and first_commission_date >= #{firstCommissionStartDate}
-                and first_commission_date &lt; #{firstCommissionEndDate}
+                and first_commission_date &lt;= #{firstCommissionEndDate}
             </if>
             <if test="actualStartTime != null and actualStartTime != ''">
                 and actual_start_time >= #{actualStartBeginTime}
@@ -168,12 +168,12 @@
             </if>
             <if test="balanceCommissionDate != null and balanceCommissionDate != ''">
                 and balance_commission_date >= #{balanceCommissionStartDate}
-                and balance_commission_date &lt; #{balanceCommissionEndDate}
+                and balance_commission_date &lt;= #{balanceCommissionEndDate}
             </if>
 
             <if test="designerAssistantCommissionDate != null and designerAssistantCommissionDate != ''">
                 and designer_assistant_commission_date >= #{designerAssistantCommissionStartDate}
-                and designer_assistant_commission_date &lt; #{designerAssistantCommissionEndDate}
+                and designer_assistant_commission_date &lt;= #{designerAssistantCommissionEndDate}
             </if>
         </where>
         ) t
@@ -316,6 +316,9 @@
     <update id="updateProject" parameterType="ProjectCommissionDto">
         update "salary_project_commission"
         set
+        <if test="designer != null">
+            designer = #{designer},
+        </if>
         <if test="contractTotal != null">
             contract_total = #{contractTotal},
         </if>
