@@ -21,4 +21,6 @@ public interface FinanceDao {
 	void updateCommission(FinanceDto financeDto);
 
 	List<SalaryBill> getSalaryBills(FinanceFilterRequest request);
+
+	void lockFinances(String month);
 }

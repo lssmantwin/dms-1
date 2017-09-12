@@ -363,7 +363,7 @@
     </update>
 
     <update id="revertFirstCommissions" parameterType="list">
-        <foreach collection="list" item="item" index="index" separator=",">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
             update "salary_project_commission"
             set
             first_commission = null,
@@ -375,8 +375,8 @@
     </update>
 
     <update id="revertBalanceCommissions" parameterType="list">
-        <foreach collection="list" item="item" index="index" separator=",">
-            update "salary_project_commission"
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+        update "salary_project_commission"
             set
             balance_commission = null,
             balance_commission_date = null,

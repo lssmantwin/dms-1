@@ -28,6 +28,7 @@ public class SalaryBill implements Serializable {
 	private BigDecimal workingAgeSubsidy;
 	private BigDecimal communicationFee;
 	private BigDecimal charge;
+	private String chargeComments;
 	private BigDecimal exhibitionCharge;
 	private BigDecimal casualLeave;
 	private BigDecimal sickLeave;
@@ -160,6 +161,14 @@ public class SalaryBill implements Serializable {
 
 	public void setCharge(BigDecimal charge) {
 		this.charge = charge;
+	}
+
+	public String getChargeComments() {
+		return chargeComments;
+	}
+
+	public void setChargeComments(String chargeComments) {
+		this.chargeComments = chargeComments;
 	}
 
 	public BigDecimal getExhibitionCharge() {

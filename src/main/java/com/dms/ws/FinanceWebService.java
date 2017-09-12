@@ -25,6 +25,10 @@ public interface FinanceWebService {
 	DmsResponse saveFinances(FinanceRequest request);
 
 	@GET
+	@Path("/finances/lock")
+	DmsResponse lockFinances(@QueryParam("month") String month);
+
+	@GET
 	@Path("/export")
 	Response export(@QueryParam("employeeName") String employeeName, @QueryParam("month") String month);
 

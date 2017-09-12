@@ -119,7 +119,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
                 commission.setEmployeeId(Long.valueOf(employee.getId()));
                 if (commission.getDesignCommissionRate() == null || BigDecimal.ZERO.equals(commission.getDesignCommissionRate())) {
                     if (commission.getContractId().startsWith(DmsConstants.JYW_PROJECT)) {
-                        commission.setDesignCommissionRate(employee.getRenovateCommissionRatio());
+                        commission.setDesignCommissionRate(employee.getJywCommissionRatio());
                         // 佳园屋
                     } else if (commission.getContractId().startsWith(DmsConstants.FX_PROJECT)) {
                         commission.setDesignCommissionRate(employee.getJywCommissionRatio());
@@ -249,11 +249,11 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
                     if (employee != null) {
                         // 翻新
                         if (project.getContractId().startsWith(DmsConstants.JYW_PROJECT)) {
-                            project.setDesignCommissionRate(employee.getRenovateCommissionRatio());
+                            project.setDesignCommissionRate(employee.getJywCommissionRatio());
                             project.setFirstCommissionRate(employee.getCommencementRatio());
                             // 佳园屋
                         } else if (project.getContractId().startsWith(DmsConstants.FX_PROJECT)) {
-                            project.setDesignCommissionRate(employee.getJywCommissionRatio());
+                            project.setDesignCommissionRate(employee.getRenovateCommissionRatio());
                             project.setFirstCommissionRate(employee.getCommencementRatio());
                         }
                         if (employee.getCommencementRatio() == null || employee.getCommencementRatio() == BigDecimal.ZERO) {
@@ -272,6 +272,7 @@ public class ProjectCommissionServiceImpl implements ProjectCommissionService {
                 projectCommissionDao.saveProjectCommission(project);
             } else {
                 LOGGER.info("======= sychronzieProejcts Start: existed project " + project.getAcNumber());
+                extProjectCommissionDto.setDesigner(project.getDesigner());
                 extProjectCommissionDto.setUpdatedTime(LocalDateTime.now());
                 extProjectCommissionDto.setPurchaseAgentFee(project.getPurchaseAgentFee());
                 extProjectCommissionDto.setActualStartTime(project.getActualStartTime());

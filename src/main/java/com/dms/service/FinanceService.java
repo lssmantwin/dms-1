@@ -20,4 +20,5 @@ public interface FinanceService {
 
 	List<SalaryBill> getSalaryBills(FinanceFilterRequest request);
 
+	void lockFinances(String month);
 }

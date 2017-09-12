@@ -67,10 +67,10 @@ public class FinanceServiceImpl implements FinanceService {
                 } else {
                     bonus = projectCommissionDto.getBalanceCommission();
                 }
-                financeDto.setBonusCash(bonus);
-                financeDto.setBonusCard(null);
+                financeDto.setBonusCash(null);
+                financeDto.setBonusCard(bonus);
                 financeDto.setCommission(bonus);
-                financeDto.setIsChanged(0);
+                financeDto.setIschanged(false);
                 financeDao.updateFinance(financeDto);
             }
         }
@@ -80,4 +80,9 @@ public class FinanceServiceImpl implements FinanceService {
     public List<SalaryBill> getSalaryBills(FinanceFilterRequest request) {
         return financeDao.getSalaryBills(request);
     }
+
+	@Override
+	public void lockFinances(String month) {
+		financeDao.lockFinances(month);
+	}
 }
